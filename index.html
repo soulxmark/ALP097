@@ -16,7 +16,7 @@
       </div>
       <ul class="nav-links" id="navLinks">
         <li><a href="#home">Home</a></li>
-        <li><a href="#contact">Reservation</a></li>
+        <li><a href="./reservation.html">Reservation</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#menu">Menu</a></li>
         <li><a href="#contact">Contact</a></li>
@@ -37,11 +37,13 @@
   </section>
 
   <!-- About -->
-  <section id="about" class="section reveal">
+ <section id="about" class="parallax-layer reveal" style="background-image: url('../images/hero.webp');">
+  <div class="container">
     <h2>About Us</h2>
-    <img src="./images/hero.webp" alt="Casa Manila Interior" class="section-img">
-    <p>Located in the heart of Manila, Casa Manila blends traditional Filipino flavors with contemporary presentation. Our chefs craft dishes inspired by heritage recipes, served in a modern, elegant setting.</p>
-  </section>
+    <p>Located in the heart of Manila, Casa Manila blends traditional Filipino flavors with contemporary presentation...</p>
+  </div>
+</section>
+
 
   <!-- Menu -->
   <section id="menu" class="section reveal">
@@ -75,9 +77,18 @@
     <p>Address: 123 Ayala Avenue, Makati, Metro Manila</p>
   </section>
 
-  <footer class="reveal">
-    <p>&copy; 2026 Casa Manila. All rights reserved.</p>
-  </footer>
+ <footer class="footer reveal">
+  <div class="footer-container">
+    <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+    <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+    <div class="social-links">
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="#">Twitter</a>
+    </div>
+  </div>
+</footer>
+
 
   <script src="./scripts/function.js"></script>
 </body>

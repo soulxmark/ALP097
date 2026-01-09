@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Casa De Manila | Reservation</title>
+  <link rel="stylesheet" href="./styles/reservation.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        Casa De Manila
+        <p>Authenticity You Can Taste</p>
+      </div>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="index.html#home">Home</a></li>
+        <li><a href="reservation.html">Reservation</a></li>
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#menu">Menu</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Reservation Section -->
+  <section id="reservation" class="section reveal">
+    <h2>Reserve Your Table</h2>
+    <div class="reservation-container">
+      <!-- Left side -->
+      <div class="reservation-info">
+        <img src="./images/hero.webp" alt="Casa De Manila Dining" class="reservation-img">
+        <p>
+          Experience authentic Filipino cuisine in a warm, elegant setting.  
+          Reserve your table today and enjoy our signature dishes with family and friends.
+        </p>
+      </div>
+
+      <!-- Right side -->
+      <form class="reservation-form" action="mailto:mark2899estimada@gmail.com" method="post" enctype="text/plain">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="date">Reservation Date</label>
+          <input type="date" id="date" name="date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="time">Reservation Time</label>
+          <input type="time" id="time" name="time" required>
+        </div>
+
+        <div class="form-group">
+          <label for="guests">Number of Guests</label>
+          <input type="number" id="guests" name="guests" min="1" max="20" required>
+        </div>
+
+        <button type="submit" class="btn">Book Now</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer reveal">
+    <div class="footer-container">
+      <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+      <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+      <div class="social-links">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./scripts/function.js"></script>
+</body>
+</html>

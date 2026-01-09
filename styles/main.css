@@ -118,6 +118,7 @@ body, html {
   font-style: normal;
 } 
   
+
 .hero-text { 
   max-width: 600px; /* optional: control text width */ 
 }
@@ -141,6 +142,7 @@ body, html {
 
 }
 
+
 .btn {
   background: #d4af37;
   color: #111;
@@ -154,6 +156,23 @@ body, html {
 .btn:hover {
   background: #fff;
   color: #111;
+}
+.parallax-layer {
+  min-height: 100vh;              /* full screen height */
+  background-attachment: fixed;   /* parallax effect */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;                  /* center content */
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #fff;                    /* text color over image */
+}
+
+.parallax-layer h2 {
+  font-size: 2.5em;
+  color: #d4af37;                 /* gold accent */
 }
 
 /* Sections */
@@ -206,12 +225,35 @@ body, html {
   box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-/* Footer */
-footer {
+.footer {
   background: #111;
   color: #fff;
   text-align: center;
   padding: 20px;
+}
+
+.footer-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+.social-links {
+  margin-top: 10px;
+}
+
+.social-links a {
+  color: #d4af37;
+  margin: 0 10px;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #fff;
 }
 
 /* Reveal Animation */
