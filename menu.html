@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Casa De Manila | Menu</title>
+  <link rel="stylesheet" href="./styles/menu.css" />
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+    <div class="logo">
+      Casa De Manila
+      <p>Authenticity You Can Taste</p>
+    </div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Reservation</a></li>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Menu</a></li>
+      <li><a href="#">Contact</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+  </nav>
+</header>
+
+<section class="menu-controls">
+  <div class="filters">
+    <button onclick="filterMenu('all')">All</button>
+    <button onclick="filterMenu('mains')">Mains</button>
+    <button onclick="filterMenu('desserts')">Desserts</button>
+    <button onclick="filterMenu('drinks')">Drinks</button>
+  </div>
+  <input type="text" id="searchInput" placeholder="Search dishes..." onkeyup="searchMenu()" />
+</section>
+
+<section class="menu-grid" id="menuGrid">
+  <div class="menu-item mains" onclick="openModal(this)">
+    <img src="./images/adobo.webp" alt="Chicken Adobo" />
+    <h3>Chicken Adobo</h3>
+    <p class="price">₱250</p>
+    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices.</div>
+  </div>
+
+  <div class="menu-item mains" onclick="openModal(this)">
+    <img src="./images/sinigang.webp" alt="Sinigang" />
+    <h3>Sinigang</h3>
+    <p class="price">₱280</p>
+    <div class="details">Tamarind-based soup with pork and vegetables.</div>
+  </div>
+
+  <div class="menu-item desserts" onclick="openModal(this)">
+    <img src="./images/lecheflan.webp" alt="Leche Flan" />
+    <h3>Leche Flan</h3>
+    <p class="price">₱150</p>
+    <div class="details">Rich caramel custard dessert.</div>
+  </div>
+</section>
+
+<!-- MODAL -->
+<div id="menuModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img id="modalImg" />
+    <h3 id="modalTitle"></h3>
+    <p class="price" id="modalPrice"></p>
+    <div class="details" id="modalDetails"></div>
+
+    <div class="qty-control">
+      <button onclick="changeQty(-1)">−</button>
+      <span id="qty">1</span>
+      <button onclick="changeQty(1)">+</button>
+    </div>
+
+    <button class="add-to-cart">🛒 Add to Cart</button>
+  </div>
+</div>
+
+<script src="./scripts/menu.js"></script>
+</body>
+</html>

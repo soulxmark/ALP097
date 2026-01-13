@@ -52,6 +52,16 @@ body, html {
   text-align: center;   /* centers text horizontally */
   display: block;       /* default, but ensures it's treated as a block */
 }
+.logo a {
+  color: #000; /* set your brand color here */
+  text-decoration: none; /* optional: remove underline */
+}
+
+.logo a:visited {
+  color: #d4af37; /* same color as normal */
+}
+
+
 
 
 .nav-links {
@@ -151,6 +161,53 @@ body, html {
   text-decoration: none;
   font-weight: bold;
   transition: background 0.3s ease;
+}
+/* Grid Menu */
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+.menu-item {
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  overflow: hidden;
+}
+
+.menu-item:hover {
+  transform: translateY(-5px);
+}
+
+.menu-item h3 {
+  margin: 10px 0;
+  color: #111;
+}
+
+.menu-item .price {
+  color: #d4af37;
+  font-weight: bold;
+}
+
+.menu-item .details {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding: 0 15px;
+  background: #fff;
+  border-top: 1px solid #ddd;
+  font-size: 0.9em;
+  color: #333;
+}
+
+.menu-item.active .details {
+  max-height: 200px; /* enough space for text */
+  padding: 15px;
 }
 
 .btn:hover {
