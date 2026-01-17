@@ -53,7 +53,7 @@ body, html {
   display: block;       /* default, but ensures it's treated as a block */
 }
 .logo a {
-  color: #000; /* set your brand color here */
+  color: #d4af37; /* set your brand color here */
   text-decoration: none; /* optional: remove underline */
 }
 
