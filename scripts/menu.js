@@ -1,11 +1,23 @@
 const hamburger = document.getElementById('hamburger');
 const navLinks = document.getElementById('navLinks');
+const navbar = document.querySelector('.navbar');
 
+// Hamburger toggle
 if (hamburger) {
   hamburger.addEventListener('click', () => {
     navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
   });
 }
+
+// Navbar scroll effect
+window.addEventListener('scroll', () => {
+  if (window.scrollY > 50) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+});
 
 let quantity = 1;
 
@@ -22,7 +34,7 @@ function openModal(item) {
   document.getElementById('modalDetails').textContent =
     item.querySelector('.details').textContent;
 
-  document.getElementById('menuModal').style.display = 'block';
+  document.getElementById('menuModal').style.display = 'flex';
 }
 
 function closeModal() {
@@ -41,6 +53,10 @@ function changeQty(val) {
 }
 
 function filterMenu(category) {
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => btn.classList.remove('active'));
+  event.target.classList.add('active');
+  
   document.querySelectorAll('.menu-item').forEach(item => {
     item.style.display =
       category === 'all' || item.classList.contains(category)
