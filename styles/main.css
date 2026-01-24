@@ -59,11 +59,11 @@ header {
 }
 .navbar.scrolled .nav-links a:hover {
   color: #d4af37;
-=======
+}
 .logo {
   font-size: 1.8em;
   color: #b14013;
->>>>>>> e40624dc141a25a5778dacae6ae930353ba8ad35
+  text-align: center; /* Add this */
 }
 .logo {
   font-size: 2.5em;
@@ -169,11 +169,8 @@ header {
   background: rgba(255, 255, 255, 0.31); /* semi-transparent */
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-<<<<<<< HEAD
   padding: 60px 35px;
-=======
   padding: 120px 35px;
->>>>>>> e40624dc141a25a5778dacae6ae930353ba8ad35
   border-radius: 12px;
 }
 
