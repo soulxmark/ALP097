@@ -40,6 +40,7 @@
   <div class="filters">
     <button class="filter-btn active" onclick="filterMenu('all')">All</button>
     <button class="filter-btn" onclick="filterMenu('mains')">Mains</button>
+    <button class="filter-btn" onclick="filterMenu('veggies')">Veggies</button>
     <button class="filter-btn" onclick="filterMenu('desserts')">Desserts</button>
     <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
   </div>
@@ -49,18 +50,53 @@
 <section class="menu-grid" id="menuGrid">
   <!-- Mains -->
   <div class="menu-item mains" onclick="openModal(this)">
-    <img src="./images/adobo.webp" alt="Chicken Adobo" />
+    <img src="./images/adobo.jpg" alt="Chicken Adobo" />
     <h3>Chicken Adobo</h3>
     <p class="price">₱250</p>
     <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
   </div>
-
+  <!--New Menu line-->
   <div class="menu-item mains" onclick="openModal(this)">
-    <img src="./images/sinigang.webp" alt="Sinigang" />
-    <h3>Sinigang na Baboy</h3>
-    <p class="price">₱280</p>
-    <div class="details">Tamarind-based soup with pork and vegetables. Tangy and savory.</div>
+    <img src="./images/adobo.jpg" alt="Pork Stake" />
+    <h3>Pork Stake</h3>
+    <p class="price">₱200</p>
+    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
   </div>
+  <div class="menu-item mains" onclick="openModal(this)">
+    <img src="./images/adobo.jpg" alt="Chicken Adobo" />
+    <h3>Pork Stake</h3>
+    <p class="price">₱250</p>
+    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+  </div>
+  <div class="menu-item mains" onclick="openModal(this)">
+    <img src="./images/adobo.jpg" alt="Beef Afritada" />
+    <h3>Beef Afritada</h3>
+    <p class="price">₱250</p>
+    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+  </div>
+   <div class="menu-item mains" onclick="openModal(this)">
+    <img src="./images/adobo.jpg" alt="Pork Afritada" />
+    <h3>Pork Afritada</h3>
+    <p class="price">₱250</p>
+    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+  </div>
+  <!--Veggies Section-->
+  <div class="menu-item veggies" onclick="openModal(this)">
+    <img src="./images/sinigang.jpg" alt="Chapuey" />
+    <h3>Chapsuey</h3>
+    <p class="price">₱180</p>
+    <div class="details">Sautéed bitter melon with eggs, tomatoes, and onions. Healthy and flavorful.</div>
+  </div>
+   <div class="menu-item veggies" onclick="openModal(this)">
+    <img src="./images/sinigang.jpg" alt="pakbet" />
+    <h3>Pakbet</h3>
+    <p class="price">₱180</p>
+    <div class="details">Sautéed bitter melon with eggs, tomatoes, and onions. Healthy and flavorful.</div>
+  </div>
+  
+
+    <!--End line-->
+ 
 
   <div class="menu-item mains" onclick="openModal(this)">
     <img src="./images/Lechon Kawali.jpg" alt="Lechon Kawali" />
@@ -95,6 +131,19 @@
     <img src="./images/turon.webp" alt="Turon" />
     <h3>Turon</h3>
     <p class="price">₱120</p>
+    <div class="details">Fried banana spring rolls with jackfruit and brown sugar.</div>
+  </div>
+
+  <div class="menu-item desserts" onclick="openModal(this)">
+    <img src="./images/turon.webp" alt="Turon" />
+      <h3>Turon</h3>
+        <p class="price">₱120</p>
+    <div class="details">Fried banana spring rolls with jackfruit and brown sugar.</div>
+  </div>
+   <div class="menu-item desserts" onclick="openModal(this)">
+    <img src="./images/turon.webp" alt="Turon" />
+      <h3>Bukopie</h3>
+        <p class="price">₱120</p>
     <div class="details">Fried banana spring rolls with jackfruit and brown sugar.</div>
   </div>
 
