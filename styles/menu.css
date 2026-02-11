@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&display=swap');
 
 * { 
@@ -64,7 +64,7 @@ body {
   font-family: 'Cormorant Garamond', serif;
   font-size: 13px;
   margin-top: 2px;
-  color: #fff;
+  color: #000;
   text-align: center;
 }
 
@@ -82,7 +82,7 @@ body {
 }
 
 .nav-links a {
-  color: #fff;
+  color: #000;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;

@@ -1,0 +1,192 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cormorant Garamond', serif;
+  background: #fdfaf6;
+}
+
+/* ================= NAVBAR ================= */
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 20px 0;
+  background: rgba(0,0,0,0.95);
+  border-bottom: 1px solid #d4af37;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1000;
+}
+
+.logo a {
+  color: #d4af37;
+  text-decoration: none;
+  font-size: 2.5em;
+}
+
+.logo p {
+  font-size: 13px;
+  color: #fff;
+  margin-top: 2px;
+}
+
+.nav-links ul {
+  list-style: none;
+  display: flex;
+  gap: 30px;
+  margin-top: 10px;
+}
+
+.nav-links a {
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: #d4af37;
+}
+
+.hamburger {
+  display: none;
+}
+
+/* ================= EVENTS HERO ================= */
+.events-hero {
+  padding: 160px 20px 60px;
+  text-align: center;
+}
+
+.events-hero h1 {
+  font-size: 3em;
+  color: #111;
+}
+
+.events-hero p {
+  font-size: 1.2em;
+  color: #666;
+  margin-top: 10px;
+}
+
+/* ================= EVENTS GRID ================= */
+.events-grid {
+  padding: 20px 30px 80px;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 30px;
+}
+
+/* ================= EVENT CARD ================= */
+.event-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.18);
+}
+
+.event-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+/* ================= EVENT CONTENT ================= */
+.event-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.event-content h3 {
+  font-size: 1.5em;
+  color: #111;
+  margin-bottom: 8px;
+}
+
+.event-date {
+  color: #d4af37;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.event-desc {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+/* ================= EVENT BUTTON ================= */
+.event-btn {
+  padding: 12px 24px;
+  background: #d4af37;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+.event-btn:hover {
+  background: #111;
+}
+
+/* ================= FOOTER ================= */
+.footer {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  padding: 30px 20px;
+}
+
+.footer p {
+  margin: 8px 0;
+}
+
+.social-links {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.social-links a {
+  color: #d4af37;
+  text-decoration: none;
+}
+
+.social-links a:hover {
+  color: #fff;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .nav-links ul {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .events-hero h1 {
+    font-size: 2.3em;
+  }
+
+  .event-card img {
+    height: 180px;
+  }
+}
