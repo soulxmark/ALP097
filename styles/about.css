@@ -142,10 +142,11 @@ header {
 
 .hero-text {
   max-width: 650px;
-  background: rgba(255, 255, 255, 0.31);
+  background: #F9F4E8;
+  color: #000;
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  padding: 50px 35px;
+  padding: 250px 35px;
   border-radius: 12px;
   text-align: left;
   justify-content: left;

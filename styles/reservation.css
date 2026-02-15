@@ -11,6 +11,7 @@ body, html {
   background: #fff;
 }
 
+/* Navbar */
 .navbar {
   position: fixed;
   top: 0;
@@ -33,20 +34,11 @@ body, html {
   box-shadow: 0 2px 15px rgba(0, 0, 0, 0.5);
 }
 
-.navbar.scrolled .nav-links a {
-  color: #fff;
-}
-
-.navbar.scrolled .logo p {
-  color: #fff;
-}
-
-.navbar.scrolled .nav-links a:hover {
-  color: #d4af37;
-}
+.navbar.scrolled .nav-links a, .navbar.scrolled .logo p { color: #fff; }
+.navbar.scrolled .nav-links a:hover { color: #d4af37; }
 
 .logo {
-  font-family: 'Cormorant Garamond', serif; /* Changed from Great Vibes */
+  font-family: 'Cormorant Garamond', serif;
   font-size: 2.5em;
   color: #d4af37;
   text-align: center;
@@ -55,24 +47,16 @@ body, html {
 .logo a {
   color: #d4af37;
   text-decoration: none;
-  font-family: 'Cormorant Garamond', serif; /* Changed from Great Vibes */
 }
 
 .logo p {
-  font-family: 'Cormorant Garamond', serif;
   font-size: 13px;
   margin-top: 2px;
   color: #000;
-  text-align: center;
-}
-.nav-links {
-  margin-top: 10px;
 }
 
 .nav-links ul {
   list-style: none;
-  padding: 0;
-  margin: 0;
   display: flex;
   justify-content: center;
   gap: 30px;
@@ -85,23 +69,7 @@ body, html {
   transition: color 0.3s ease;
 }
 
-.nav-links a:hover {
-  color: #d4af37;
-}
-
-.hamburger {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.hamburger span {
-  height: 3px;
-  width: 25px;
-  background: #fff;
-  margin: 4px;
-  border-radius: 5px;
-}
+.nav-links a:hover { color: #d4af37; }
 
 /* Reservation Section */
 #reservation {
@@ -111,13 +79,12 @@ body, html {
 
 #reservation h2 {
   text-align: center;
-  font-size: 2.2em;
-  margin-bottom: 30px;
-  margin-top: 40px; /* Add this line */
+  font-size: 2.5em;
+  margin-bottom: 40px;
+  margin-top: 40px;
   color: #d4af37;
 }
 
-/* Two-column layout */
 .reservation-container {
   display: flex;
   justify-content: space-between;
@@ -129,142 +96,110 @@ body, html {
 
 /* Left side */
 .reservation-info { flex: 1; text-align: left; }
-
 .reservation-img {
   max-width: 100%;
   border-radius: 10px;
-  margin-bottom: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
 
 .reservation-info p {
-  font-size: 1.1em;
-  line-height: 1.6;
-  color: #333;
+  font-size: 1.2em;
+  line-height: 1.8;
+  color: #444;
 }
 
-/* Right side (form) */
+/* Right side (Form) */
 .reservation-form {
   flex: 1;
   background: #fff;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  padding: 35px;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
 }
 
 .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+  margin-bottom: 20px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
+  margin-bottom: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
   color: #111;
 }
 
-.form-group input {
+/* Unified input, select, and textarea styling */
+.form-group input, 
+.form-group select, 
+.form-group textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 1em;
-  transition: border-color 0.3s ease;
+  font-size: 1rem;
+  font-family: 'Cormorant Garamond', serif;
+  color: #333;
+  background-color: #fff;
+  transition: all 0.3s ease;
 }
 
-.form-group input:focus {
+/* Focus styles for all */
+.form-group input:focus, 
+.form-group select:focus, 
+.form-group textarea:focus {
   border-color: #d4af37;
   outline: none;
+  box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+}
+
+/* Custom Gold Arrow for Select */
+.form-group select {
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 1.2em;
+}
+
+.form-group textarea {
+  min-height: 140px;
+  resize: vertical;
 }
 
 /* Button */
 .reservation-form .btn {
   width: 100%;
   background: #d4af37;
-  color: #111;
-  padding: 12px;
+  color: #fff;
+  padding: 15px;
   border: none;
   border-radius: 6px;
   font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 2px;
   cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: all 0.3s ease;
+  margin-top: 10px;
 }
 
 .reservation-form .btn:hover {
   background: #111;
-  color: #fff;
-}
-
-/* Footer */
-.footer {
-  background: #111;
-  color: #fff;
-  text-align: center;
-  padding: 20px;
-}
-
-.footer-container {
-  max-width: 1000px;
-  margin: 0 auto;
-}
-
-.footer p {
-  margin: 5px 0;
-}
-
-.social-links {
-  margin-top: 10px;
-}
-
-.social-links a {
   color: #d4af37;
-  margin: 0 10px;
-  text-decoration: none;
-  transition: color 0.3s ease;
+  transform: translateY(-2px);
 }
 
-.social-links a:hover {
-  color: #fff;
-}
+/* Footer & Responsive */
+.footer { background: #111; color: #fff; text-align: center; padding: 40px 20px; }
+.social-links a { color: #d4af37; margin: 0 10px; text-decoration: none; transition: 0.3s; }
+.social-links a:hover { color: #fff; }
 
-/* Responsive */
 @media (max-width: 768px) {
-  .reservation-container {
-    flex-direction: column;
-  }
-  
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    background: #111;
-    position: absolute;
-    top: 60px;
-    right: 0;
-    width: 200px;
-  }
-  
-  .nav-links li {
-    margin: 20px 0;
-  }
-  
-  .hamburger {
-    display: flex;
-  }
-  
-  .nav-links.active {
-    display: flex;
-    animation: slideIn 0.4s ease forwards;
-  }
-}
-
-@keyframes slideIn {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+  .reservation-container { flex-direction: column; }
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
 }

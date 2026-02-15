@@ -45,8 +45,9 @@
       </div>
 
       <!-- Right side -->
-      <form class="reservation-form" action="mailto:mark2899estimada@gmail.com" method="post" enctype="text/plain">
+      <form class="reservation-form" id="res-form" action="https://script.google.com/macros/s/AKfycbyVV6PQtgaOUCxiXAJxdVKZxl5zRxqL1eZdZYST89OUiBQaehev_75Dh-waV2KhTaB7Pg/exec" method="POST">
         <div class="form-group">
+          <input type="hidden" id="user_ip" name="user_ip" value="Unknown">
             <label for="event">Event</label>
             <select id="event" name="event" required>
               <option value="">Select event</option>
@@ -110,5 +111,6 @@
   </footer>
 
   <script src="./scripts/function.js"></script>
+  <script src="./scripts/email.js"></script>
 </body>
 </html>
