@@ -45,7 +45,7 @@
       </div>
 
       <!-- Right side -->
-      <form class="reservation-form" id="res-form" action="https://script.google.com/macros/s/AKfycbyVV6PQtgaOUCxiXAJxdVKZxl5zRxqL1eZdZYST89OUiBQaehev_75Dh-waV2KhTaB7Pg/exec" method="POST">
+      <form class="reservation-form" id="res-form" action="https://script.google.com/macros/s/AKfycbxHq3DlVkvp4EhX-zFV-cQd4G19__mF5ctUthQ17xdmBcUccX6J-zIrOJ6yfiYezhvvBw/exec" method="POST">
         <div class="form-group">
           <input type="hidden" id="user_ip" name="user_ip" value="Unknown">
             <label for="event">Event</label>
@@ -54,7 +54,7 @@
               <option value="birthday">Birthday</option>
               <option value="corporate">Corporate</option>
               <option value="family">Family Gathering</option>
-              <option value="4">Reserve Table Only</option>
+              <option value="Reserve_Table">Reserve Table Only</option>
             </select>
         </div>
         
@@ -112,5 +112,17 @@
 
   <script src="./scripts/function.js"></script>
   <script src="./scripts/email.js"></script>
+  <div id="successModal" class="modal-overlay">
+  <div class="modal-content">
+    <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
+    <div class="modal-body">
+      <div class="success-icon">✔</div>
+      <h3>Mabuhay!</h3>
+      <p>Your reservation has been sent successfully.</p>
+      <p>A confirmation email is on its way to your inbox.</p>
+      <button type="button" onclick="closeSuccessModal()" class="btn">Close</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
