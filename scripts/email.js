@@ -1,5 +1,5 @@
 const form = document.getElementById('res-form');
-const scriptURL = 'https://script.google.com/macros/s/AKfycbxHq3DlVkvp4EhX-zFV-cQd4G19__mF5ctUthQ17xdmBcUccX6J-zIrOJ6yfiYezhvvBw/exec'; // The URL from your screenshot
+const scriptURL = 'https://script.google.com/macros/s/AKfycbzPUb_h-BENvBxHoE4rGq_Li5BCDSS9_IaQX9TT-YodfRGj22wHNbsflTfg9H6hdFKZIA/exec'; // The URL from your screenshot
 
 form.addEventListener('submit', e => {
   e.preventDefault(); // This is the magic line that stops the black screen!
