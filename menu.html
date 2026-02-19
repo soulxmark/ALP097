@@ -20,11 +20,11 @@
     <nav class="nav-links" id="navLinks">
       <ul>
         <li><a href="./index.html">Home</a></li>
-        <li><a href="./reservation.html">Reservation</a></li>
-        <li><a href="./menu.html">Menu</a></li>
-        <li><a href="./events.html">Events</a></li>
-        <li><a href="./contact_us.html">Contact</a></li>
-        <li><a href="./about.html">About</a></li>
+          <li><a href="./reservation.html">Reservation</a></li>
+              <li><a href="./menu.html">Menu</a></li>
+                <li><a href="./events.html">Events</a></li>
+              <li><a href="./contact_us.html">Contact</a></li>
+            <li><a href="./about.html">About</a></li>
         <li>
           <a href="#" onclick="toggleCart(); return false;" class="cart-btn">
             🛒 Cart
@@ -37,50 +37,60 @@
 </header>
 
 <section class="menu-controls">
-  <div class="filters">
-    <button class="filter-btn active" onclick="filterMenu('all')">All</button>
-    <button class="filter-btn" onclick="filterMenu('mains')">Mains</button>
-    <button class="filter-btn" onclick="filterMenu('veggies')">Veggies</button>
-    <button class="filter-btn" onclick="filterMenu('desserts')">Desserts</button>
-    <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
-  </div>
+    <div class="filters">
+      <button class="filter-btn active" onclick="filterMenu('all')">All</button>
+        <button class="filter-btn" onclick="filterMenu('mains')">Mains</button>
+          <button class="filter-btn" onclick="filterMenu('veggies')">Veggies</button>
+        <button class="filter-btn" onclick="filterMenu('desserts')">Desserts</button>
+      <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
+    </div>
   <input type="text" id="searchInput" placeholder="Search dishes..." onkeyup="searchMenu()" />
 </section>
 
 <section class="menu-grid" id="menuGrid">
-  <!-- Mains -->
+<!-- Mains -->
   <div class="menu-item mains" onclick="openModal(this)">
     <img src="./images/adobo.jpg" alt="Chicken Adobo" />
-    <h3>Chicken Adobo</h3>
-    <p class="price">₱250</p>
-    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+      <h3>Chicken Adobo</h3>
+        <p class="price">₱250</p>
+        <div class="details">"Succulent chicken slow-braised in a savory-tangy blend of fermented vinegar, premium soy sauce, and toasted garlic. 
+      Finished with cracked black peppercorns for a deep, aromatic flavor."
+    </div>
   </div>
-  <!--New Menu line-->
-  <div class="menu-item mains" onclick="openModal(this)">
-    <img src="./images/pork-steak-5.jpg" alt="Chicken Adobo" />
-    <h3>Pork Stake</h3>
-    <p class="price">₱250</p>
-    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+<!--New Menu line-->
+ <div class="menu-item mains" onclick="openModal(this)">
+  <img src="./images/pork-steak-5.jpg" alt="Filipino Pork Steak" />
+    <h3>Pork Steak</h3> <p class="price">₱250</p>
+      <div class="details">
+        Tender pork slices marinated in soy sauce and calamansi, topped with a generous serving .
+      </div>
   </div>
-  <div class="menu-item mains" onclick="openModal(this)">
+ <div class="menu-item mains" onclick="openModal(this)">
     <img src="./images/beef-afritada.jpg" alt="Beef Afritada" />
-    <h3>Beef Afritada</h3>
-    <p class="price">₱250</p>
-    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+      <h3>Beef Afritada</h3>
+        <p class="price">₱250</p>
+    <div class="details">
+    Tender beef chunks slow-cooked in a rich tomato sauce with bell peppers, potatoes, and carrots.
   </div>
-   <div class="menu-item mains" onclick="openModal(this)">
-    <img src="./images/pork-afritada.jpg" alt="Pork Afritada" />
+</div>
+<div class="menu-item mains" onclick="openModal(this)">
+  <img src="./images/pork-afritada.jpg" alt="Pork Afritada" />
     <h3>Pork Afritada</h3>
-    <p class="price">₱250</p>
-    <div class="details">Simmered in soy sauce, vinegar, garlic, and spices. A classic Filipino dish.</div>
+      <p class="price">₱250</p>
+    <div class="details">
+    Succulent pork chunks slow-cooked in a savory tomato sauce with potatoes, carrots, and bell peppers.
   </div>
-  <!--Veggies Section-->
-  <div class="menu-item veggies" onclick="openModal(this)">
-    <img src="./images/chapsuey.webp" alt="Chapuey" />
-    <h3>Chapsuey</h3>
-    <p class="price">₱180</p>
-    <div class="details">Sautéed bitter melon with eggs, tomatoes, and onions. Healthy and flavorful.</div>
+</div>
+<!--Veggies Section-->
+<div class="menu-item veggies" onclick="openModal(this)">
+    <img src="./images/chapsuey.webp" alt="Chopsuey" />
+      <h3>Chopsuey</h3>
+        <p class="price">₱180</p>
+      <div class="details">
+    A vibrant medley of crisp cauliflower, carrots, and cabbage stir-fried in a silky, savory glaze.
   </div>
+</div>
+ <!--End Last Edited-->
    <div class="menu-item veggies" onclick="openModal(this)">
     <img src="./images/pakbet.jpg" alt="pakbet" />
     <h3>Pakbet</h3>
