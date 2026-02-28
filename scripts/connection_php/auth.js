@@ -1,113 +1,90 @@
 /* ============================================================
-   Casa De Manila — Auth Pages JS
+   Casa De Manila — Auth JS
    File: scripts/auth.js
-   ============================================================ */
+============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  /* ----------------------------------------------------------
-     1. PASSWORD TOGGLE (show/hide password)
-  ---------------------------------------------------------- */
+  /* -- Password show/hide toggle ----------------------------- */
   document.querySelectorAll('.toggle-password').forEach(function (btn) {
     btn.addEventListener('click', function () {
       const input = document.querySelector(this.dataset.target);
       if (!input) return;
-
-      const isHidden = input.type === 'password';
-      input.type = isHidden ? 'text' : 'password';
-      this.textContent = isHidden ? '🙈' : '👁';
+      const hidden = input.type === 'password';
+      input.type   = hidden ? 'text' : 'password';
+      this.textContent = hidden ? '🙈' : '👁';
     });
   });
 
-  /* ----------------------------------------------------------
-     2. PASSWORD STRENGTH METER (register page only)
-  ---------------------------------------------------------- */
-  const passwordInput = document.getElementById('password');
-  const strengthBar   = document.getElementById('strength-bar');
-  const strengthText  = document.getElementById('strength-text');
+  /* -- Password strength meter (register page) --------------- */
+  const pwInput  = document.getElementById('password');
+  const bar      = document.getElementById('strength-bar');
+  const barText  = document.getElementById('strength-text');
 
-  if (passwordInput && strengthBar && strengthText) {
-    passwordInput.addEventListener('input', function () {
-      const val      = this.value;
-      const strength = getPasswordStrength(val);
-
-      strengthBar.style.width      = strength.percent + '%';
-      strengthBar.style.background = strength.color;
-      strengthText.textContent     = val.length === 0 ? '' : strength.label;
-      strengthText.style.color     = strength.color;
+  if (pwInput && bar && barText) {
+    pwInput.addEventListener('input', function () {
+      if (!this.value.length) { bar.style.width = '0'; barText.textContent = ''; return; }
+      const s = strength(this.value);
+      bar.style.width      = s.pct + '%';
+      bar.style.background = s.color;
+      barText.textContent  = s.label;
+      barText.style.color  = s.color;
     });
   }
 
-  function getPasswordStrength(password) {
+  function strength(pw) {
     let score = 0;
-    if (password.length >= 6)  score++;
-    if (password.length >= 10) score++;
-    if (/[A-Z]/.test(password)) score++;
-    if (/[0-9]/.test(password)) score++;
-    if (/[^A-Za-z0-9]/.test(password)) score++;
-
+    if (pw.length >= 6)           score++;
+    if (pw.length >= 10)          score++;
+    if (/[A-Z]/.test(pw))         score++;
+    if (/[0-9]/.test(pw))         score++;
+    if (/[^A-Za-z0-9]/.test(pw))  score++;
     const levels = [
-      { percent: 20,  color: '#e74c3c', label: 'Very Weak'  },
-      { percent: 40,  color: '#e67e22', label: 'Weak'       },
-      { percent: 60,  color: '#f1c40f', label: 'Fair'       },
-      { percent: 80,  color: '#2ecc71', label: 'Strong'     },
-      { percent: 100, color: '#27ae60', label: 'Very Strong' },
+      { pct:20,  color:'#e74c3c', label:'Very Weak'  },
+      { pct:40,  color:'#e67e22', label:'Weak'       },
+      { pct:60,  color:'#f1c40f', label:'Fair'       },
+      { pct:80,  color:'#2ecc71', label:'Strong'     },
+      { pct:100, color:'#27ae60', label:'Very Strong' },
     ];
-
     return levels[Math.min(score, levels.length) - 1] || levels[0];
   }
 
-  /* ----------------------------------------------------------
-     3. CONFIRM PASSWORD MATCH INDICATOR (register page only)
-  ---------------------------------------------------------- */
-  const confirmInput = document.getElementById('confirm_password');
+  /* -- Confirm password match indicator ---------------------- */
+  const confirm = document.getElementById('confirm_password');
+  const hint    = document.getElementById('match-hint');
 
-  if (passwordInput && confirmInput) {
+  if (pwInput && confirm && hint) {
     function checkMatch() {
-      const matchHint = document.getElementById('match-hint');
-      if (!matchHint) return;
-
-      if (confirmInput.value.length === 0) {
-        matchHint.textContent = '';
-        return;
-      }
-
-      if (passwordInput.value === confirmInput.value) {
-        matchHint.textContent = '✓ Passwords match';
-        matchHint.style.color = '#2ecc71';
+      if (!confirm.value.length) { hint.textContent = ''; return; }
+      if (pwInput.value === confirm.value) {
+        hint.textContent = '✓ Passwords match';
+        hint.style.color = '#2ecc71';
       } else {
-        matchHint.textContent = '✗ Passwords do not match';
-        matchHint.style.color = '#e74c3c';
+        hint.textContent = '✗ Passwords do not match';
+        hint.style.color = '#e74c3c';
       }
     }
-
-    confirmInput.addEventListener('input', checkMatch);
-    passwordInput.addEventListener('input', checkMatch);
+    confirm.addEventListener('input', checkMatch);
+    pwInput.addEventListener('input', checkMatch);
   }
 
-  /* ----------------------------------------------------------
-     4. AUTO-DISMISS FLASH MESSAGES
-  ---------------------------------------------------------- */
-  const messages = document.querySelectorAll('.auth-error, .auth-success');
-  messages.forEach(function (msg) {
+  /* -- Auto-dismiss flash messages after 4s ----------------- */
+  document.querySelectorAll('.auth-error, .auth-success').forEach(function (el) {
     setTimeout(function () {
-      msg.style.transition = 'opacity 0.6s ease';
-      msg.style.opacity    = '0';
-      setTimeout(function () { msg.remove(); }, 600);
+      el.style.transition = 'opacity 0.6s';
+      el.style.opacity    = '0';
+      setTimeout(function () { el.remove(); }, 600);
     }, 4000);
   });
 
-  /* ----------------------------------------------------------
-     5. FORM SUBMIT LOADING STATE
-  ---------------------------------------------------------- */
-  const form   = document.querySelector('form');
-  const authBtn = document.querySelector('.auth-btn');
-
-  if (form && authBtn) {
+  /* -- Loading state on submit ------------------------------ */
+  const form = document.querySelector('form');
+  const btn  = document.querySelector('.auth-btn');
+  if (form && btn) {
     form.addEventListener('submit', function () {
-      authBtn.disabled     = true;
-      authBtn.textContent  = 'Please wait...';
-      authBtn.style.opacity = '0.7';
+      btn.disabled     = true;
+      btn.textContent  = 'Please wait...';
+      btn.style.opacity = '0.7';
     });
   }
 

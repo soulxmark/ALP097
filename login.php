@@ -2,12 +2,10 @@
 /* ============================================================
    Casa De Manila — Login Page
    File: login.php
-   ============================================================ */
-
+============================================================ */
 session_start();
 require_once 'connection.php';
 
-// Redirect if already logged in
 if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     header('Location: account.php');
     exit;
@@ -22,7 +20,9 @@ if (isset($_POST['login'])) {
     if (empty($username) || empty($password)) {
         $error = "Please fill in all fields.";
     } else {
-        $stmt = $mysqli->prepare("SELECT uid, username, password_us FROM users_tbl1 WHERE username = ?");
+        $stmt = $mysqli->prepare(
+            "SELECT uid, username, password_us FROM users_tbl1 WHERE username = ?"
+        );
         $stmt->bind_param("s", $username);
         $stmt->execute();
         $result = $stmt->get_result();
@@ -31,7 +31,6 @@ if (isset($_POST['login'])) {
             $error = "Invalid username or password.";
         } else {
             $row = $result->fetch_assoc();
-
             if (password_verify($password, $row['password_us'])) {
                 $_SESSION['uid']            = $row['uid'];
                 $_SESSION['username']       = $row['username'];
@@ -52,32 +51,24 @@ if (isset($_POST['login'])) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login – Casa De Manila</title>
-
-  <!-- Global Site Styles -->
   <link rel="stylesheet" href="./styles/about.css">
-
-  <!-- Auth-Specific Styles -->
   <link rel="stylesheet" href="./styles/auth.css">
+  <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
 </head>
 <body>
 
-  <!-- Back to Home -->
-  <a href="./index.php" class="back-home">
-    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-    </svg>
+  <a href="./index.html" class="back-home">
+    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
     Back to Home
   </a>
 
-  <!-- Navbar -->
-  <div class="navbar scrolled" id="navbar">
+  <div class="navbar scrolled">
     <div class="logo">
-      <a href="./index.php">Casa De Manila</a>
+      <a href="./index.html">Casa De Manila</a>
       <p>Authenticity You Can Taste</p>
     </div>
   </div>
 
-  <!-- Login Section -->
   <main class="auth-page">
     <div class="auth-card">
 
@@ -93,35 +84,21 @@ if (isset($_POST['login'])) {
       <?php endif; ?>
 
       <form method="POST" action="">
-
         <div class="form-group">
           <label for="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Enter your username"
-            value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>"
-            autocomplete="username"
-            required
-          >
+          <input type="text" id="username" name="username"
+                 placeholder="Enter your username"
+                 value="<?php echo isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ''; ?>"
+                 autocomplete="username" required>
         </div>
-
         <div class="form-group">
           <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Enter your password"
-            autocomplete="current-password"
-            required
-          >
+          <input type="password" id="password" name="password"
+                 placeholder="Enter your password"
+                 autocomplete="current-password" required>
           <button type="button" class="toggle-password" data-target="#password">👁</button>
         </div>
-
         <button type="submit" name="login" class="auth-btn">Sign In</button>
-
       </form>
 
       <div class="auth-divider"><span>or</span></div>
@@ -133,20 +110,15 @@ if (isset($_POST['login'])) {
     </div>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
       <p>&copy; <?php echo date('Y'); ?> Casa De Manila. All rights reserved.</p>
       <div class="social-links">
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">Twitter</a>
+        <a href="#">Facebook</a><a href="#">Instagram</a><a href="#">Twitter</a>
       </div>
     </div>
   </footer>
 
-  <!-- Auth JS -->
   <script src="./scripts/auth.js"></script>
-
 </body>
 </html>
