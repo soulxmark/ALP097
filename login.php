@@ -4,7 +4,7 @@
    File: login.php
 ============================================================ */
 session_start();
-require_once 'connection.php';
+require_once './php/connection.php';
 
 if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     header('Location: account.php');
