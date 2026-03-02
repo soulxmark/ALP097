@@ -1,107 +1,4 @@
-<?php
-/* ============================================================
-   Casa De Manila — Account Dashboard
-   File: account.php
-============================================================ */
-session_start();
-require_once 'connection.php';
 
-// Guard
-if (!isset($_SESSION['session_status']) || $_SESSION['session_status'] != 1) {
-    header('Location: login.php');
-    exit;
-}
-
-// Logout
-if (isset($_GET['logout'])) {
-    session_destroy();
-    header('Location: login.php');
-    exit;
-}
-
-$uid = (int)$_SESSION['uid'];
-
-// ── User profile ─────────────────────────────────────────────
-$stmt = $mysqli->prepare(
-    "SELECT username, email, role, created_at FROM users_tbl1 WHERE uid = ?"
-);
-$stmt->bind_param("i", $uid);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-
-if (!$user) { session_destroy(); header('Location: login.php'); exit; }
-
-// ── Order stats ───────────────────────────────────────────────
-$stmt_s = $mysqli->prepare("
-    SELECT
-        COUNT(*)                                AS total_orders,
-        COALESCE(SUM(total_amount), 0)          AS total_spent,
-        SUM(status = 'pending')                 AS pending,
-        SUM(status IN ('completed','ready'))    AS completed
-    FROM orders_tbl WHERE uid = ?
-");
-$stmt_s->bind_param("i", $uid);
-$stmt_s->execute();
-$stats = $stmt_s->get_result()->fetch_assoc();
-$stmt_s->close();
-
-// ── Recent orders (last 10) ───────────────────────────────────
-$stmt_o = $mysqli->prepare("
-    SELECT order_id, order_date, total_amount, status, notes
-    FROM orders_tbl
-    WHERE uid = ?
-    ORDER BY order_date DESC
-    LIMIT 10
-");
-$stmt_o->bind_param("i", $uid);
-$stmt_o->execute();
-$orders = $stmt_o->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt_o->close();
-
-// ── Order items ───────────────────────────────────────────────
-$order_items = [];
-if (!empty($orders)) {
-    $ids = implode(',', array_column($orders, 'order_id'));
-    $res = $mysqli->query("
-        SELECT order_id, item_name, price, quantity, subtotal
-        FROM order_items_tbl
-        WHERE order_id IN ($ids)
-        ORDER BY item_id ASC
-    ");
-    while ($it = $res->fetch_assoc()) {
-        $order_items[$it['order_id']][] = $it;
-    }
-}
-
-// ── Reservations ─────────────────────────────────────────────
-$stmt_r = $mysqli->prepare("
-    SELECT reservation_id, full_name, reservation_date,
-           reservation_time, party_size, status
-    FROM reservations_tbl
-    WHERE uid = ?
-    ORDER BY reservation_date DESC
-    LIMIT 5
-");
-$stmt_r->bind_param("i", $uid);
-$stmt_r->execute();
-$reservations = $stmt_r->get_result()->fetch_all(MYSQLI_ASSOC);
-$stmt_r->close();
-
-// ── Status badge helper ───────────────────────────────────────
-function badge(string $status): string {
-    $map = [
-        'pending'   => ['badge-pending',   '⏳ Pending'],
-        'confirmed' => ['badge-confirmed', '✅ Confirmed'],
-        'preparing' => ['badge-preparing', '👨‍🍳 Preparing'],
-        'ready'     => ['badge-ready',     '🔔 Ready'],
-        'completed' => ['badge-completed', '✔ Completed'],
-        'cancelled' => ['badge-cancelled', '✖ Cancelled'],
-    ];
-    [$cls, $label] = $map[$status] ?? ['badge-pending', ucfirst($status)];
-    return "<span class=\"badge $cls\">$label</span>";
-}
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -505,8 +402,7 @@ function badge(string $status): string {
             <?php foreach ($orders as $order): ?>
               <div class="order-card" id="ord-<?php echo $order['order_id']; ?>">
 
-                <div class="order-header"
-                     onclick="toggleOrder(<?php echo $order['order_id']; ?>)">
+                <div class="order-header"></div>
                   <div class="order-meta">
                     <span class="order-id">
                       Order #<?php echo str_pad($order['order_id'], 4, '0', STR_PAD_LEFT); ?>
