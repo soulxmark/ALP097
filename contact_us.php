@@ -12,7 +12,7 @@
   <!-- Navbar -->
   <div class="navbar" id="navbar">
     <div class="logo">
-      <a href="./index.html">Casa De Manila</a>
+      <a href="./index.php">Casa De Manila</a>
       <p>Authenticity You Can Taste</p>
     </div>
     <div class="hamburger" id="hamburger">
@@ -20,12 +20,12 @@
     </div>
     <nav class="nav-links" id="navLinks">
       <ul>
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./reservation.html">Reservation</a></li>
-        <li><a href="./menu.html">Menu</a></li>
-        <li><a href="./events.html">Events</a></li>
-        <li><a href="./contact.html">Contact</a></li>
-        <li><a href="./about.html">About</a></li>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./reservation.php">Reservation</a></li>
+        <li><a href="./menu.php">Menu</a></li>
+        <li><a href="./events.php">Events</a></li>
+        <li><a href="./contact_us.php">Contact</a></li>
+        <li><a href="./about.php">About</a></li>
       </ul>
     </nav>
   </div>

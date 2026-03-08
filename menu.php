@@ -67,19 +67,19 @@
 <header>
   <nav class="navbar" id="navbar">
     <div class="logo">
-      <a href="./index.html">Casa De Manila</a>
+      <a href="./index.php">Casa De Manila</a>
       <p>Authenticity You Can Taste</p>
     </div>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
     <nav class="nav-links" id="navLinks">
       <ul>
-        <li><a href="./index.html">Home</a></li>
-        <li><a href="./reservation.html">Reservation</a></li>
-        <li><a href="./menu.html" class="active">Menu</a></li>
-        <li><a href="./events.html">Events</a></li>
-        <li><a href="./contact_us.html">Contact</a></li>
-        <li><a href="./about.html">About</a></li>
-        <li id="nav-auth"><a href="./login.html">Login</a></li>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./reservation.php">Reservation</a></li>
+        <li><a href="./menu.php" class="active">Menu</a></li>
+        <li><a href="./events.php">Events</a></li>
+        <li><a href="./contact_us.php">Contact</a></li>
+        <li><a href="./about.php">About</a></li>
+        <li id="nav-auth"><a href="./login.php">Login</a></li>
         <li>
           <a href="#" onclick="toggleCart(); return false;" class="cart-btn">
             🛒 Cart <span id="cartBadge" class="cart-badge">0</span>
@@ -197,7 +197,7 @@
 <script src="./scripts/api.js"></script>
 <script>
 /* ============================================================
-   MENU PAGE — MongoDB/Flask powered
+   MENU PAGE — Debuuugggg This
 ============================================================ */
 
 const API_BASE   = 'http://localhost:5000/api';

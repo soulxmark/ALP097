@@ -20,12 +20,12 @@
   </div>
   <nav class="nav-links" id="navLinks">
     <ul>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./reservation.html">Reservation</a></li>
-      <li><a href="./menu.html">Menu</a></li>
-      <li><a href="./events.html">Events</a></li>
-      <li><a href="./contact_us.html">Contact</a></li>
-      <li><a href="./about.html">About</a></li>
+      <li><a href="./index.php">Home</a></li>
+      <li><a href="./reservation.php">Reservation</a></li>
+      <li><a href="./menu.php">Menu</a></li>
+      <li><a href="./events.php">Events</a></li>
+      <li><a href="./contact_us.php">Contact</a></li>
+      <li><a href="./about.php">About</a></li>
     </ul>
   </nav>
 </div>
