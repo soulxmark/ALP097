@@ -1,12 +1,10 @@
 /* ============================================================
    Casa De Manila — API Helper
-   File: scripts/api.js
-   All fetch calls go through here
+   File: scripts/conection_string/api.js
 ============================================================ */
 
-const API = 'http://localhost:5000/api';
+const API = '/mainproj/ALP097/api';
 
-/* ── Generic fetch wrapper ─────────────────────────────────── */
 async function apiFetch(endpoint, options = {}) {
   try {
     const res = await fetch(API + endpoint, {
@@ -14,71 +12,49 @@ async function apiFetch(endpoint, options = {}) {
       credentials: 'include',
       ...options
     });
-    return await res.json();
+
+    const text = await res.text();
+
+    // Guard: if response is HTML, the path is wrong
+    if (text.trim().startsWith('<')) {
+      console.error('API returned HTML instead of JSON. Check const API path.', API + endpoint);
+      return { success: false, message: 'Server error. Check API path configuration.' };
+    }
+
+    return JSON.parse(text);
   } catch (err) {
     console.error('API error:', err);
-    return { success: false, message: 'Network error. Is the server running?' };
+    return { success: false, message: 'Network error. Is XAMPP running?' };
   }
 }
 
-/* ── Auth ───────────────────────────────────────────────────── */
 const Auth = {
-  me:       ()       => apiFetch('/auth/me'),
-  login:    (data)   => apiFetch('/auth/login',    { method: 'POST', body: JSON.stringify(data) }),
-  register: (data)   => apiFetch('/auth/register', { method: 'POST', body: JSON.stringify(data) }),
-  logout:   ()       => apiFetch('/auth/logout',   { method: 'POST' })
+  me:       ()     => apiFetch('/auth/me.php'),
+  login:    (data) => apiFetch('/auth/login.php',    { method: 'POST', body: JSON.stringify(data) }),
+  register: (data) => apiFetch('/auth/register.php', { method: 'POST', body: JSON.stringify(data) }),
+  logout:   ()     => apiFetch('/auth/logout.php',   { method: 'POST' })
 };
 
-/* ── Menu ───────────────────────────────────────────────────── */
 const Menu = {
-  getAll:   (cat)    => apiFetch('/menu' + (cat && cat !== 'all' ? `?category=${cat}` : '')),
-  seed:     ()       => apiFetch('/menu/seed', { method: 'POST' })
+  getAll: (cat) => apiFetch('/menu/get_all.php' + (cat && cat !== 'all' ? `?category=${encodeURIComponent(cat)}` : ''))
 };
 
-/* ── Orders ─────────────────────────────────────────────────── */
 const Orders = {
-  place:    (data)   => apiFetch('/orders',    { method: 'POST', body: JSON.stringify(data) }),
-  mine:     ()       => apiFetch('/orders/my')
+  place: (data) => apiFetch('/orders/place.php',   { method: 'POST', body: JSON.stringify(data) }),
+  mine:  ()     => apiFetch('/orders/my_orders.php')
 };
 
-/* ── Account ────────────────────────────────────────────────── */
-const Account = {
-  stats:    ()       => apiFetch('/account/stats')
-};
-
-/* ── Session helpers ────────────────────────────────────────── */
 async function checkAuth() {
   const res = await Auth.me();
-  return res.logged_in ? res.user : null;
+  return res.success ? res.user : null;
 }
 
-async function requireAuth(redirectTo = 'login.html') {
+async function requireAuth(redirectTo = 'login.php') {
   const user = await checkAuth();
-  if (!user) {
-    window.location.href = redirectTo;
-    return null;
-  }
+  if (!user) { window.location.href = redirectTo; return null; }
   return user;
 }
 
-/* ── Navbar: update login/user pill based on session ────────── */
-async function initNavbar() {
-  const user = await checkAuth();
-  const li   = document.getElementById('nav-auth');
-  if (!li) return;
-
-  if (user) {
-    li.innerHTML = `
-      <a href="account.html" class="user-pill">
-        <span class="user-avatar">${user.username[0].toUpperCase()}</span>
-        ${user.username}
-      </a>`;
-  } else {
-    li.innerHTML = `<a href="login.html">Login</a>`;
-  }
-}
-
-/* ── Toast notification ─────────────────────────────────────── */
 function showToast(msg, type = 'info') {
   let toast = document.getElementById('cdm-toast');
   if (!toast) {
@@ -96,16 +72,7 @@ function showToast(msg, type = 'info') {
     document.body.appendChild(toast);
   }
   toast.textContent = msg;
-  if (type === 'error') toast.style.borderColor = '#e74c3c';
-  else if (type === 'success') toast.style.borderColor = '#2ecc71';
-  else toast.style.borderColor = '#d4af37';
-
-  setTimeout(() => {
-    toast.style.transform = 'translateX(-50%) translateY(0)';
-    toast.style.opacity   = '1';
-  }, 10);
-  setTimeout(() => {
-    toast.style.transform = 'translateX(-50%) translateY(70px)';
-    toast.style.opacity   = '0';
-  }, 3200);
+  toast.style.borderColor = type === 'error' ? '#e74c3c' : type === 'success' ? '#2ecc71' : '#d4af37';
+  setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(0)'; toast.style.opacity = '1'; }, 10);
+  setTimeout(() => { toast.style.transform = 'translateX(-50%) translateY(70px)'; toast.style.opacity = '0'; }, 3200);
 }

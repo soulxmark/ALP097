@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,25 +10,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&display=swap" rel="stylesheet">
   <style>
-    /* Login Modal */
-    .lm-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.78); z-index: 9999;
-      align-items: center; justify-content: center;
-    }
-    .lm-overlay.active { display: flex; animation: lmFade .3s ease; }
+    .lm-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.78); z-index:9999; align-items:center; justify-content:center; }
+    .lm-overlay.active { display:flex; animation:lmFade .3s ease; }
     @keyframes lmFade { from{opacity:0} to{opacity:1} }
-
-    .lm-box {
-      background: #111; border: 1px solid rgba(212,175,55,0.4);
-      border-radius: 20px; padding: 44px 40px;
-      width: 100%; max-width: 420px;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.7);
-      position: relative; font-family: 'Cormorant Garamond', serif;
-      animation: lmUp .4s ease; margin: 20px;
-    }
+    .lm-box { background:#111; border:1px solid rgba(212,175,55,0.4); border-radius:20px; padding:44px 40px; width:100%; max-width:420px; box-shadow:0 30px 70px rgba(0,0,0,0.7); position:relative; font-family:'Cormorant Garamond',serif; animation:lmUp .4s ease; margin:20px; }
     @keyframes lmUp { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
-
     .lm-close { position:absolute; top:14px; right:18px; background:none; border:none; color:rgba(255,255,255,0.4); font-size:1.7em; cursor:pointer; transition:color .2s; line-height:1; padding:0; }
     .lm-close:hover { color:#d4af37; }
     .lm-logo { text-align:center; margin-bottom:6px; }
@@ -49,21 +36,16 @@
     .lm-links { text-align:center; color:rgba(255,255,255,0.45); font-size:.95em; display:flex; flex-direction:column; gap:8px; }
     .lm-links a { color:#d4af37; text-decoration:none; font-weight:600; }
     .lm-links a:hover { color:#fff; }
-
-    /* Navbar user pill */
     .user-pill { display:inline-flex; align-items:center; gap:7px; background:rgba(212,175,55,0.12); border:1px solid rgba(212,175,55,0.35); border-radius:30px; padding:4px 14px 4px 5px; text-decoration:none; color:#d4af37 !important; font-size:.9em; transition:background .3s; }
     .user-pill:hover { background:rgba(212,175,55,0.25); }
     .user-avatar { width:26px; height:26px; border-radius:50%; background:#d4af37; color:#111; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:.8em; }
-
-    /* Loading skeleton */
     .menu-skeleton { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; padding:20px; }
-    .skeleton-card { background:#fff; border-radius:16px; overflow:hidden; height:320px; animation:shimmer 1.5s infinite; background:linear-gradient(90deg,#f0e8d0 25%,#fdf9f0 50%,#f0e8d0 75%); background-size:200% 100%; }
+    .skeleton-card { border-radius:16px; overflow:hidden; height:320px; animation:shimmer 1.5s infinite; background:linear-gradient(90deg,#f0e8d0 25%,#fdf9f0 50%,#f0e8d0 75%); background-size:200% 100%; }
     @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
   </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <header>
   <nav class="navbar" id="navbar">
     <div class="logo">
@@ -90,21 +72,18 @@
   </nav>
 </header>
 
-<!-- Filter & Search -->
 <section class="menu-controls">
   <div class="filters">
     <button class="filter-btn active" onclick="filterMenu('all')">All</button>
-    <button class="filter-btn" onclick="filterMenu('mains')">Mains</button>
-    <button class="filter-btn" onclick="filterMenu('veggies')">Veggies</button>
-    <button class="filter-btn" onclick="filterMenu('desserts')">Desserts</button>
-    <button class="filter-btn" onclick="filterMenu('drinks')">Drinks</button>
+    <button class="filter-btn" onclick="filterMenu('Mains')">Mains</button>
+    <button class="filter-btn" onclick="filterMenu('Veggies')">Veggies</button>
+    <button class="filter-btn" onclick="filterMenu('Desserts')">Desserts</button>
+    <button class="filter-btn" onclick="filterMenu('Drinks')">Drinks</button>
   </div>
   <input type="text" id="searchInput" placeholder="Search dishes..." oninput="searchMenu()" />
 </section>
 
-<!-- Menu Grid -->
 <section class="menu-grid" id="menuGrid">
-  <!-- Skeleton loaders while fetching -->
   <div class="menu-skeleton" id="skeletonLoader">
     <div class="skeleton-card"></div>
     <div class="skeleton-card"></div>
@@ -115,7 +94,6 @@
   </div>
 </section>
 
-<!-- Item Detail Modal -->
 <section id="modal-section">
   <div id="menuModal" class="modal">
     <div class="modal-content">
@@ -134,7 +112,6 @@
   </div>
 </section>
 
-<!-- Cart Sidebar -->
 <section id="cart-section">
   <div id="cartSidebar" class="cart-sidebar">
     <div class="cart-header">
@@ -156,7 +133,6 @@
   <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
 </section>
 
-<!-- Login Modal -->
 <div class="lm-overlay" id="lmOverlay">
   <div class="lm-box">
     <button class="lm-close" onclick="closeLM()">×</button>
@@ -177,8 +153,8 @@
     <button class="lm-submit" id="lmBtn" onclick="submitLogin()">Sign In & Place Order</button>
     <div class="lm-divider"><span>or</span></div>
     <div class="lm-links">
-      <span>No account? <a href="./register.html">Create one →</a></span>
-      <span><a href="./login.html">Go to full login page</a></span>
+      <span>No account? <a href="./register.php">Create one →</a></span>
+      <span><a href="./login.php">Go to full login page</a></span>
     </div>
   </div>
 </div>
@@ -193,29 +169,20 @@
   </div>
 </footer>
 
+<!-- CORRECT script path -->
 <script src="./scripts/function.js"></script>
-<script src="./scripts/api.js"></script>
+<script src="./scripts/conection_string/api.js"></script>
 <script>
-/* ============================================================
-   MENU PAGE — Debuuugggg This
-============================================================ */
-
-const API_BASE   = 'http://localhost:5000/api';
 let currentUser  = null;
 let allMenuItems = [];
 let currentItem  = null;
 
-/* ── Boot ──────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
-  // Check session
   currentUser = await checkAuth();
   updateNavbar();
   updateCheckoutBtn();
-
-  // Load menu from MongoDB via Flask
   await loadMenu();
 
-  // Enter on login modal inputs
   ['lmUsername','lmPassword'].forEach(id => {
     document.getElementById(id).addEventListener('keydown', e => {
       if (e.key === 'Enter') submitLogin();
@@ -223,39 +190,41 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
-/* ── Navbar ─────────────────────────────────────────────────── */
 function updateNavbar() {
   const li = document.getElementById('nav-auth');
+  if (!li) return;
   if (currentUser) {
     li.innerHTML = `
-      <a href="./account.html" class="user-pill">
+      <a href="./account.php" class="user-pill">
         <span class="user-avatar">${currentUser.username[0].toUpperCase()}</span>
         ${currentUser.username}
       </a>`;
   } else {
-    li.innerHTML = `<a href="./login.html">Login</a>`;
+    li.innerHTML = `<a href="./login.php">Login</a>`;
   }
 }
 
-/* ── Load menu from API ─────────────────────────────────────── */
 async function loadMenu() {
-  const res = await Menu.getAll();
-  document.getElementById('skeletonLoader').remove();
+  try {
+    const res = await Menu.getAll();
+    const skeleton = document.getElementById('skeletonLoader');
+    if (skeleton) skeleton.remove();
 
-  if (!res.success || !res.items || !res.items.length) {
-    document.getElementById('menuGrid').innerHTML =
-      `<div style="text-align:center;padding:60px;color:#aaa;font-size:1.2em;">
-         No menu items found. Make sure the server is running.<br>
-         <small style="font-size:.8em;">POST http://localhost:5000/api/menu/seed to seed data</small>
-       </div>`;
-    return;
+    if (!res.success || !res.items || !res.items.length) {
+      document.getElementById('menuGrid').innerHTML =
+        `<div style="text-align:center;padding:60px;color:#aaa;font-size:1.2em;">
+           No menu items found.<br>
+           <small>Make sure the database is seeded.</small>
+         </div>`;
+      return;
+    }
+    allMenuItems = res.items;
+    renderMenu(allMenuItems);
+  } catch(e) {
+    console.error('loadMenu error:', e);
   }
-
-  allMenuItems = res.items;
-  renderMenu(allMenuItems);
 }
 
-/* ── Render menu cards ──────────────────────────────────────── */
 function renderMenu(items) {
   const grid = document.getElementById('menuGrid');
   if (!items.length) {
@@ -268,76 +237,58 @@ function renderMenu(items) {
       <img src="${item.image}" alt="${item.name}"
            onerror="this.src='./images/placeholder.jpg'">
       <h3>${item.name}</h3>
-      <p class="price">₱${item.price.toLocaleString()}</p>
+      <p class="price">₱${parseFloat(item.price).toLocaleString()}</p>
       <div class="details">${item.description}</div>
-      <span class="item-id"    style="display:none">${item._id}</span>
-      <span class="item-price" style="display:none">${item.price}</span>
     </div>`).join('');
 }
 
-/* ── Open item modal ────────────────────────────────────────── */
 function openItemModal(id) {
-  const item = allMenuItems.find(i => i._id === id);
+  const item = allMenuItems.find(i => i._id == id);
   if (!item) return;
   currentItem = item;
-
-  document.getElementById('modalImg').src       = item.image;
-  document.getElementById('modalImg').onerror   = () => { document.getElementById('modalImg').src = './images/placeholder.jpg'; };
-  document.getElementById('modalTitle').textContent   = item.name;
-  document.getElementById('modalPrice').textContent   = `₱${item.price.toLocaleString()}`;
-  document.getElementById('modalDetails').textContent = item.description;
-  document.getElementById('qty').textContent          = 1;
-  document.getElementById('menuModal').style.display  = 'flex';
+  document.getElementById('modalImg').src                  = item.image;
+  document.getElementById('modalImg').onerror              = () => { document.getElementById('modalImg').src = './images/placeholder.jpg'; };
+  document.getElementById('modalTitle').textContent        = item.name;
+  document.getElementById('modalPrice').textContent        = `₱${parseFloat(item.price).toLocaleString()}`;
+  document.getElementById('modalDetails').textContent      = item.description;
+  document.getElementById('qty').textContent               = 1;
+  document.getElementById('menuModal').style.display       = 'flex';
 }
 
-/* ── Filter ─────────────────────────────────────────────────── */
 function filterMenu(cat) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
-
   const filtered = cat === 'all'
     ? allMenuItems
     : allMenuItems.filter(i => i.category.toLowerCase() === cat.toLowerCase());
   renderMenu(filtered);
 }
 
-/* ── Search ─────────────────────────────────────────────────── */
 function searchMenu() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   const filtered = allMenuItems.filter(i =>
-    i.name.toLowerCase().includes(q) ||
-    i.description.toLowerCase().includes(q)
+    i.name.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)
   );
   renderMenu(filtered);
 }
 
-/* ── Add to cart (uses existing menu.js cart logic) ─────────── */
 function addToCart() {
   if (!currentItem) return;
-  const qty      = parseInt(document.getElementById('qty').textContent);
-  const cartData = {
-    id:       currentItem._id,
-    name:     currentItem.name,
-    price:    currentItem.price,
-    quantity: qty
-  };
-
-  // Build cart item HTML (compatible with existing cart sidebar)
-  const existing = document.querySelector(`#cartItems [data-menu-id="${cartData.id}"]`);
+  const qty = parseInt(document.getElementById('qty').textContent);
+  const existing = document.querySelector(`#cartItems [data-menu-id="${currentItem._id}"]`);
   if (existing) {
     const qtyEl = existing.querySelector('.cart-item-qty');
     qtyEl.textContent = parseInt(qtyEl.textContent) + qty;
   } else {
     const emptyMsg = document.querySelector('#cartItems .empty-cart');
     if (emptyMsg) emptyMsg.remove();
-
     const div = document.createElement('div');
-    div.className        = 'cart-item';
-    div.dataset.menuId   = cartData.id;
+    div.className      = 'cart-item';
+    div.dataset.menuId = currentItem._id;
     div.innerHTML = `
       <div class="cart-item-info">
-        <span class="cart-item-name">${cartData.name}</span>
-        <span class="cart-item-price" data-price="${cartData.price}">₱${cartData.price}</span>
+        <span class="cart-item-name">${currentItem.name}</span>
+        <span class="cart-item-price" data-price="${currentItem.price}">₱${currentItem.price}</span>
       </div>
       <div class="cart-item-controls">
         <button onclick="changeCartQty(this,-1)">−</button>
@@ -347,17 +298,15 @@ function addToCart() {
       </div>`;
     document.getElementById('cartItems').appendChild(div);
   }
-
   updateCartUI();
   closeModal();
-  showToast(`✅ ${cartData.name} added to cart`, 'success');
+  showToast(`✅ ${currentItem.name} added to cart`, 'success');
 }
 
 function changeCartQty(btn, delta) {
   const row   = btn.closest('.cart-item');
   const qtyEl = row.querySelector('.cart-item-qty');
-  const newQ  = Math.max(1, parseInt(qtyEl.textContent) + delta);
-  qtyEl.textContent = newQ;
+  qtyEl.textContent = Math.max(1, parseInt(qtyEl.textContent) + delta);
   updateCartUI();
 }
 
@@ -370,8 +319,8 @@ function removeCartItem(btn) {
 }
 
 function updateCartUI() {
-  const rows  = document.querySelectorAll('#cartItems .cart-item');
-  let total   = 0, count = 0;
+  const rows = document.querySelectorAll('#cartItems .cart-item');
+  let total = 0, count = 0;
   rows.forEach(row => {
     const price = parseFloat(row.querySelector('.cart-item-price').dataset.price);
     const qty   = parseInt(row.querySelector('.cart-item-qty').textContent);
@@ -387,7 +336,6 @@ function clearCart() {
   updateCartUI();
 }
 
-/* ── Checkout ────────────────────────────────────────────────── */
 function updateCheckoutBtn() {
   const btn = document.getElementById('checkoutBtn');
   if (currentUser) {
@@ -401,32 +349,27 @@ function updateCheckoutBtn() {
 
 async function handleCheckout() {
   if (!currentUser) { requireLogin(); return; }
-
   const rows = document.querySelectorAll('#cartItems .cart-item');
   if (!rows.length) { showToast('🛒 Your cart is empty!'); return; }
-
   const items = [];
   rows.forEach(row => {
     items.push({
-      name:    row.querySelector('.cart-item-name').textContent.trim(),
-      price:   parseFloat(row.querySelector('.cart-item-price').dataset.price),
+      name:     row.querySelector('.cart-item-name').textContent.trim(),
+      price:    parseFloat(row.querySelector('.cart-item-price').dataset.price),
       quantity: parseInt(row.querySelector('.cart-item-qty').textContent),
-      menu_id: row.dataset.menuId
+      menu_id:  row.dataset.menuId
     });
   });
-
   const total = items.reduce((s, i) => s + i.price * i.quantity, 0);
   const btn   = document.getElementById('checkoutBtn');
   btn.disabled    = true;
   btn.textContent = 'Placing order...';
-
   const res = await Orders.place({ items, total });
-
   if (res.success) {
     clearCart();
     toggleCart();
-    showToast(`✅ Order placed! Redirecting to dashboard...`, 'success');
-    setTimeout(() => { window.location.href = './account.html'; }, 2000);
+    showToast('✅ Order placed! Redirecting...', 'success');
+    setTimeout(() => { window.location.href = './account.php'; }, 2000);
   } else {
     showToast('❌ ' + (res.message || 'Failed. Try again.'), 'error');
     btn.disabled    = false;
@@ -434,11 +377,9 @@ async function handleCheckout() {
   }
 }
 
-/* ── Login Modal ─────────────────────────────────────────────── */
 function requireLogin() {
   if (!document.querySelectorAll('#cartItems .cart-item').length) {
-    showToast('🛒 Your cart is empty!');
-    return;
+    showToast('🛒 Your cart is empty!'); return;
   }
   const sidebar = document.getElementById('cartSidebar');
   if (sidebar) sidebar.classList.remove('open');
@@ -468,28 +409,24 @@ async function submitLogin() {
   const errDiv   = document.getElementById('lmError');
   const username = document.getElementById('lmUsername').value.trim();
   const password = document.getElementById('lmPassword').value.trim();
-
   if (!username || !password) {
-    errDiv.textContent   = 'Please fill in all fields.';
+    errDiv.textContent = 'Please fill in all fields.';
     errDiv.style.display = 'block';
     return;
   }
-
   btn.disabled    = true;
   btn.textContent = 'Signing in...';
   errDiv.style.display = 'none';
-
   const res = await Auth.login({ username, password });
-
   if (res.success) {
     currentUser = res.user;
     closeLM();
     updateNavbar();
     updateCheckoutBtn();
-    showToast(`✅ Welcome, ${res.user.username}! Now placing your order...`, 'success');
+    showToast(`✅ Welcome, ${res.user.username}! Placing order...`, 'success');
     setTimeout(handleCheckout, 800);
   } else {
-    errDiv.textContent   = res.message;
+    errDiv.textContent   = res.message || 'Login failed.';
     errDiv.style.display = 'block';
     btn.disabled    = false;
     btn.textContent = 'Sign In & Place Order';
