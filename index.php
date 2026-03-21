@@ -14,7 +14,7 @@
     <a href="#home">Casa De Manila</a>
     <p>Authenticity You Can Taste</p> 
   </div>
-  <div class="hamburger" id="hamburger">
+  <div class="hamburger" id="ham  burger">
     <span></span><span></span><span></span>
   </div>
   <nav class="nav-links" id="navLinks">

@@ -4,13 +4,13 @@
    File: login.php
 ============================================================ */
 session_start();
-require_once './php/connection.php';
+require_once './connection.php';
 
 if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     header('Location: account.php');
     exit;
 }
-
+//
 $error = '';
 
 if (isset($_POST['login'])) {
