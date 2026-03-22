@@ -169,14 +169,30 @@
   </div>
 </footer>
 
-<!-- CORRECT script path -->
-<script src="./scripts/function.js"></script>
+<!-- api.js only — NOT function.js (it conflicts with the new cart) -->
 <script src="./scripts/conection_string/api.js"></script>
 <script>
+/* ── Navbar & scroll (was in function.js) ───────────────────── */
+const hamburger = document.getElementById('hamburger');
+const navLinks  = document.getElementById('navLinks');
+const navbar    = document.querySelector('.navbar');
+
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
+    hamburger.classList.toggle('active');
+  });
+}
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+/* ── State ──────────────────────────────────────────────────── */
 let currentUser  = null;
 let allMenuItems = [];
 let currentItem  = null;
 
+/* ── Boot ───────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', async () => {
   currentUser = await checkAuth();
   updateNavbar();
@@ -190,6 +206,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 });
 
+/* ── Navbar ─────────────────────────────────────────────────── */
 function updateNavbar() {
   const li = document.getElementById('nav-auth');
   if (!li) return;
@@ -204,17 +221,17 @@ function updateNavbar() {
   }
 }
 
+/* ── Load menu ──────────────────────────────────────────────── */
 async function loadMenu() {
   try {
     const res = await Menu.getAll();
     const skeleton = document.getElementById('skeletonLoader');
     if (skeleton) skeleton.remove();
-
     if (!res.success || !res.items || !res.items.length) {
       document.getElementById('menuGrid').innerHTML =
         `<div style="text-align:center;padding:60px;color:#aaa;font-size:1.2em;">
            No menu items found.<br>
-           <small>Make sure the database is seeded.</small>
+           <small>Make sure the database is seeded and api.php is at the project root.</small>
          </div>`;
       return;
     }
@@ -225,6 +242,7 @@ async function loadMenu() {
   }
 }
 
+/* ── Render ─────────────────────────────────────────────────── */
 function renderMenu(items) {
   const grid = document.getElementById('menuGrid');
   if (!items.length) {
@@ -242,19 +260,37 @@ function renderMenu(items) {
     </div>`).join('');
 }
 
+/* ── Modal ──────────────────────────────────────────────────── */
 function openItemModal(id) {
   const item = allMenuItems.find(i => i._id == id);
   if (!item) return;
   currentItem = item;
-  document.getElementById('modalImg').src                  = item.image;
-  document.getElementById('modalImg').onerror              = () => { document.getElementById('modalImg').src = './images/placeholder.jpg'; };
-  document.getElementById('modalTitle').textContent        = item.name;
-  document.getElementById('modalPrice').textContent        = `₱${parseFloat(item.price).toLocaleString()}`;
-  document.getElementById('modalDetails').textContent      = item.description;
-  document.getElementById('qty').textContent               = 1;
-  document.getElementById('menuModal').style.display       = 'flex';
+  document.getElementById('modalImg').src             = item.image;
+  document.getElementById('modalImg').onerror         = () => { document.getElementById('modalImg').src = './images/placeholder.jpg'; };
+  document.getElementById('modalTitle').textContent   = item.name;
+  document.getElementById('modalPrice').textContent   = `₱${parseFloat(item.price).toLocaleString()}`;
+  document.getElementById('modalDetails').textContent = item.description;
+  document.getElementById('qty').textContent          = 1;
+  document.getElementById('menuModal').style.display  = 'flex';
 }
 
+function closeModal() {
+  document.getElementById('menuModal').style.display = 'none';
+  currentItem = null;
+}
+
+function changeQty(val) {
+  const qtyEl = document.getElementById('qty');
+  qtyEl.textContent = Math.max(1, parseInt(qtyEl.textContent) + val);
+}
+
+// Close modal on backdrop click
+window.addEventListener('click', e => {
+  const modal = document.getElementById('menuModal');
+  if (e.target === modal) closeModal();
+});
+
+/* ── Filter & Search ────────────────────────────────────────── */
 function filterMenu(cat) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
@@ -270,6 +306,15 @@ function searchMenu() {
     i.name.toLowerCase().includes(q) || i.description.toLowerCase().includes(q)
   );
   renderMenu(filtered);
+}
+
+/* ── Cart ───────────────────────────────────────────────────── */
+function toggleCart() {
+  const sidebar = document.getElementById('cartSidebar');
+  const overlay = document.getElementById('cartOverlay');
+  sidebar.classList.toggle('open');
+  overlay.classList.toggle('active');
+  document.body.style.overflow = sidebar.classList.contains('open') ? 'hidden' : '';
 }
 
 function addToCart() {
@@ -336,6 +381,7 @@ function clearCart() {
   updateCartUI();
 }
 
+/* ── Checkout ───────────────────────────────────────────────── */
 function updateCheckoutBtn() {
   const btn = document.getElementById('checkoutBtn');
   if (currentUser) {
@@ -377,6 +423,7 @@ async function handleCheckout() {
   }
 }
 
+/* ── Login Modal ────────────────────────────────────────────── */
 function requireLogin() {
   if (!document.querySelectorAll('#cartItems .cart-item').length) {
     showToast('🛒 Your cart is empty!'); return;
@@ -410,7 +457,7 @@ async function submitLogin() {
   const username = document.getElementById('lmUsername').value.trim();
   const password = document.getElementById('lmPassword').value.trim();
   if (!username || !password) {
-    errDiv.textContent = 'Please fill in all fields.';
+    errDiv.textContent   = 'Please fill in all fields.';
     errDiv.style.display = 'block';
     return;
   }

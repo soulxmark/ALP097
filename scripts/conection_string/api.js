@@ -3,24 +3,20 @@
    File: scripts/conection_string/api.js
 ============================================================ */
 
-const API = '/mainproj/ALP097/api';
+const API = '/mainproj/ALP097/api.php?action=';
 
-async function apiFetch(endpoint, options = {}) {
+async function apiFetch(action, options = {}) {
   try {
-    const res = await fetch(API + endpoint, {
+    const res = await fetch(API + action, {
       headers: { 'Content-Type': 'application/json' },
       credentials: 'include',
       ...options
     });
-
     const text = await res.text();
-
-    // Guard: if response is HTML, the path is wrong
     if (text.trim().startsWith('<')) {
-      console.error('API returned HTML instead of JSON. Check const API path.', API + endpoint);
-      return { success: false, message: 'Server error. Check API path configuration.' };
+      console.error('Got HTML instead of JSON for action:', action);
+      return { success: false, message: 'Server error. Check api.php exists at project root.' };
     }
-
     return JSON.parse(text);
   } catch (err) {
     console.error('API error:', err);
@@ -29,19 +25,19 @@ async function apiFetch(endpoint, options = {}) {
 }
 
 const Auth = {
-  me:       ()     => apiFetch('/auth/me.php'),
-  login:    (data) => apiFetch('/auth/login.php',    { method: 'POST', body: JSON.stringify(data) }),
-  register: (data) => apiFetch('/auth/register.php', { method: 'POST', body: JSON.stringify(data) }),
-  logout:   ()     => apiFetch('/auth/logout.php',   { method: 'POST' })
+  me:       ()     => apiFetch('me'),
+  login:    (data) => apiFetch('login',    { method: 'POST', body: JSON.stringify(data) }),
+  register: (data) => apiFetch('register', { method: 'POST', body: JSON.stringify(data) }),
+  logout:   ()     => apiFetch('logout',   { method: 'POST' })
 };
 
 const Menu = {
-  getAll: (cat) => apiFetch('/menu/get_all.php' + (cat && cat !== 'all' ? `?category=${encodeURIComponent(cat)}` : ''))
+  getAll: (cat) => apiFetch('menu' + (cat && cat !== 'all' ? '&category=' + encodeURIComponent(cat) : ''))
 };
 
 const Orders = {
-  place: (data) => apiFetch('/orders/place.php',   { method: 'POST', body: JSON.stringify(data) }),
-  mine:  ()     => apiFetch('/orders/my_orders.php')
+  place: (data) => apiFetch('place_order', { method: 'POST', body: JSON.stringify(data) }),
+  mine:  ()     => apiFetch('my_orders')
 };
 
 async function checkAuth() {
