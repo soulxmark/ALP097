@@ -4,7 +4,7 @@
 ============================================================ */
 
 const API = '/mainproj/ALP097/api.php?action=';
-
+ 
 async function apiFetch(action, options = {}) {
   try {
     const res = await fetch(API + action, {

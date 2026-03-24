@@ -71,13 +71,17 @@ header {
   text-align: center;
   margin-bottom: 0;
   padding-bottom: 0;
-  text-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+  /* CHOOSE ONE METHOD BELOW */
+
+  /* METHOD 1: PRECISION SHADOW */
+ text-shadow: 2px 4px 5px rgba(0, 0, 0, 0.45);
 }
 
 .logo a {
   color: #d4af37;
   text-decoration: none;
-  text-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  text-shadow: 2px 4px 5px rgba(0, 0, 0, 0.45);
 }
 
 .logo p {

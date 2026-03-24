@@ -302,8 +302,8 @@ function toggleChat() {
   if (cdmOpen) setTimeout(() => document.getElementById('cdm-chat-input').focus(), 300);
 }
 
-/* ── Send ───────────────────────────────────────────────────── */
-async function sendMessage() {
+/* ── Send (Manual Version) ──────────────────────────────────── */
+function sendMessage() {
   const input = document.getElementById('cdm-chat-input');
   const text  = input.value.trim();
   if (!text) return;
@@ -311,7 +311,6 @@ async function sendMessage() {
   input.value = '';
   input.style.height = 'auto';
   appendMsg('user', text);
-  CDM_HISTORY.push({ role: 'user', content: text });
 
   // Hide quick replies after first message
   document.getElementById('cdmQuickReplies').style.display = 'none';
@@ -319,32 +318,48 @@ async function sendMessage() {
   const typingId = appendMsg('bot', '…', true);
   document.getElementById('cdm-chat-send').disabled = true;
 
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model:      'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        system:     CDM_SYSTEM,
-        messages:   CDM_HISTORY
-      })
-    });
-
-    const data  = await res.json();
-    const reply = data.content?.[0]?.text || 'Sorry, I could not get a response. Please call us at +63 912 345 6789.';
-
+  // Simulate a slight delay so it feels natural
+  setTimeout(() => {
     removeMsg(typingId);
+    
+    // Get the manual response based on keywords
+    const reply = getManualResponse(text);
+    
     appendMsg('bot', reply);
-    CDM_HISTORY.push({ role: 'assistant', content: reply });
+    document.getElementById('cdm-chat-send').disabled = false;
+    document.getElementById('cdm-chat-input').focus();
+  }, 600);
+}
 
-  } catch (err) {
-    removeMsg(typingId);
-    appendMsg('bot', 'Sorry, something went wrong. Please call us at +63 912 345 6789 or email reservations@casamanila.ph.');
+/* ── Manual Response Logic ──────────────────────────────────── */
+function getManualResponse(userInput) {
+  // Convert input to lowercase to make keyword matching easier
+  const text = userInput.toLowerCase();
+
+  // Menu / Food Queries
+  if (text.includes('menu') || text.includes('dish') || text.includes('food') || text.includes('serve')) {
+    return "Here are some highlights from our menu:\n\n🍗 Mains: Chicken Adobo ₱250, Lechon Kawali ₱320, Kare-Kare ₱300\n🥦 Veggies: Chopsuey ₱180, Pakbet ₱180\n🍧 Desserts: Halo-Halo ₱180, Leche Flan ₱150\n\nWould you like to know about our drinks?";
+  } 
+  // Drink Queries
+  else if (text.includes('drink') || text.includes('beverage') || text.includes('juice')) {
+    return "For drinks, we offer refreshing Calamansi Juice ₱80, Mango Shake ₱100, and Buko Juice ₱90.";
   }
-
-  document.getElementById('cdm-chat-send').disabled = false;
-  document.getElementById('cdm-chat-input').focus();
+  // Reservation Queries
+  else if (text.includes('reserve') || text.includes('reservation') || text.includes('book')) {
+    return "You can easily reserve a table by clicking the 'Reservation' link in our navigation bar, or by calling us directly at +63 912 345 6789.";
+  }
+  // Hours Queries
+  else if (text.includes('hour') || text.includes('open') || text.includes('time')) {
+    return "Our operating hours are:\nMon–Thu: 11:00 AM – 9:00 PM\nFri–Sat: 11:00 AM – 10:30 PM\nSunday: 10:00 AM – 9:00 PM";
+  }
+  // Location Queries
+  else if (text.includes('location') || text.includes('where') || text.includes('address')) {
+    return "We are located at SM City Manila, Ermita, Manila, 1000, Metro Manila.";
+  }
+  // Default Fallback
+  else {
+    return "Mabuhay! I'm here to help with information about Casa De Manila. You can ask me about our menu, reservations, opening hours, or location!";
+  }
 }
 
 function sendQuick(text) {

@@ -17,7 +17,7 @@ switch ($action) {
       ]]);
     } else {
       echo json_encode(['success' => false]);
-    }
+    } 
     break;
 
   case 'login':
