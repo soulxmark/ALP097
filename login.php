@@ -114,10 +114,43 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       margin-bottom: 15px;
       display: none;
     }
+    .back-home {
+      position: fixed;
+      top: 22px;
+      left: 28px;
+      color: #d4af37;
+      text-decoration: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1em;
+      letter-spacing: 1px;
+      z-index: 999;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color .3s;
+      box-shadow: 0 4px 5px rgba(212, 175, 55, 0.3);
+    }
+
+    .back-home:hover {
+      color: #fff;
+      box-shadow: 0 6px 10px rgba(212, 175, 55, 0.5);
+    }
+
+    .back-home svg {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+    }
   </style>
 </head>
 
 <body>
+   <a href="./index.php" class="back-home">
+    <svg viewBox="0 0 24 24">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+    </svg>
+    Back to Home
+  </a>
 
   <div class="login-container">
     <h2>Casa De Manila</h2>

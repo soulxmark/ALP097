@@ -120,7 +120,7 @@ function badge($status) {
     .welcome-banner {
       background: linear-gradient(130deg, #111 55%, #1c1508);
       border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 20px;
+      border-radius: 223px;
       padding: 36px 44px;
       display: flex;
       align-items: center;
@@ -975,11 +975,11 @@ function badge($status) {
         <li><a href="./events.php">Events</a></li>
         <li><a href="./contact_us.php">Contact</a></li>
         <li><a href="./about.php">About</a></li>
-        <li><a href="account.php?logout=1" style="color:#d4af37;">Logout</a></li>
+        <!--<li><a href="account.php?logout=1" style="color:#d4af37;">Logout</a></li>-->
       </ul>
     </nav>
   </div>
-
+    <br><br><br>
   <div class="account-page">
     <div class="account-wrapper">
 
