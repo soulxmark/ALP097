@@ -1,13 +1,15 @@
 <!-- reservation.php -->
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Casa De Manila | Reservation</title>
   <link rel="stylesheet" href="./styles/reservation.css">
-    <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
 </head>
+
 <body>
 
   <header>
@@ -41,7 +43,7 @@
       <div class="reservation-info">
         <img src="./images/hero.webp" alt="Casa De Manila Dining" class="reservation-img">
         <p>
-          Experience authentic Filipino cuisine in a warm, elegant setting.  
+          Experience authentic Filipino cuisine in a warm, elegant setting.
           Reserve your table today and enjoy our signature dishes with family and friends.
         </p>
       </div>
@@ -50,17 +52,17 @@
       <form class="reservation-form" id="res-form" action="https://script.google.com/macros/s/AKfycbyJmBFsvTIk_-tdU59KjOVyvmdURZ282lXUzS412g85b_Sv_PNEuG94wmC1c0HNptQaiA/exec" method="POST">
         <div class="form-group">
           <input type="hidden" id="user_ip" name="user_ip" value="Unknown">
-            <label for="event">Event</label>
-            <select id="event" name="event" required>
-              <option value="">Select event</option>
-              <option value="birthday">Birthday</option>
-              <option value="corporate">Corporate</option>
-              <option value="family">Family Gathering</option>
-              <option value="Reserve_Table">Reserve Table Only</option>
-            </select>
+          <label for="event">Event</label>
+          <select id="event" name="event" required>
+            <option value="">Select event</option>
+            <option value="birthday">Birthday</option>
+            <option value="corporate">Corporate</option>
+            <option value="family">Family Gathering</option>
+            <option value="Reserve_Table">Reserve Table Only</option>
+          </select>
         </div>
-        
-        
+
+
         <div class="form-group">
           <label for="name">Full Name</label>
           <input type="text" id="name" name="name" required>
@@ -115,16 +117,17 @@
   <script src="./scripts/function.js"></script>
   <script src="./scripts/reservation/email.js"></script>
   <div id="successModal" class="modal-overlay">
-  <div class="modal-content">
-    <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
-    <div class="modal-body">
-      <div class="success-icon">✔</div>
-      <h3>Mabuhay!</h3>
-      <p>Your reservation has been sent successfully.</p>
-      <p>A confirmation email is on its way to your inbox.</p>
-      <button type="button" onclick="closeSuccessModal()" class="btn">Close</button>
+    <div class="modal-content">
+      <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
+      <div class="modal-body">
+        <div class="success-icon">✔</div>
+        <h3>Mabuhay!</h3>
+        <p>Your reservation has been sent successfully.</p>
+        <p>A confirmation email is on its way to your inbox.</p>
+        <button type="button" onclick="closeSuccessModal()" class="btn">Close</button>
+      </div>
     </div>
   </div>
-</div>
 </body>
+
 </html>

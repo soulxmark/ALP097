@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link rel="stylesheet" href="./styles/contact_us.css">
   <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
 </head>
+
 <body>
 
   <!-- Navbar -->
@@ -152,9 +154,7 @@
   <div class="map-strip reveal">
     <h2>Find Us</h2>
     <p>SM City Manila, Metro Manila</p>
-    <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7722.354434765172!2d120.97522846447067!3d14.588975556121387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397cb209479aa11%3A0x872db4487b1bb367!2sSM%20City%20Manila!5e0!3m2!1sen!2sph!4v1771427686354!5m2!1sen!2sph"
-      allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7722.354434765172!2d120.97522846447067!3d14.588975556121387!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397cb209479aa11%3A0x872db4487b1bb367!2sSM%20City%20Manila!5e0!3m2!1sen!2sph!4v1771427686354!5m2!1sen!2sph" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
     </iframe>
   </div>
 
@@ -174,4 +174,5 @@
   <script src="./scripts/function.js"></script>
   <script src="./scripts/contact_us/contact.js"></script>
 </body>
+
 </html>

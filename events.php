@@ -1,143 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Casa De Manila | Events</title>
   <link rel="stylesheet" href="./styles/events.css" />
-    <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
 </head>
+
 <body>
 
   <!-- Navbar -->
-<div class="navbar" id="navbar">
-  <div class="logo">
-    <a href="#home">Casa De Manila</a>
-    <p>Authenticity You Can Taste</p> 
-  </div>
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
-  <nav class="nav-links" id="navLinks">
-    <ul>
-      <li><a href="./index.php">Home</a></li>
-      <li><a href="./reservation.php">Reservation</a></li>
-      <li><a href="./menu.php">Menu</a></li>
-      <li><a href="./events.php">Events</a></li>
-      <li><a href="./contact_us.php">Contact</a></li>
-      <li><a href="./about.php">About</a></li>
-    </ul>
-  </nav>
-</div>
-
-<!-- Events Header -->
-<section class="events-hero">
-  <h1>Upcoming Events</h1>
-  <p>Celebrate Filipino culture, food, and moments with us</p>
-</section>
-
-<!-- Events Grid -->
-<section class="events-grid" id="eventsGrid">
-
-  <div class="event-card">
-    <img src="./images/accoustic.webp" alt="Live Acoustic Night">
-    <div class="event-content">
-      <h3>🎶 Live Acoustic Night</h3>
-      <p class="event-date">Every Friday | 7:00 PM</p>
-      <p class="event-desc">
-        Enjoy classic OPM and acoustic hits while dining with family and friends.
-      </p>
-     <a href="./reservation.html" class="event-btn">Reserve Now!</a>    
-  </div>
-</div>
-
-  <div class="event-card">
-    <img src="./images/kamayan.jpg" alt="Kamayan Feast">
-    <div class="event-content">
-      <h3>🍽️ Kamayan Feast</h3>
-      <p class="event-date">March 15, 2026</p>
-      <p class="event-desc">
-        Experience traditional Filipino boodle fight served on banana leaves.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+  <div class="navbar" id="navbar">
+    <div class="logo">
+      <a href="#home">Casa De Manila</a>
+      <p>Authenticity You Can Taste</p>
     </div>
-  </div>
-
-  <div class="event-card">
-    <img src="./images/Celebrate-Birthday-at-Home-with-Family-5-Simple-Ideas-and-Themes.webp" alt="Birthday Packages">
-    <div class="event-content">
-      <h3>🎉 Birthday Celebrations</h3>
-      <p class="event-date">Available Anytime</p>
-      <p class="event-desc">
-        Custom birthday packages with food bundles, décor, and cake options.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
     </div>
+    <nav class="nav-links" id="navLinks">
+      <ul>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./reservation.php">Reservation</a></li>
+        <li><a href="./menu.php">Menu</a></li>
+        <li><a href="./events.php">Events</a></li>
+        <li><a href="./contact_us.php">Contact</a></li>
+        <li><a href="./about.php">About</a></li>
+      </ul>
+    </nav>
   </div>
 
-  <div class="event-card">
-    <img src="./images/eventprivate.jpg" alt="Private Events">
-    <div class="event-content">
-      <h3>🏢 Private Events</h3>
-      <p class="event-date">By Reservation</p>
-      <p class="event-desc">
-        Perfect for corporate meetings, anniversaries, and family gatherings.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+  <!-- Events Header -->
+  <section class="events-hero">
+    <h1>Upcoming Events</h1>
+    <p>Celebrate Filipino culture, food, and moments with us</p>
+  </section>
+
+  <!-- Events Grid -->
+  <section class="events-grid" id="eventsGrid">
+
+    <div class="event-card">
+      <img src="./images/accoustic.webp" alt="Live Acoustic Night">
+      <div class="event-content">
+        <h3>🎶 Live Acoustic Night</h3>
+        <p class="event-date">Every Friday | 7:00 PM</p>
+        <p class="event-desc">
+          Enjoy classic OPM and acoustic hits while dining with family and friends.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
     </div>
-  </div>
 
-  <div class="event-card">
-    <img src="./images/kamayan.jpg" alt="Gabi ng Karangyaan">
-    <div class="event-content">
-      <h3>🍽️ Gabi ng Karangyaan</h3>
-      <p class="event-date">7:00 PM - 10:30 PM</p>
-      <p class="event-desc">
-        An Elegant Filipino Culinary Soirée.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+    <div class="event-card">
+      <img src="./images/kamayan.jpg" alt="Kamayan Feast">
+      <div class="event-content">
+        <h3>🍽️ Kamayan Feast</h3>
+        <p class="event-date">March 15, 2026</p>
+        <p class="event-desc">
+          Experience traditional Filipino boodle fight served on banana leaves.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
     </div>
-  </div>
 
-  <div class="event-card">
-    <img src="./images/kamayan.jpg" alt="Pamana">
-    <div class="event-content">
-    <h3>🍽️Pamana</h3>
-      <p class="event-date">March 15, 2026</p>
-      <p class="event-desc">
-        A Filipino Heritage Dining Series.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+    <div class="event-card">
+      <img src="./images/Celebrate-Birthday-at-Home-with-Family-5-Simple-Ideas-and-Themes.webp" alt="Birthday Packages">
+      <div class="event-content">
+        <h3>🎉 Birthday Celebrations</h3>
+        <p class="event-date">Available Anytime</p>
+        <p class="event-desc">
+          Custom birthday packages with food bundles, décor, and cake options.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
     </div>
-  </div>
 
-  <div class="event-card">
-    <img src="./images/halo-halo.jpg" alt="Tag-Init Treats">
-    <div class="event-content">
-      <h3>🍽️ Tag-Init Treats</h3>
-      <p class="event-date">March 15, 2026</p>
-      <p class="event-desc">
-       A Filipino Summer at Casa Milan.
-      </p>
-      <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+    <div class="event-card">
+      <img src="./images/eventprivate.jpg" alt="Private Events">
+      <div class="event-content">
+        <h3>🏢 Private Events</h3>
+        <p class="event-date">By Reservation</p>
+        <p class="event-desc">
+          Perfect for corporate meetings, anniversaries, and family gatherings.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
     </div>
-  </div>
 
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="footer-container">
-    <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
-    <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
-    <div class="social-links">
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">Twitter</a>
+    <div class="event-card">
+      <img src="./images/kamayan.jpg" alt="Gabi ng Karangyaan">
+      <div class="event-content">
+        <h3>🍽️ Gabi ng Karangyaan</h3>
+        <p class="event-date">7:00 PM - 10:30 PM</p>
+        <p class="event-desc">
+          An Elegant Filipino Culinary Soirée.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
     </div>
-  </div>
-</footer>
 
-<script src="./scripts/events.js"></script>
+    <div class="event-card">
+      <img src="./images/kamayan.jpg" alt="Pamana">
+      <div class="event-content">
+        <h3>🍽️Pamana</h3>
+        <p class="event-date">March 15, 2026</p>
+        <p class="event-desc">
+          A Filipino Heritage Dining Series.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
+    </div>
+
+    <div class="event-card">
+      <img src="./images/halo-halo.jpg" alt="Tag-Init Treats">
+      <div class="event-content">
+        <h3>🍽️ Tag-Init Treats</h3>
+        <p class="event-date">March 15, 2026</p>
+        <p class="event-desc">
+          A Filipino Summer at Casa Milan.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+      <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+      <div class="social-links">
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">Twitter</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="./scripts/events.js"></script>
 </body>
+
 </html>

@@ -23,7 +23,7 @@
       <li><a href="./reservation.php">Reservation</a></li>
       <li><a href="./menu.php">Menu</a></li>
       <li><a href="./events.php">Events</a></li>
-      <li><a href="./contact.php">Contact</a></li>
+      <li><a href="./contact_us.php">Contact</a></li>
       <li><a href="./about.php">About</a></li>
     </ul>
   </nav>
