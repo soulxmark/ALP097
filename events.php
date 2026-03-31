@@ -102,7 +102,7 @@
     </div>
 
     <div class="event-card">
-      <img src="./images/kamayan.jpg" alt="Pamana">
+      <img src="./images/content.jpg" alt="Pamana">
       <div class="event-content">
         <h3>🍽️Pamana</h3>
         <p class="event-date">March 15, 2026</p>

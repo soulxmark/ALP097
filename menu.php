@@ -410,6 +410,7 @@
       opacity: 0;
       transition: transform .35s ease, opacity .35s ease;
       font-family: 'Cormorant Garamond', serif;
+      color: #fff;
     }
 
     .cart-popup.show {

@@ -1,4 +1,7 @@
-<!-- reservation.php -->
+<?php
+session_start();
+require_once './connection.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,6 +11,23 @@
   <title>Casa De Manila | Reservation</title>
   <link rel="stylesheet" href="./styles/reservation.css">
   <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
+  <style>
+    /* ── Inline error next to label ── */
+    .label-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .field-error {
+      color: #e53e3e;
+      font-size: 0.75rem;
+      font-style: italic;
+      visibility: hidden;
+    }
+    /* Disable past dates visually on the native date picker */
+    input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+  </style>
 </head>
 
 <body>
@@ -39,6 +59,7 @@
   <section id="reservation" class="section reveal">
     <h2>Reserve Your Table</h2>
     <div class="reservation-container">
+
       <!-- Left side -->
       <div class="reservation-info">
         <img src="./images/hero.webp" alt="Casa De Manila Dining" class="reservation-img">
@@ -49,10 +70,17 @@
       </div>
 
       <!-- Right side -->
-      <form class="reservation-form" id="res-form" action="https://script.google.com/macros/s/AKfycbyJmBFsvTIk_-tdU59KjOVyvmdURZ282lXUzS412g85b_Sv_PNEuG94wmC1c0HNptQaiA/exec" method="POST">
+      <form class="reservation-form" id="res-form">
+
+        <!-- Pass logged-in UID if session exists -->
+        <input type="hidden" id="uid" name="uid" value="<?php echo isset($_SESSION['uid']) ? (int)$_SESSION['uid'] : ''; ?>">
+        <input type="hidden" id="user_ip" name="user_ip" value="Unknown">
+
         <div class="form-group">
-          <input type="hidden" id="user_ip" name="user_ip" value="Unknown">
-          <label for="event">Event</label>
+          <div class="label-row">
+            <label for="event">Event</label>
+            <span class="field-error" id="error-event"></span>
+          </div>
           <select id="event" name="event" required>
             <option value="">Select event</option>
             <option value="birthday">Birthday</option>
@@ -62,40 +90,61 @@
           </select>
         </div>
 
-
         <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" id="name" name="name" required>
+          <div class="label-row">
+            <label for="name">Full Name</label>
+            <span class="field-error" id="error-name"></span>
+          </div>
+          <input type="text" id="name" name="name" required
+            value="<?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : ''; ?>">
         </div>
 
         <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" required>
+          <div class="label-row">
+            <label for="email">Email Address</label>
+            <span class="field-error" id="error-email"></span>
+          </div>
+          <input type="email" id="email" name="email" required
+            value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>">
         </div>
 
         <div class="form-group">
-          <label for="phone">Phone Number</label>
+          <div class="label-row">
+            <label for="phone">Phone Number</label>
+            <span class="field-error" id="error-phone"></span>
+          </div>
           <input type="tel" id="phone" name="phone" required>
         </div>
 
         <div class="form-group">
-          <label for="date">Reservation Date</label>
+          <div class="label-row">
+            <label for="date">Reservation Date</label>
+            <span class="field-error" id="error-date"></span>
+          </div>
           <input type="date" id="date" name="date" required>
         </div>
 
         <div class="form-group">
-          <label for="time">Reservation Time</label>
+          <div class="label-row">
+            <label for="time">Reservation Time</label>
+            <span class="field-error" id="error-time"></span>
+          </div>
           <input type="time" id="time" name="time" required>
         </div>
 
         <div class="form-group">
-          <label for="guests">Number of Guests</label>
+          <div class="label-row">
+            <label for="guests">Number of Guests</label>
+            <span class="field-error" id="error-guests"></span>
+          </div>
           <input type="number" id="guests" name="guests" min="1" max="20" required>
         </div>
+
         <div class="form-group">
           <label for="notes">Special Requests</label>
           <textarea id="notes" name="notes" rows="7" cols="70" placeholder="Any special requests?"></textarea>
         </div>
+
         <button type="submit" class="btn">Book Now</button>
       </form>
     </div>
@@ -116,6 +165,7 @@
 
   <script src="./scripts/function.js"></script>
   <script src="./scripts/reservation/email.js"></script>
+
   <div id="successModal" class="modal-overlay">
     <div class="modal-content">
       <span class="close-modal" onclick="closeSuccessModal()">&times;</span>
@@ -128,6 +178,6 @@
       </div>
     </div>
   </div>
-</body>
 
+</body>
 </html>

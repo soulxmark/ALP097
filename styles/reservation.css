@@ -72,6 +72,19 @@ body, html {
 .nav-links a:hover { color: #d4af37; }
 
 /* Reservation Section */
+.label-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.field-error {
+  color: #e53e3e;
+  font-size: 0.75rem;
+  font-style: italic;
+  visibility: hidden;
+}
 #reservation {
   padding: 120px 20px 80px;
   background: #fdfaf6;
