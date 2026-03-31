@@ -5,6 +5,9 @@
 
 const scriptURL = 'https://script.google.com/macros/s/AKfycbyJmBFsvTIk_-tdU59KjOVyvmdURZ282lXUzS412g85b_Sv_PNEuG94wmC1c0HNptQaiA/exec';
 
+// ── Match same API base path used by api.js ──
+const API_BASE = '/mainproj/ALP097/api.php?action=';
+
 const datePicker = document.getElementById('date');
 const timePicker = document.getElementById('time');
 
@@ -16,18 +19,13 @@ fetch('https://api.ipify.org?format=json')
 
 // =============================================
 // REAL-TIME DATE BLOCKING
-// Sets today as min, and updates every minute
-// so past dates are always blocked even if the
-// user leaves the tab open overnight.
 // =============================================
 function getToday() {
-  return new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+  return new Date().toISOString().split('T')[0];
 }
 
 function updateDateMin() {
   datePicker.setAttribute('min', getToday());
-
-  // If user somehow has a past date selected, clear it
   if (datePicker.value && datePicker.value < getToday()) {
     datePicker.value = '';
     showError('date', 'Reservation date cannot be in the past.');
@@ -35,13 +33,10 @@ function updateDateMin() {
 }
 
 updateDateMin();
-setInterval(updateDateMin, 60000); // refresh every minute
+setInterval(updateDateMin, 60000);
 
 // =============================================
 // REAL-TIME TIME BLOCKING
-// When today is selected, blocks past hours AND
-// past AM/PM — so 3 AM can't be chosen when it's
-// already 3 PM.
 // =============================================
 function getCurrentTime24() {
   const now = new Date();
@@ -51,8 +46,6 @@ function getCurrentTime24() {
 function updateTimeMin() {
   if (datePicker.value === getToday()) {
     timePicker.setAttribute('min', getCurrentTime24());
-
-    // If a past time was already typed/selected, clear it
     if (timePicker.value && timePicker.value < getCurrentTime24()) {
       timePicker.value = '';
       showError('time', 'Please select a future time for today.');
@@ -63,15 +56,11 @@ function updateTimeMin() {
   }
 }
 
-// Re-check time restriction whenever date changes
 datePicker.addEventListener('change', () => {
   clearError('date');
   updateTimeMin();
 });
 
-// Validate on time change: catches 3 AM vs 3 PM confusion
-// because the native time input is a 24h internal value —
-// 3:00 AM = "03:00", 3:00 PM = "15:00", so comparison is exact.
 timePicker.addEventListener('change', () => {
   clearError('time');
   if (datePicker.value === getToday()) {
@@ -82,7 +71,6 @@ timePicker.addEventListener('change', () => {
   }
 });
 
-// Update time min every minute (handles open tabs)
 setInterval(updateTimeMin, 60000);
 
 // =============================================
@@ -136,7 +124,12 @@ function validateForm() {
     }
   }
 
-  // Final safety check: block past time even if min attribute was bypassed
+  if (datePicker.value && datePicker.value < getToday()) {
+    showError('date', 'Reservation date cannot be in the past.');
+    if (!firstInvalid) firstInvalid = datePicker;
+    isValid = false;
+  }
+
   if (datePicker.value === getToday() && timePicker.value) {
     if (timePicker.value < getCurrentTime24()) {
       showError('time', 'Please select a future time for today.');
@@ -145,20 +138,12 @@ function validateForm() {
     }
   }
 
-  // Block past date even if min was bypassed
-  if (datePicker.value && datePicker.value < getToday()) {
-    showError('date', 'Reservation date cannot be in the past.');
-    if (!firstInvalid) firstInvalid = datePicker;
-    isValid = false;
-  }
-
   if (firstInvalid) firstInvalid.focus();
   return isValid;
 }
 
-// Clear errors live as user fills fields
 requiredFields.forEach(field => {
-  if (field.id === 'date' || field.id === 'time') return; // handled by listeners above
+  if (field.id === 'date' || field.id === 'time') return;
   const el = document.getElementById(field.id);
   if (el) {
     el.addEventListener('input',  () => clearError(field.id));
@@ -168,8 +153,6 @@ requiredFields.forEach(field => {
 
 // =============================================
 // FORM SUBMIT
-// 1. Saves to reservations_tbl via submit_reservation.php
-// 2. Also sends to Google Sheets as backup
 // =============================================
 document.getElementById('res-form').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -186,20 +169,21 @@ document.getElementById('res-form').addEventListener('submit', async function (e
   const payload  = Object.fromEntries(formData.entries());
 
   try {
-    // ── Step 1: Save to database ──
-    const dbRes  = await fetch('./submit_reservation.php', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(payload),
+    // ── Step 1: Save to DB via api.php (same session as login) ──
+    const dbRes = await fetch(API_BASE + 'save_reservation', {
+      method:      'POST',
+      headers:     { 'Content-Type': 'application/json' },
+      credentials: 'include',            // sends session cookie — same as Auth.login()
+      body:        JSON.stringify(payload),
     });
     const dbResult = await dbRes.json();
 
-    if (dbResult.status !== 'success') {
+    if (!dbResult.success) {
       alert('⚠️ ' + (dbResult.message || 'Could not save reservation. Please try again.'));
       return;
     }
 
-    // ── Step 2: Also forward to Google Sheets (best-effort) ──
+    // ── Step 2: Forward to Google Sheets as backup (best-effort) ──
     const params = new URLSearchParams(payload);
     fetch(`${scriptURL}?${params.toString()}`, { method: 'GET' }).catch(() => {});
 

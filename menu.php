@@ -595,9 +595,15 @@
     <source src="./sounds/notify.mp3" type="audio/mpeg">
   </audio>
 
-  <footer class="footer">
+ <footer class="footer reveal">
     <div class="footer-container">
       <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+      <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+      <div class="social-links">
+        <a href="https://facebook.com">Facebook</a>
+        <a href="htpps://instagram.com">Instagram</a>
+        <a href="htpp://twitter.com">X</a>
+      </div>
     </div>
   </footer>
 
