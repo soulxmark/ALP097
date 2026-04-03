@@ -1100,7 +1100,7 @@ function badge($status) {
                   <td data-label="Name"><?php echo htmlspecialchars($res['full_name']); ?></td>
                   <td data-label="Date"><?php echo date('M j, Y', strtotime($res['reservation_date'])); ?></td>
                   <td data-label="Time"><?php echo date('g:i A', strtotime($res['reservation_time'])); ?></td>
-                  <td data-label="Guests"><?php echo $res['party_size']; ?> pax</td>
+                  <td data-label="Guests"><?php echo $res['party_size']; ?>paxs</td>
                   <td data-label="Status"><?php echo badge($res['status']); ?></td>
                 </tr>
                 <?php endforeach; ?>

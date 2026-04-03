@@ -6,7 +6,127 @@ header('Content-Type: application/json');
 $action = $_GET['action'] ?? '';
 $data   = json_decode(file_get_contents('php://input'), true) ?? [];
 
+// ── Gmail SMTP config (free) ──────────────────────────────────────────────
+// 1. Go to myaccount.google.com → Security → App Passwords
+// 2. Generate an App Password for "Mail"
+// 3. Paste it below (NOT your real Gmail password)
+define('SMTP_HOST', 'smtp.gmail.com');
+define('SMTP_PORT', 587);
+define('SMTP_USER', 'your_gmail@gmail.com');   // ← change this
+define('SMTP_PASS', 'your_app_password');       // ← change this (App Password)
+define('SMTP_FROM', 'Casa De Manila <your_gmail@gmail.com>');
+
+// ── Simple SMTP mailer (no library needed) ────────────────────────────────
+function sendOTPEmail($to, $otp) {
+    $subject = 'Your Casa De Manila OTP Code';
+    $body    = "
+    <div style='font-family:Georgia,serif;max-width:480px;margin:0 auto;padding:32px;background:#f9f5ec;border-radius:12px;'>
+      <h2 style='color:#d4af37;font-size:1.8em;margin:0 0 8px;'>Casa De Manila</h2>
+      <p style='color:#555;margin:0 0 24px;font-size:0.9em;'>Authenticity You Can Taste</p>
+      <p style='color:#333;margin:0 0 16px;'>Your one-time verification code is:</p>
+      <div style='font-size:2.4em;font-weight:bold;letter-spacing:10px;color:#111;background:#fff;border:2px solid #d4af37;border-radius:8px;padding:16px 24px;text-align:center;margin-bottom:20px;'>
+        {$otp}
+      </div>
+      <p style='color:#888;font-size:0.82em;margin:0;'>This code expires in <strong>5 minutes</strong>. Do not share it with anyone.</p>
+    </div>";
+
+    // Open SMTP socket
+    $smtp = fsockopen('tls://'.SMTP_HOST, SMTP_PORT, $errno, $errstr, 10);
+    if (!$smtp) return false;
+
+    $recv = function() use ($smtp) { return fgets($smtp, 512); };
+    $send = function($cmd) use ($smtp) { fputs($smtp, $cmd."\r\n"); };
+
+    $recv(); // 220 greeting
+    $send('EHLO localhost');
+    while ($line = $recv()) { if (substr($line,3,1)==' ') break; }
+
+    $send('AUTH LOGIN');
+    $recv();
+    $send(base64_encode(SMTP_USER));
+    $recv();
+    $send(base64_encode(SMTP_PASS));
+    $recv(); // 235 authenticated
+
+    $send('MAIL FROM:<'.SMTP_USER.'>');
+    $recv();
+    $send('RCPT TO:<'.$to.'>');
+    $recv();
+    $send('DATA');
+    $recv();
+
+    $headers  = "From: ".SMTP_FROM."\r\n";
+    $headers .= "To: {$to}\r\n";
+    $headers .= "Subject: {$subject}\r\n";
+    $headers .= "MIME-Version: 1.0\r\n";
+    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
+
+    $send($headers."\r\n".$body."\r\n.");
+    $recv();
+    $send('QUIT');
+    fclose($smtp);
+    return true;
+}
+
 switch ($action) {
+
+  // ── Send OTP ─────────────────────────────────────────────────────────────
+  case 'send_otp':
+    $email = trim($data['email'] ?? '');
+    if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+      echo json_encode(['success' => false, 'message' => 'Valid email is required.']);
+      break;
+    }
+
+    // Generate 6-digit OTP
+    $otp     = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+    $expires = date('Y-m-d H:i:s', strtotime('+5 minutes'));
+
+    // Store in session (no extra DB table needed)
+    $_SESSION['otp_code']    = $otp;
+    $_SESSION['otp_email']   = $email;
+    $_SESSION['otp_expires'] = $expires;
+
+    if (sendOTPEmail($email, $otp)) {
+      echo json_encode(['success' => true, 'message' => 'OTP sent to your email.']);
+    } else {
+      echo json_encode(['success' => false, 'message' => 'Failed to send OTP. Check SMTP config.']);
+    }
+    break;
+
+  // ── Verify OTP ───────────────────────────────────────────────────────────
+  case 'verify_otp':
+    $email    = trim($data['email'] ?? '');
+    $entered  = trim($data['otp']   ?? '');
+
+    $stored_otp     = $_SESSION['otp_code']    ?? '';
+    $stored_email   = $_SESSION['otp_email']   ?? '';
+    $stored_expires = $_SESSION['otp_expires'] ?? '';
+
+    if (!$stored_otp || !$stored_expires) {
+      echo json_encode(['success' => false, 'message' => 'No OTP found. Please request a new one.']);
+      break;
+    }
+
+    if (strtotime($stored_expires) < time()) {
+      unset($_SESSION['otp_code'], $_SESSION['otp_email'], $_SESSION['otp_expires']);
+      echo json_encode(['success' => false, 'message' => 'OTP has expired. Please request a new one.']);
+      break;
+    }
+
+    if ($email !== $stored_email || $entered !== $stored_otp) {
+      echo json_encode(['success' => false, 'message' => 'Invalid OTP. Please try again.']);
+      break;
+    }
+
+    // OTP correct — clear it so it can't be reused
+    unset($_SESSION['otp_code'], $_SESSION['otp_email'], $_SESSION['otp_expires']);
+    $_SESSION['otp_verified'] = true;
+
+    echo json_encode(['success' => true, 'message' => 'OTP verified successfully.']);
+    break;
+
+  // ─────────────────────────────────────────────────────────────────────────
 
   case 'me':
     if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
@@ -17,7 +137,7 @@ switch ($action) {
       ]]);
     } else {
       echo json_encode(['success' => false]);
-    } 
+    }
     break;
 
   case 'login':
@@ -190,6 +310,64 @@ switch ($action) {
       }
     }
     echo json_encode(['success' => true, 'orders' => array_values($orders)]);
+    break;
+
+  case 'save_reservation':
+    $uid = (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1 && isset($_SESSION['uid']))
+         ? (int)$_SESSION['uid']
+         : null;
+
+    $full_name   = trim($data['name']    ?? '');
+    $email       = trim($data['email']   ?? '');
+    $phone       = trim($data['phone']   ?? '');
+    $party_size  = (int)($data['guests'] ?? 0);
+    $res_date    = trim($data['date']    ?? '');
+    $res_time    = trim($data['time']    ?? '');
+    $special_req = trim($data['notes']   ?? '');
+
+    if (!$full_name || !$email || !$phone || !$party_size || !$res_date || !$res_time) {
+      echo json_encode(['success' => false, 'message' => 'All required fields must be filled.']);
+      break;
+    }
+
+    $today    = new DateTime('today');
+    $selected = DateTime::createFromFormat('Y-m-d', $res_date);
+    if (!$selected || $selected < $today) {
+      echo json_encode(['success' => false, 'message' => 'Reservation date cannot be in the past.']);
+      break;
+    }
+
+    if ($selected == $today) {
+      $now          = new DateTime();
+      $selectedTime = DateTime::createFromFormat('H:i', $res_time);
+      if ($selectedTime && $selectedTime <= $now) {
+        echo json_encode(['success' => false, 'message' => 'Reservation time cannot be in the past.']);
+        break;
+      }
+    }
+
+    if ($uid !== null) {
+      // i=uid, s=name, s=email, s=phone, i=party_size, s=date, s=time, s=notes
+      $stmt = $mysqli->prepare(
+        "INSERT INTO reservations_tbl (uid, full_name, email, phone, party_size, reservation_date, reservation_time, special_request, status)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')"
+      );
+      $stmt->bind_param("isssisss", $uid, $full_name, $email, $phone, $party_size, $res_date, $res_time, $special_req);
+    } else {
+      // s=name, s=email, s=phone, i=party_size, s=date, s=time, s=notes
+      $stmt = $mysqli->prepare(
+        "INSERT INTO reservations_tbl (uid, full_name, email, phone, party_size, reservation_date, reservation_time, special_request, status)
+         VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, 'pending')"
+      );
+      $stmt->bind_param("sssisss", $full_name, $email, $phone, $party_size, $res_date, $res_time, $special_req);
+    }
+
+    if ($stmt->execute()) {
+      echo json_encode(['success' => true, 'message' => 'Reservation saved successfully!']);
+    } else {
+      echo json_encode(['success' => false, 'message' => 'Database error: ' . $mysqli->error]);
+    }
+    $stmt->close();
     break;
 
   default:
