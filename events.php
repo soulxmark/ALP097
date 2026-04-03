@@ -28,6 +28,7 @@
         <li><a href="./events.php">Events</a></li>
         <li><a href="./contact_us.php">Contact</a></li>
         <li><a href="./about.php">About</a></li>
+        <li id="nav-auth"><a href="./login.php">Login</a></li>
       </ul>
     </nav>
   </div>
@@ -124,7 +125,30 @@
         <a href="./reservation.html" class="event-btn">Reserve Now!</a>
       </div>
     </div>
+    
+    <div class="event-card">
+      <img src="./images/merienda.jpg" alt="Merienda Buffet">
+      <div class="event-content">
+        <h3>☕ Klasikong Merienda</h3>
+        <p class="event-date">Daily | 2:00 PM - 5:00 PM</p>
+        <p class="event-desc">
+          Unlimited servings of Bibingka, Puto Bumbong, and Pancit Guisado paired with our hot native chocolate.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
+    </div>
 
+    <div class="event-card">
+      <img src="./images/wine-tapas.jpg" alt="Wine and Tapas Night">
+      <div class="event-content">
+        <h3>🍷 Alak at Pulutan</h3>
+        <p class="event-date">April 20, 2026</p>
+        <p class="event-desc">
+          An evening of premium local fruit wines paired with artisanal Filipino cheeses and gourmet appetizers.
+        </p>
+        <a href="./reservation.html" class="event-btn">Reserve Now!</a>
+      </div>
+    </div>
   </section>
 
   <!-- Footer -->

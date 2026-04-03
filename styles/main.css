@@ -82,6 +82,7 @@ header {
   color: #d4af37;
   text-decoration: none;
   text-shadow: 2px 4px 5px rgba(0, 0, 0, 0.45);
+  opacity: 0.95;
 }
 
 .logo p {
@@ -327,6 +328,9 @@ header {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1em;
+  font-style: bold;
 }
 
 .item {

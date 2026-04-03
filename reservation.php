@@ -50,6 +50,7 @@ require_once './connection.php';
           <li><a href="./events.php">Events</a></li>
           <li><a href="./contact_us.php">Contact</a></li>
           <li><a href="./about.php">About</a></li>
+          <li id="nav-auth"><a href="./login.php">Login</a></li>
         </ul>
       </nav>
     </div>
@@ -62,7 +63,7 @@ require_once './connection.php';
 
       <!-- Left side -->
       <div class="reservation-info">
-        <img src="./images/hero.webp" alt="Casa De Manila Dining" class="reservation-img">
+        <img src="./images/content.jpg" alt="Casa De Manila Dining" class="reservation-img">
         <p>
           Experience authentic Filipino cuisine in a warm, elegant setting.
           Reserve your table today and enjoy our signature dishes with family and friends.

@@ -28,6 +28,7 @@
         <li><a href="./events.php">Events</a></li>
         <li><a href="./contact_us.php">Contact</a></li>
         <li><a href="./about.php">About</a></li>
+        <li id="nav-auth"><a href="./login.php">Login</a></li>
       </ul>
     </nav>
   </div>

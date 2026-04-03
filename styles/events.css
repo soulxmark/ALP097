@@ -82,8 +82,9 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(3, minmax(260px, 1fr)); /* Fixed 3 columns */
   gap: 30px;
+  justify-items: center; /* Center cards horizontally */
 }
 
 /* ================= EVENT CARD ================= */
@@ -93,6 +94,8 @@ body {
   overflow: hidden;
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;              /* ADD THIS */
+  flex-direction: column;     /* ADD THIS */
 }
 
 .event-card:hover {
@@ -105,11 +108,17 @@ body {
   height: 200px;
   object-fit: cover;
 }
-
+/* Center the last card if it's alone */
+.event-card:last-child:nth-child(4n - 2) {
+  grid-column: 2; /* Places it in the middle column */
+}
 /* ================= EVENT CONTENT ================= */
 .event-content {
   padding: 20px;
   text-align: center;
+  display: flex;              /* ADD THIS */
+  flex-direction: column;     /* ADD THIS */
+  flex: 1;                    /* ADD THIS - fills remaining card height */
 }
 
 .event-content h3 {
@@ -128,6 +137,7 @@ body {
   color: #666;
   line-height: 1.6;
   margin-bottom: 18px;
+   flex: 1;                    /* ADD THIS - pushes button to bottom */
 }
 
 /* ================= EVENT BUTTON ================= */

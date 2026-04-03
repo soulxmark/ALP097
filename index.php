@@ -280,6 +280,7 @@
         <li><a href="./events.php">Events</a></li>
         <li><a href="./contact_us.php">Contact</a></li>
         <li><a href="./about.php">About</a></li>
+        <li id="nav-auth"><a href="./login.php">Login</a></li>
       </ul>
     </nav>
   </div>
@@ -337,7 +338,7 @@
       </div>
       <div class="item reveal">
         <a href="./menu.php"><img src="./images/sinigang.jpg" alt="Sinigang" class="menu-img"></a>
-        Tamarind soup (Sinigang na baboy)
+        Tamarind soup
       </div>
       <div class="item reveal">
         <a href="./menu.php"><img src="./images/Lechon Kawali.jpg" alt="Lechon-kawali" class="menu-img"></a>
