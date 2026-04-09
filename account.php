@@ -979,7 +979,7 @@ function badge($status) {
       </ul>
     </nav>
   </div>
-    <br><br><br>
+  <br><br><br>
   <div class="account-page">
     <div class="account-wrapper">
 
@@ -1242,14 +1242,14 @@ function badge($status) {
     </div>
   </div>
 
- <footer class="footer reveal">
+  <footer class="footer reveal">
     <div class="footer-container">
       <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
       <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
       <div class="social-links">
         <a href="https://facebook.com">Facebook</a>
-        <a href="htpps://instagram.com">Instagram</a>
-        <a href="htpp://twitter.com">X</a>
+        <a href="https://instagram.com">Instagram</a>
+        <a href="https://twitter.com">X</a>
       </div>
     </div>
   </footer>

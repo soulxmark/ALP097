@@ -133,7 +133,7 @@
         <a href="./reservation.php" class="event-btn">Reserve Now!</a>
       </div>
     </div>
-    
+
     <div class="event-card">
       <img src="./images/events/merienda.webp" alt="Merienda Buffet">
       <div class="event-content">

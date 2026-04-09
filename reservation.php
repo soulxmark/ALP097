@@ -19,14 +19,18 @@ require_once './connection.php';
       gap: 8px;
       margin-bottom: 4px;
     }
+
     .field-error {
       color: #e53e3e;
       font-size: 0.75rem;
       font-style: italic;
       visibility: hidden;
     }
+
     /* Disable past dates visually on the native date picker */
-    input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; }
+    input[type="date"]::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -96,8 +100,7 @@ require_once './connection.php';
             <label for="name">Full Name</label>
             <span class="field-error" id="error-name"></span>
           </div>
-          <input type="text" id="name" name="name" required
-            value="<?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : ''; ?>">
+          <input type="text" id="name" name="name" required value="<?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : ''; ?>">
         </div>
 
         <div class="form-group">
@@ -105,8 +108,7 @@ require_once './connection.php';
             <label for="email">Email Address</label>
             <span class="field-error" id="error-email"></span>
           </div>
-          <input type="email" id="email" name="email" required
-            value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>">
+          <input type="email" id="email" name="email" required value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>">
         </div>
 
         <div class="form-group">
@@ -153,16 +155,16 @@ require_once './connection.php';
 
   <!-- Footer -->
   <footer class="footer reveal">
-      <div class="footer-container">
-        <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
-        <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
-        <div class="social-links">
-          <a href="https://facebook.com">Facebook</a>
-          <a href="htpps://instagram.com">Instagram</a>
-          <a href="htpp://twitter.com">X</a>
-        </div>
+    <div class="footer-container">
+      <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+      <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+      <div class="social-links">
+        <a href="https://facebook.com">Facebook</a>
+        <a href="htpps://instagram.com">Instagram</a>
+        <a href="htpp://twitter.com">X</a>
       </div>
-    </footer>
+    </div>
+  </footer>
 
   <script src="./scripts/function.js"></script>
   <script src="./scripts/reservation/email.js"></script>
@@ -181,4 +183,5 @@ require_once './connection.php';
   </div>
 
 </body>
+
 </html>

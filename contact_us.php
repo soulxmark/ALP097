@@ -87,9 +87,9 @@
       </div>
 
       <div class="contact-social">
-        <a href="#">Facebook</a>
-        <a href="#">Instagram</a>
-        <a href="#">Twitter</a>
+        <a href="https://facebook.com">Facebook</a>
+        <a href="https://instagram.com">Instagram</a>
+        <a href="https://twitter.com">Twitter</a>
       </div>
     </div>
 
@@ -160,7 +160,7 @@
   </div>
 
   <!-- Footer -->
-<footer class="footer reveal">
+  <footer class="footer reveal">
     <div class="footer-container">
       <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
       <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>

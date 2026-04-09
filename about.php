@@ -1,62 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Casa De Manila | About</title>
   <link rel="stylesheet" href="./styles/about.css">
-    <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">  
+  <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
 </head>
+
 <body>
   <!-- Navbar -->
-<div class="navbar" id="navbar">
-  <div class="logo">
-    <a href="#home">Casa De Manila</a>
-    <p>Authenticity You Can Taste</p> 
+  <div class="navbar" id="navbar">
+    <div class="logo">
+      <a href="#home">Casa De Manila</a>
+      <p>Authenticity You Can Taste</p>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <span></span><span></span><span></span>
+    </div>
+    <nav class="nav-links" id="navLinks">
+      <ul>
+        <li><a href="./index.php">Home</a></li>
+        <li><a href="./reservation.php">Reservation</a></li>
+        <li><a href="./menu.php">Menu</a></li>
+        <li><a href="./events.php">Events</a></li>
+        <li><a href="./contact_us.php">Contact</a></li>
+        <li><a href="./about.php">About</a></li>
+        <li id="nav-auth"><a href="./login.php">Login</a></li>
+      </ul>
+    </nav>
   </div>
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
-  </div>
-  <nav class="nav-links" id="navLinks">
-    <ul>
-      <li><a href="./index.php">Home</a></li>
-      <li><a href="./reservation.php">Reservation</a></li>
-      <li><a href="./menu.php">Menu</a></li>
-      <li><a href="./events.php">Events</a></li>
-      <li><a href="./contact_us.php">Contact</a></li>
-      <li><a href="./about.php">About</a></li>
-    </ul>
-  </nav>
-</div>
 
 
   <!-- Hero -->
   <section id="home" class="hero reveal visible">
     <div class="hero-text">
       <h2>A Warm Welcome to Casa De Manila</h2>
-      <p>Casa de Manila is a Filipino cuisine inspired by the rich culinary history and cultural heritage of the Pilippines, 
+      <p>Casa de Manila is a Filipino cuisine inspired by the rich culinary history and cultural heritage of the Pilippines,
         particularly the traditions rooted in Manila, the nation's historic capital. The name reflects the lasting spanish influence on filipino society,
-         which played a significant role in shaping the country's gastronomy through centuries of cultural exchange.</p>
-      <p>Filipino cuisine is the result of a unique blend of indigenous practices, Asian influences, and 
+        which played a significant role in shaping the country's gastronomy through centuries of cultural exchange.</p>
+      <p>Filipino cuisine is the result of a unique blend of indigenous practices, Asian influences, and
         spanish cooking techniques. The dishes represented at Casa de Manila are rootred in traditional lutong bahay--home-style
-         recipes passed down through generations. These dishes, such as adobo, sinigang, kare-kare, and pancit.
-         embody the filipino values of family, community, and hospitality.</p>
-     </div>
+        recipes passed down through generations. These dishes, such as adobo, sinigang, kare-kare, and pancit.
+        embody the filipino values of family, community, and hospitality.</p>
+    </div>
   </section>
 
- <footer class="footer reveal">
-  <div class="footer-container">
-    <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
-    <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
-    <div class="social-links">
-      <a href="#">Facebook</a>
-      <a href="#">Instagram</a>
-      <a href="#">Twitter</a>
+  <footer class="footer reveal">
+    <div class="footer-container">
+      <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
+      <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
+      <div class="social-links">
+        <a href="https://facebook.com">Facebook</a>
+        <a href="htpps://instagram.com">Instagram</a>
+        <a href="htpp://twitter.com">X</a>
+      </div>
     </div>
-  </div>
-</footer>
+  </footer>
 
 
   <script src="./scripts/function.js"></script>
 </body>
+
 </html>

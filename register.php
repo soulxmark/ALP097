@@ -81,7 +81,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     }
 
     .auth-logo h1 {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 3em;
       color: #d4af37;
       line-height: 1;
@@ -608,7 +608,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     }
 
     .navbar .logo a {
-      font-family: 'Great Vibes', cursive;
+      font-family: 'Cormorant Garamond', serif;
       font-size: 40px;
       color: #d4af37;
       text-decoration: none;
@@ -653,7 +653,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     <div class="register-card">
 
       <div class="auth-logo">
-        <h1>Casa De Manila</h1>
+        <h1>Sign Up</h1>
         <p>Create Your Account</p>
       </div>
 
@@ -683,12 +683,11 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
 
       <!-- STEP 1 -->
       <div class="form-panel active" id="panel1">
-        <p class="section-title">🔐 Account Info</p>
+        <p class="section-title">Account Info</p>
         <div class="form-row">
           <div class="form-group">
             <label>Username <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">👤</span>
               <input type="text" id="username" placeholder="e.g. juandelacruz" autocomplete="username">
             </div>
             <p class="field-hint">At least 3 characters, no spaces</p>
@@ -697,7 +696,6 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Email Address <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">✉️</span>
               <input type="email" id="email" placeholder="you@email.com" autocomplete="email">
             </div>
             <div class="field-error" id="errEmail"></div>
@@ -707,7 +705,6 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Password <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">🔒</span>
               <input type="password" id="password" placeholder="Min. 6 characters" autocomplete="new-password" oninput="checkStrength()">
               <button type="button" class="toggle-pw" onclick="togglePw('password',this)">👁</button>
             </div>
@@ -720,8 +717,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Confirm Password <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">🔒</span>
-              <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password" oninput="checkMatch()">
+                <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password" oninput="checkMatch()">
               <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword',this)">👁</button>
             </div>
             <small id="matchHint" style="font-size:.75em;display:block;margin-top:4px;min-height:16px;"></small>
@@ -735,12 +731,12 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
 
       <!-- STEP 2 -->
       <div class="form-panel" id="panel2">
-        <p class="section-title">👤 Personal Info</p>
+        <p class="section-title">Personal Info</p>
         <div class="form-row">
           <div class="form-group">
             <label>First Name <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">📝</span>
+             
               <input type="text" id="firstName" placeholder="Juan" autocomplete="given-name">
             </div>
             <div class="field-error" id="errFirstName"></div>
@@ -748,7 +744,6 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Last Name <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">📝</span>
               <input type="text" id="lastName" placeholder="dela Cruz" autocomplete="family-name">
             </div>
             <div class="field-error" id="errLastName"></div>
@@ -758,22 +753,20 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Phone Number <span class="req">*</span></label>
             <div class="input-wrap">
-              <span class="input-icon">📱</span>
               <input type="tel" id="phone" placeholder="09XX XXX XXXX" autocomplete="tel">
             </div>
             <p class="field-hint">Philippine number format</p>
             <div class="field-error" id="errPhone"></div>
           </div>
           <div class="form-group">
-            <label>Birthday <span class="opt">(optional)</span></label>
+            <label>Birthday <span class="opt">Required</span></label>
             <div class="input-wrap">
-              <span class="input-icon">🎂</span>
               <input type="date" id="birthday" autocomplete="bday">
             </div>
           </div>
         </div>
         <div class="form-group">
-          <label>Gender <span class="opt">(optional)</span></label>
+          <label>Gender <span class="opt">Required</span></label>
           <div class="gender-group">
             <div class="gender-option"><input type="radio" name="gender" id="gMale" value="Male"><label for="gMale">♂ Male</label></div>
             <div class="gender-option"><input type="radio" name="gender" id="gFemale" value="Female"><label for="gFemale">♀ Female</label></div>
@@ -781,7 +774,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           </div>
         </div>
         <div class="form-group">
-          <label>Address <span class="opt">(optional)</span></label>
+          <label>Address <span class="opt">Required</span></label>
           <div class="input-wrap">
             <span class="input-icon" style="top:14px;transform:none;">📍</span>
             <textarea id="address" placeholder="Street, Barangay, City, Province" autocomplete="street-address" style="padding-left:40px;"></textarea>
@@ -807,7 +800,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
         <div class="field-error" id="errTerms" style="margin-bottom:12px;"></div>
         <div class="btn-row">
           <button class="btn-back" onclick="prevStep(3)">← Back</button>
-          <button class="btn-submit" id="submitBtn" onclick="submitForm()">🎉 Create My Account</button>
+          <button class="btn-submit" id="submitBtn" onclick="submitForm()">Create My Account</button>
         </div>
       </div>
 

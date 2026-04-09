@@ -149,7 +149,10 @@ requiredFields.forEach(field => {
 });
 
 // =============================================
-// FORM SUBMIT — saves to DB only via api.php
+// FORM SUBMIT
+// — Saves to DB via api.php (no direct browser→GAS call)
+// — api.php then forwards to Google Sheets server-side
+//   which avoids the CORS error entirely
 // =============================================
 document.getElementById('res-form').addEventListener('submit', async function (e) {
   e.preventDefault();

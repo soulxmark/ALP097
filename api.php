@@ -392,6 +392,22 @@ switch ($action) {
       $stmt->bind_param("sssisss", $full_name, $email, $phone, $party_size, $res_date, $res_time, $special_req);
     }
     if ($stmt->execute()) {
+      // Forward to Google Sheets server-side (no CORS issue since this is PHP not browser)
+      $event    = trim($data['event']   ?? '');
+      $user_ip  = trim($data['user_ip'] ?? 'Unknown');
+      $gas_params = http_build_query([
+        'name'    => $full_name,
+        'email'   => $email,
+        'phone'   => $phone,
+        'date'    => $res_date,
+        'time'    => $res_time,
+        'guests'  => $party_size,
+        'event'   => $event,
+        'notes'   => $special_req,
+        'user_ip' => $user_ip,
+      ]);
+      @file_get_contents(GAS_URL . '?' . $gas_params);
+
       echo json_encode(['success' => true, 'message' => 'Reservation saved successfully!']);
     } else {
       echo json_encode(['success' => false, 'message' => 'Database error: ' . $mysqli->error]);
