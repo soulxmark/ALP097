@@ -6,71 +6,53 @@ header('Content-Type: application/json');
 $action = $_GET['action'] ?? '';
 $data   = json_decode(file_get_contents('php://input'), true) ?? [];
 
-// ── Gmail SMTP config (free) ──────────────────────────────────────────────
-// 1. Go to myaccount.google.com → Security → App Passwords
-// 2. Generate an App Password for "Mail"
-// 3. Paste it below (NOT your real Gmail password)
-define('SMTP_HOST', 'smtp.gmail.com');
-define('SMTP_PORT', 587);
-define('SMTP_USER', 'your_gmail@gmail.com');   // ← change this
-define('SMTP_PASS', 'your_app_password');       // ← change this (App Password)
-define('SMTP_FROM', 'Casa De Manila <your_gmail@gmail.com>');
+// ── Google Apps Script URL (your existing one) ────────────────────────────
+// After adding the OTP code to your Apps Script and redeploying,
+// paste the NEW deployment URL here:
+define('GAS_URL', 'https://script.google.com/macros/s/AKfycbwstUXUIOjo0ULyVO9auDJSAOpJcJokQGt9TudxmlS0GkJvSjRjLQw4KNbhBzZ5WatfaQ/exec');
 
-// ── Simple SMTP mailer (no library needed) ────────────────────────────────
-function sendOTPEmail($to, $otp) {
-    $subject = 'Your Casa De Manila OTP Code';
-    $body    = "
-    <div style='font-family:Georgia,serif;max-width:480px;margin:0 auto;padding:32px;background:#f9f5ec;border-radius:12px;'>
-      <h2 style='color:#d4af37;font-size:1.8em;margin:0 0 8px;'>Casa De Manila</h2>
-      <p style='color:#555;margin:0 0 24px;font-size:0.9em;'>Authenticity You Can Taste</p>
-      <p style='color:#333;margin:0 0 16px;'>Your one-time verification code is:</p>
-      <div style='font-size:2.4em;font-weight:bold;letter-spacing:10px;color:#111;background:#fff;border:2px solid #d4af37;border-radius:8px;padding:16px 24px;text-align:center;margin-bottom:20px;'>
-        {$otp}
-      </div>
-      <p style='color:#888;font-size:0.82em;margin:0;'>This code expires in <strong>5 minutes</strong>. Do not share it with anyone.</p>
-    </div>";
-
-    // Open SMTP socket
-    $smtp = fsockopen('tls://'.SMTP_HOST, SMTP_PORT, $errno, $errstr, 10);
-    if (!$smtp) return false;
-
-    $recv = function() use ($smtp) { return fgets($smtp, 512); };
-    $send = function($cmd) use ($smtp) { fputs($smtp, $cmd."\r\n"); };
-
-    $recv(); // 220 greeting
-    $send('EHLO localhost');
-    while ($line = $recv()) { if (substr($line,3,1)==' ') break; }
-
-    $send('AUTH LOGIN');
-    $recv();
-    $send(base64_encode(SMTP_USER));
-    $recv();
-    $send(base64_encode(SMTP_PASS));
-    $recv(); // 235 authenticated
-
-    $send('MAIL FROM:<'.SMTP_USER.'>');
-    $recv();
-    $send('RCPT TO:<'.$to.'>');
-    $recv();
-    $send('DATA');
-    $recv();
-
-    $headers  = "From: ".SMTP_FROM."\r\n";
-    $headers .= "To: {$to}\r\n";
-    $headers .= "Subject: {$subject}\r\n";
-    $headers .= "MIME-Version: 1.0\r\n";
-    $headers .= "Content-Type: text/html; charset=UTF-8\r\n";
-
-    $send($headers."\r\n".$body."\r\n.");
-    $recv();
-    $send('QUIT');
-    fclose($smtp);
-    return true;
+// ── Send OTP via Google Apps Script (free, no SMTP needed) ───────────────
+function sendOTPviaGAS($to, $otp) {
+    $url      = GAS_URL . '?action=send_otp&email=' . urlencode($to) . '&otp=' . urlencode($otp);
+    $response = @file_get_contents($url);
+    if (!$response) return false;
+    $result = json_decode($response, true);
+    return isset($result['success']) && $result['success'] === true;
 }
 
 switch ($action) {
 
-  // ── Send OTP ─────────────────────────────────────────────────────────────
+  // ── Step 1: Check credentials only — don't log in yet ────────────────────
+  case 'check_credentials':
+    $username = trim($data['username'] ?? '');
+    $password = trim($data['password'] ?? '');
+
+    if (!$username || !$password) {
+      echo json_encode(['success' => false, 'message' => 'Please fill in all fields.']);
+      break;
+    }
+
+    $stmt = $mysqli->prepare("SELECT uid, username, email, password_us, role FROM users_tbl1 WHERE username = ? LIMIT 1");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    if (!$row || !password_verify($password, $row['password_us'])) {
+      echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+      break;
+    }
+
+    // Store pending login — not fully logged in yet
+    $_SESSION['pending_uid']      = $row['uid'];
+    $_SESSION['pending_username'] = $row['username'];
+    $_SESSION['pending_email']    = $row['email'];
+    $_SESSION['pending_role']     = $row['role'];
+
+    echo json_encode(['success' => true, 'email' => $row['email']]);
+    break;
+
+  // ── Step 2: Generate OTP and send via Google Apps Script ─────────────────
   case 'send_otp':
     $email = trim($data['email'] ?? '');
     if (!$email || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -78,33 +60,44 @@ switch ($action) {
       break;
     }
 
-    // Generate 6-digit OTP
     $otp     = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
     $expires = date('Y-m-d H:i:s', strtotime('+5 minutes'));
 
-    // Store in session (no extra DB table needed)
+    // Save OTP in session
     $_SESSION['otp_code']    = $otp;
     $_SESSION['otp_email']   = $email;
     $_SESSION['otp_expires'] = $expires;
 
-    if (sendOTPEmail($email, $otp)) {
+    // Debug mode — shows exactly what Google Apps Script returns
+    $gas_url      = GAS_URL . '?action=send_otp&email=' . urlencode($email) . '&otp=' . urlencode($otp);
+    $gas_response = @file_get_contents($gas_url);
+    $gas_result   = json_decode($gas_response, true);
+
+    if ($gas_result && !empty($gas_result['success'])) {
       echo json_encode(['success' => true, 'message' => 'OTP sent to your email.']);
     } else {
-      echo json_encode(['success' => false, 'message' => 'Failed to send OTP. Check SMTP config.']);
+      echo json_encode([
+        'success'      => false,
+        'message'      => 'Failed to send OTP.',
+        'gas_raw'      => $gas_response,
+        'gas_parsed'   => $gas_result,
+        'gas_url'      => $gas_url,
+      ]);
     }
     break;
 
-  // ── Verify OTP ───────────────────────────────────────────────────────────
-  case 'verify_otp':
-    $email    = trim($data['email'] ?? '');
-    $entered  = trim($data['otp']   ?? '');
+  // ── Step 3: Verify OTP and complete login ─────────────────────────────────
+  case 'verify_otp_login':
+    $email   = trim($data['email'] ?? '');
+    $entered = trim($data['otp']   ?? '');
 
     $stored_otp     = $_SESSION['otp_code']    ?? '';
     $stored_email   = $_SESSION['otp_email']   ?? '';
     $stored_expires = $_SESSION['otp_expires'] ?? '';
+    $pending_uid    = $_SESSION['pending_uid'] ?? null;
 
-    if (!$stored_otp || !$stored_expires) {
-      echo json_encode(['success' => false, 'message' => 'No OTP found. Please request a new one.']);
+    if (!$stored_otp || !$pending_uid) {
+      echo json_encode(['success' => false, 'message' => 'Session expired. Please login again.']);
       break;
     }
 
@@ -115,15 +108,57 @@ switch ($action) {
     }
 
     if ($email !== $stored_email || $entered !== $stored_otp) {
-      echo json_encode(['success' => false, 'message' => 'Invalid OTP. Please try again.']);
+      echo json_encode(['success' => false, 'message' => 'Incorrect OTP. Please try again.']);
       break;
     }
 
-    // OTP correct — clear it so it can't be reused
+    // Save before unsetting
+    $final_uid      = (int)$_SESSION['pending_uid'];
+    $final_username = $_SESSION['pending_username'];
+    $final_role     = $_SESSION['pending_role'];
+
+    // Clear OTP + pending data
+    unset(
+      $_SESSION['otp_code'],      $_SESSION['otp_email'],    $_SESSION['otp_expires'],
+      $_SESSION['pending_uid'],   $_SESSION['pending_username'],
+      $_SESSION['pending_email'], $_SESSION['pending_role']
+    );
+
+    // Full login
+    $_SESSION['uid']            = $final_uid;
+    $_SESSION['username']       = $final_username;
+    $_SESSION['role']           = $final_role;
+    $_SESSION['session_status'] = 1;
+
+    echo json_encode(['success' => true]);
+    break;
+
+  // ── Standalone OTP verify (e.g. reservation confirmation) ────────────────
+  case 'verify_otp':
+    $email   = trim($data['email'] ?? '');
+    $entered = trim($data['otp']   ?? '');
+
+    $stored_otp     = $_SESSION['otp_code']    ?? '';
+    $stored_email   = $_SESSION['otp_email']   ?? '';
+    $stored_expires = $_SESSION['otp_expires'] ?? '';
+
+    if (!$stored_otp) {
+      echo json_encode(['success' => false, 'message' => 'No OTP found. Please request a new one.']);
+      break;
+    }
+    if (strtotime($stored_expires) < time()) {
+      unset($_SESSION['otp_code'], $_SESSION['otp_email'], $_SESSION['otp_expires']);
+      echo json_encode(['success' => false, 'message' => 'OTP expired.']);
+      break;
+    }
+    if ($email !== $stored_email || $entered !== $stored_otp) {
+      echo json_encode(['success' => false, 'message' => 'Invalid OTP.']);
+      break;
+    }
+
     unset($_SESSION['otp_code'], $_SESSION['otp_email'], $_SESSION['otp_expires']);
     $_SESSION['otp_verified'] = true;
-
-    echo json_encode(['success' => true, 'message' => 'OTP verified successfully.']);
+    echo json_encode(['success' => true, 'message' => 'OTP verified.']);
     break;
 
   // ─────────────────────────────────────────────────────────────────────────
@@ -329,14 +364,12 @@ switch ($action) {
       echo json_encode(['success' => false, 'message' => 'All required fields must be filled.']);
       break;
     }
-
     $today    = new DateTime('today');
     $selected = DateTime::createFromFormat('Y-m-d', $res_date);
     if (!$selected || $selected < $today) {
       echo json_encode(['success' => false, 'message' => 'Reservation date cannot be in the past.']);
       break;
     }
-
     if ($selected == $today) {
       $now          = new DateTime();
       $selectedTime = DateTime::createFromFormat('H:i', $res_time);
@@ -345,23 +378,19 @@ switch ($action) {
         break;
       }
     }
-
     if ($uid !== null) {
-      // i=uid, s=name, s=email, s=phone, i=party_size, s=date, s=time, s=notes
       $stmt = $mysqli->prepare(
         "INSERT INTO reservations_tbl (uid, full_name, email, phone, party_size, reservation_date, reservation_time, special_request, status)
          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')"
       );
       $stmt->bind_param("isssisss", $uid, $full_name, $email, $phone, $party_size, $res_date, $res_time, $special_req);
     } else {
-      // s=name, s=email, s=phone, i=party_size, s=date, s=time, s=notes
       $stmt = $mysqli->prepare(
         "INSERT INTO reservations_tbl (uid, full_name, email, phone, party_size, reservation_date, reservation_time, special_request, status)
          VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, 'pending')"
       );
       $stmt->bind_param("sssisss", $full_name, $email, $phone, $party_size, $res_date, $res_time, $special_req);
     }
-
     if ($stmt->execute()) {
       echo json_encode(['success' => true, 'message' => 'Reservation saved successfully!']);
     } else {

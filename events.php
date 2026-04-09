@@ -135,7 +135,7 @@
     </div>
     
     <div class="event-card">
-      <img src="./images/merienda.jpg" alt="Merienda Buffet">
+      <img src="./images/events/merienda.webp" alt="Merienda Buffet">
       <div class="event-content">
         <h3>☕ Klasikong Merienda</h3>
         <p class="event-date">Daily | 2:00 PM - 5:00 PM</p>

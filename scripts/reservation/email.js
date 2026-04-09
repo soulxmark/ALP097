@@ -3,9 +3,6 @@
 // scripts/reservation/email.js
 // =============================================
 
-const scriptURL = 'https://script.google.com/macros/s/AKfycbyJmBFsvTIk_-tdU59KjOVyvmdURZ282lXUzS412g85b_Sv_PNEuG94wmC1c0HNptQaiA/exec';
-
-// ── Match same API base path used by api.js ──
 const API_BASE = '/mainproj/ALP097/api.php?action=';
 
 const datePicker = document.getElementById('date');
@@ -152,7 +149,7 @@ requiredFields.forEach(field => {
 });
 
 // =============================================
-// FORM SUBMIT
+// FORM SUBMIT — saves to DB only via api.php
 // =============================================
 document.getElementById('res-form').addEventListener('submit', async function (e) {
   e.preventDefault();
@@ -169,11 +166,10 @@ document.getElementById('res-form').addEventListener('submit', async function (e
   const payload  = Object.fromEntries(formData.entries());
 
   try {
-    // ── Step 1: Save to DB via api.php (same session as login) ──
     const dbRes = await fetch(API_BASE + 'save_reservation', {
       method:      'POST',
       headers:     { 'Content-Type': 'application/json' },
-      credentials: 'include',            // sends session cookie — same as Auth.login()
+      credentials: 'include',
       body:        JSON.stringify(payload),
     });
     const dbResult = await dbRes.json();
@@ -183,11 +179,6 @@ document.getElementById('res-form').addEventListener('submit', async function (e
       return;
     }
 
-    // ── Step 2: Forward to Google Sheets as backup (best-effort) ──
-    const params = new URLSearchParams(payload);
-    fetch(`${scriptURL}?${params.toString()}`, { method: 'GET' }).catch(() => {});
-
-    // ── Show success modal ──
     clearAllErrors();
     document.getElementById('successModal').style.display = 'flex';
     form.reset();
