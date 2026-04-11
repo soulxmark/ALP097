@@ -11,12 +11,22 @@ $data   = json_decode(file_get_contents('php://input'), true) ?? [];
 // paste the NEW deployment URL here:
 define('GAS_URL', 'https://script.google.com/macros/s/AKfycbwstUXUIOjo0ULyVO9auDJSAOpJcJokQGt9TudxmlS0GkJvSjRjLQw4KNbhBzZ5WatfaQ/exec');
 
-// ── Send OTP via Google Apps Script (free, no SMTP needed) ───────────────
+// ── Call Google Apps Script via cURL (works on XAMPP, no SSL issues) ────────
+function callGAS($url) {
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,            $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  // follow GAS redirects
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // XAMPP localhost SSL fix
+    curl_setopt($ch, CURLOPT_TIMEOUT,        15);
+    $response = curl_exec($ch);
+    curl_close($ch);
+    return $response;
+}
+
 function sendOTPviaGAS($to, $otp) {
-    $url      = GAS_URL . '?action=send_otp&email=' . urlencode($to) . '&otp=' . urlencode($otp);
-    $response = @file_get_contents($url);
-    if (!$response) return false;
-    $result = json_decode($response, true);
+    $url    = GAS_URL . '?action=send_otp&email=' . urlencode($to) . '&otp=' . urlencode($otp);
+    $result = json_decode(callGAS($url), true);
     return isset($result['success']) && $result['success'] === true;
 }
 
@@ -68,21 +78,13 @@ switch ($action) {
     $_SESSION['otp_email']   = $email;
     $_SESSION['otp_expires'] = $expires;
 
-    // Debug mode — shows exactly what Google Apps Script returns
-    $gas_url      = GAS_URL . '?action=send_otp&email=' . urlencode($email) . '&otp=' . urlencode($otp);
-    $gas_response = @file_get_contents($gas_url);
-    $gas_result   = json_decode($gas_response, true);
+    $gas_url    = GAS_URL . '?action=send_otp&email=' . urlencode($email) . '&otp=' . urlencode($otp);
+    $gas_result = json_decode(callGAS($gas_url), true);
 
     if ($gas_result && !empty($gas_result['success'])) {
       echo json_encode(['success' => true, 'message' => 'OTP sent to your email.']);
     } else {
-      echo json_encode([
-        'success'      => false,
-        'message'      => 'Failed to send OTP.',
-        'gas_raw'      => $gas_response,
-        'gas_parsed'   => $gas_result,
-        'gas_url'      => $gas_url,
-      ]);
+      echo json_encode(['success' => false, 'message' => 'Failed to send OTP. Please try again.']);
     }
     break;
 
@@ -406,7 +408,7 @@ switch ($action) {
         'notes'   => $special_req,
         'user_ip' => $user_ip,
       ]);
-      @file_get_contents(GAS_URL . '?' . $gas_params);
+      callGAS(GAS_URL . '?' . $gas_params);
 
       echo json_encode(['success' => true, 'message' => 'Reservation saved successfully!']);
     } else {
