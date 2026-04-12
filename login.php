@@ -26,14 +26,11 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       position: relative;
       overflow: hidden;
     }
-
     body::before {
       content: "";
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       background-image: url('./images/hero.webp');
       background-size: cover;
       background-position: center;
@@ -41,251 +38,98 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       transform: scale(1.1);
       z-index: -1;
     }
-
     .login-container {
       background: #1a1a1a;
-      border: 1px solid rgba(212, 175, 55, 0.3);
+      border: 1px solid rgba(212,175,55,0.3);
       padding: 40px;
       border-radius: 20px;
       width: 100%;
       max-width: 400px;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
       text-align: center;
     }
-
     .login-container h2 {
-      font-family: 'Cormorant Garamond', serif;
+      font-family: 'Great Vibes', cursive;
+      color: #d4af37;
       font-size: 3em;
       margin-bottom: 10px;
-      color: #d4af37;
     }
-
-    .login-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .login-group label {
-      color: #d4af37;
-      display: block;
-      margin-bottom: 8px;
-      font-size: 0.9em;
-      letter-spacing: 1px;
-    }
-
+    .login-group { margin-bottom: 20px; text-align: left; }
+    .login-group label { color: #d4af37; display: block; margin-bottom: 8px; font-size: 0.9em; letter-spacing: 1px; }
     .login-group input {
-      width: 100%;
-      padding: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 8px;
-      color: #fff;
-      outline: none;
+      width: 100%; padding: 12px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(212,175,55,0.2);
+      border-radius: 8px; color: #fff; outline: none;
       box-sizing: border-box;
     }
-
-    .login-group input:focus {
-      border-color: rgba(212, 175, 55, 0.6);
-    }
-
+    .login-group input:focus { border-color: rgba(212,175,55,0.6); }
     .login-btn {
-      width: 100%;
-      padding: 14px;
-      background: #d4af37;
-      border: none;
-      border-radius: 8px;
+      width: 100%; padding: 14px;
+      background: #d4af37; border: none; border-radius: 8px;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
+      font-size: 1em; font-weight: bold; cursor: pointer; transition: 0.3s;
     }
-
-    .login-btn:hover {
-      background: #fff;
-      color: #111;
-    }
-
-    .login-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .error-msg {
-      color: #ff8a8a;
-      margin-bottom: 15px;
-      font-size: 0.9em;
-      display: none;
-    }
-
+    .login-btn:hover { background: #fff; color: #111; }
+    .login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .error-msg { color: #ff8a8a; margin-bottom: 15px; font-size: 0.9em; display: none; }
     .back-home {
-      position: fixed;
-      top: 22px;
-      left: 28px;
-      color: #d4af37;
-      text-decoration: none;
+      position: fixed; top: 22px; left: 28px;
+      color: #d4af37; text-decoration: none;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1em;
-      letter-spacing: 1px;
-      z-index: 999;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: color .3s;
+      font-size: 1em; letter-spacing: 1px; z-index: 999;
+      display: flex; align-items: center; gap: 8px; transition: color .3s;
     }
-
-    .back-home:hover {
-      color: #fff;
-    }
-
-    .back-home svg {
-      width: 18px;
-      height: 18px;
-      fill: currentColor;
-    }
+    .back-home:hover { color: #fff; }
+    .back-home svg { width: 18px; height: 18px; fill: currentColor; }
 
     /* OTP Modal */
     .otp-overlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.85);
-      z-index: 9999;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.85); z-index: 9999;
+      align-items: center; justify-content: center; padding: 20px;
     }
-
-    .otp-overlay.active {
-      display: flex;
-    }
-
+    .otp-overlay.active { display: flex; }
     .otp-box {
       background: #1a1a1a;
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      border-radius: 20px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      text-align: center;
-      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(212,175,55,0.35);
+      border-radius: 20px; padding: 40px 36px;
+      width: 100%; max-width: 380px; text-align: center;
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6);
       animation: popUp .35s ease;
     }
-
     @keyframes popUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
     }
-
-    .otp-box h3 {
-      font-family: 'Great Vibes', cursive;
-      color: #d4af37;
-      font-size: 2.2em;
-      margin: 0 0 6px;
-    }
-
-    .otp-box p {
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 0.88em;
-      margin: 0 0 24px;
-      line-height: 1.5;
-    }
-
-    .otp-box p strong {
-      color: #d4af37;
-    }
-
-    .otp-inputs {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-
+    .otp-box h3 { font-family:'Great Vibes',cursive; color:#d4af37; font-size:2.2em; margin:0 0 6px; }
+    .otp-box p  { color:rgba(255,255,255,0.5); font-size:0.88em; margin:0 0 24px; line-height:1.5; }
+    .otp-box p strong { color:#d4af37; }
+    .otp-inputs { display:flex; gap:10px; justify-content:center; margin-bottom:24px; }
     .otp-inputs input {
-      width: 44px;
-      height: 54px;
-      text-align: center;
-      font-size: 1.4em;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1.5px solid rgba(212, 175, 55, 0.25);
-      border-radius: 10px;
-      color: #fff;
-      outline: none;
-      transition: border-color .2s;
+      width:44px; height:54px; text-align:center;
+      font-size:1.4em; font-family:'Cormorant Garamond',serif; font-weight:700;
+      background:rgba(255,255,255,0.05);
+      border:1.5px solid rgba(212,175,55,0.25);
+      border-radius:10px; color:#fff; outline:none; transition:border-color .2s;
     }
-
-    .otp-inputs input:focus {
-      border-color: #d4af37;
-    }
-
-    .otp-error {
-      color: #ff8a8a;
-      font-size: 0.85em;
-      margin-bottom: 16px;
-      min-height: 20px;
-    }
-
+    .otp-inputs input:focus { border-color:#d4af37; }
+    .otp-error { color:#ff8a8a; font-size:0.85em; margin-bottom:16px; min-height:20px; }
     .otp-btn {
-      width: 100%;
-      padding: 13px;
-      background: #d4af37;
-      border: none;
-      border-radius: 8px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1em;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-      margin-bottom: 14px;
+      width:100%; padding:13px; background:#d4af37; border:none; border-radius:8px;
+      font-family:'Cormorant Garamond',serif; font-size:1em; font-weight:bold;
+      cursor:pointer; transition:0.3s; margin-bottom:14px;
     }
-
-    .otp-btn:hover {
-      background: #fff;
-      color: #111;
-    }
-
-    .otp-btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .otp-resend {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 0.85em;
-    }
-
+    .otp-btn:hover { background:#fff; color:#111; }
+    .otp-btn:disabled { opacity:0.6; cursor:not-allowed; }
+    .otp-resend { color:rgba(255,255,255,0.4); font-size:0.85em; }
     .otp-resend button {
-      background: none;
-      border: none;
-      color: #d4af37;
-      cursor: pointer;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1em;
-      text-decoration: underline;
-      padding: 0;
+      background:none; border:none; color:#d4af37; cursor:pointer;
+      font-family:'Cormorant Garamond',serif; font-size:1em;
+      text-decoration:underline; padding:0;
     }
-
-    .otp-resend button:disabled {
-      color: rgba(212, 175, 55, 0.4);
-      cursor: not-allowed;
-      text-decoration: none;
-    }
-
-    .otp-timer {
-      color: rgba(212, 175, 55, 0.7);
-      font-size: 0.85em;
-      margin-top: 8px;
-    }
+    .otp-resend button:disabled { color:rgba(212,175,55,0.4); cursor:not-allowed; text-decoration:none; }
+    .otp-timer { color:rgba(212,175,55,0.7); font-size:0.85em; margin-top:8px; }
   </style>
 </head>
 
@@ -293,7 +137,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
 
   <a href="./index.php" class="back-home">
     <svg viewBox="0 0 24 24">
-      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
     </svg>
     Back to Home
   </a>
@@ -302,6 +146,11 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     <h2>Casa De Manila</h2>
     <p style="color:rgba(255,255,255,0.5);margin-bottom:30px;">Welcome back, please login.</p>
     <div id="errorBox" class="error-msg"></div>
+    <?php if (isset($_GET['timeout'])): ?>
+    <div style="color:#f39c12;background:rgba(243,156,18,0.1);border:1px solid rgba(243,156,18,0.3);padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:0.9em;text-align:center;">
+      ⏱️ You were logged out due to inactivity.
+    </div>
+    <?php endif; ?>
     <div class="login-group">
       <label>Username</label>
       <input type="text" id="username" placeholder="Enter username" onkeydown="if(event.key==='Enter') performLogin()">
@@ -344,21 +193,21 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     let timerInterval = null;
 
     async function performLogin() {
-      const user = document.getElementById('username').value.trim();
-      const pass = document.getElementById('password').value.trim();
+      const user     = document.getElementById('username').value.trim();
+      const pass     = document.getElementById('password').value.trim();
       const errorBox = document.getElementById('errorBox');
-      const btn = document.getElementById('loginBtn');
+      const btn      = document.getElementById('loginBtn');
 
       errorBox.style.display = 'none';
 
       if (!user || !pass) {
-        errorBox.textContent = 'Please fill in all fields.';
+        errorBox.textContent   = 'Please fill in all fields.';
         errorBox.style.display = 'block';
         return;
       }
 
       btn.textContent = 'Checking...';
-      btn.disabled = true;
+      btn.disabled    = true;
 
       console.log('[LOGIN] Step 1 — checking credentials for:', user);
 
@@ -366,30 +215,27 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       try {
         res = await apiFetch('check_credentials', {
           method: 'POST',
-          body: JSON.stringify({
-            username: user,
-            password: pass
-          })
+          body: JSON.stringify({ username: user, password: pass })
         });
         console.log('[LOGIN] check_credentials response:', res);
-      } catch (e) {
+      } catch(e) {
         console.error('[LOGIN] check_credentials fetch error:', e);
-        errorBox.textContent = 'Network error. Is XAMPP running?';
+        errorBox.textContent   = 'Network error. Is XAMPP running?';
         errorBox.style.display = 'block';
         btn.textContent = 'Sign In';
-        btn.disabled = false;
+        btn.disabled    = false;
         return;
       }
 
       if (!res.success) {
-        errorBox.textContent = res.message || 'Invalid credentials.';
+        errorBox.textContent   = res.message || 'Invalid credentials.';
         errorBox.style.display = 'block';
         btn.textContent = 'Sign In';
-        btn.disabled = false;
+        btn.disabled    = false;
         return;
       }
 
-      // Credentials OK — send OTP
+      // ── Both admin and user go through OTP ──
       otpEmail = res.email;
       console.log('[LOGIN] Credentials OK. Sending OTP to:', otpEmail);
 
@@ -399,25 +245,23 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       try {
         otpRes = await apiFetch('send_otp', {
           method: 'POST',
-          body: JSON.stringify({
-            email: otpEmail
-          })
+          body: JSON.stringify({ email: otpEmail })
         });
         console.log('[LOGIN] send_otp response:', otpRes);
-      } catch (e) {
+      } catch(e) {
         console.error('[LOGIN] send_otp fetch error:', e);
-        errorBox.textContent = 'Failed to send OTP. Check your internet.';
+        errorBox.textContent   = 'Failed to send OTP. Check your internet.';
         errorBox.style.display = 'block';
         btn.textContent = 'Sign In';
-        btn.disabled = false;
+        btn.disabled    = false;
         return;
       }
 
       btn.textContent = 'Sign In';
-      btn.disabled = false;
+      btn.disabled    = false;
 
       if (!otpRes.success) {
-        errorBox.textContent = otpRes.message || 'Failed to send OTP. Check SMTP settings in api.php.';
+        errorBox.textContent   = otpRes.message || 'Failed to send OTP. Check SMTP settings in api.php.';
         errorBox.style.display = 'block';
         return;
       }
@@ -454,9 +298,9 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     }
 
     async function verifyOTP() {
-      const code = [...document.querySelectorAll('.otp-digit')].map(i => i.value).join('');
+      const code  = [...document.querySelectorAll('.otp-digit')].map(i => i.value).join('');
       const errEl = document.getElementById('otpError');
-      const btn = document.getElementById('verifyBtn');
+      const btn   = document.getElementById('verifyBtn');
 
       if (code.length < 6) {
         errEl.textContent = 'Please enter the full 6-digit code.';
@@ -464,7 +308,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       }
 
       btn.textContent = 'Verifying...';
-      btn.disabled = true;
+      btn.disabled    = true;
       errEl.textContent = '';
 
       console.log('[OTP] Verifying code:', code, 'for email:', otpEmail);
@@ -473,27 +317,25 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
       try {
         res = await apiFetch('verify_otp_login', {
           method: 'POST',
-          body: JSON.stringify({
-            email: otpEmail,
-            otp: code
-          })
+          body: JSON.stringify({ email: otpEmail, otp: code })
         });
         console.log('[OTP] verify_otp_login response:', res);
-      } catch (e) {
+      } catch(e) {
         console.error('[OTP] verify fetch error:', e);
         errEl.textContent = 'Network error during verification.';
-        btn.textContent = 'Verify & Sign In';
-        btn.disabled = false;
+        btn.textContent   = 'Verify & Sign In';
+        btn.disabled      = false;
         return;
       }
 
       btn.textContent = 'Verify & Sign In';
-      btn.disabled = false;
+      btn.disabled    = false;
 
       if (res.success) {
         clearInterval(timerInterval);
-        console.log('[OTP] Success! Redirecting to account.php');
-        window.location.href = 'account.php';
+        const dest = res.redirect || 'account.php';
+        console.log('[OTP] Success! Redirecting to', dest);
+        window.location.href = dest;
       } else {
         errEl.textContent = res.message || 'Invalid OTP.';
         clearOTPInputs();
@@ -502,7 +344,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     }
 
     async function resendOTP() {
-      const btn = document.getElementById('resendBtn');
+      const btn   = document.getElementById('resendBtn');
       const errEl = document.getElementById('otpError');
       btn.disabled = true;
 
@@ -510,9 +352,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
 
       const res = await apiFetch('send_otp', {
         method: 'POST',
-        body: JSON.stringify({
-          email: otpEmail
-        })
+        body: JSON.stringify({ email: otpEmail })
       });
 
       console.log('[OTP] resend response:', res);
@@ -548,5 +388,4 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
   </script>
 
 </body>
-
 </html>

@@ -16,8 +16,8 @@ function callGAS($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,            $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  // follow GAS redirects
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // XAMPP localhost SSL fix
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
     curl_setopt($ch, CURLOPT_TIMEOUT,        15);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -53,13 +53,13 @@ switch ($action) {
       break;
     }
 
-    // Store pending login — not fully logged in yet
+    // ── Both admin and user require OTP ──
     $_SESSION['pending_uid']      = $row['uid'];
     $_SESSION['pending_username'] = $row['username'];
     $_SESSION['pending_email']    = $row['email'];
     $_SESSION['pending_role']     = $row['role'];
 
-    echo json_encode(['success' => true, 'email' => $row['email']]);
+    echo json_encode(['success' => true, 'email' => $row['email'], 'role' => $row['role']]);
     break;
 
   // ── Step 2: Generate OTP and send via Google Apps Script ─────────────────
@@ -127,12 +127,15 @@ switch ($action) {
     );
 
     // Full login
-    $_SESSION['uid']            = $final_uid;
-    $_SESSION['username']       = $final_username;
-    $_SESSION['role']           = $final_role;
-    $_SESSION['session_status'] = 1;
+    $_SESSION['uid']              = $final_uid;
+    $_SESSION['username']         = $final_username;
+    $_SESSION['role']             = $final_role;
+    $_SESSION['session_status']   = 1;
+    $_SESSION['last_activity']    = time(); // for auto-logout tracking
 
-    echo json_encode(['success' => true]);
+    // Redirect admin to dashboard, user to account
+    $redirect = ($final_role === 'admin') ? 'admin_dashboard.php' : 'account.php';
+    echo json_encode(['success' => true, 'role' => $final_role, 'redirect' => $redirect]);
     break;
 
   // ── Standalone OTP verify (e.g. reservation confirmation) ────────────────
