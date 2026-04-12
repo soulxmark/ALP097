@@ -1,21 +1,19 @@
-<!--Admin Dashboard for Casa De Manila
-     - View and manage orders and reservations
-     - Export daily sales report (PDF)
-     - Auto-logout after 15 minutes of inactivity -->
-
-
 <?php
+// =============================================
+// admin.php — Main Admin Dashboard
+// Casa De Manila
+// =============================================
 session_start();
 require_once './connection.php';
-require_once './session_check.php'; // auto-logout on inactivity
+require_once './session_check.php';
 
-// SECURITY: Only allow Admins
+// SECURITY: Admins only
 if (!isset($_SESSION['session_status']) || $_SESSION['session_status'] != 1 || $_SESSION['role'] !== 'admin') {
     header('Location: login.php');
     exit;
 }
 
-// Handle logout
+// Logout
 if (isset($_GET['logout'])) {
     session_unset();
     session_destroy();
@@ -25,7 +23,7 @@ if (isset($_GET['logout'])) {
 
 $today = date('Y-m-d');
 
-// 1. Overall Summary Stats
+// Overall Stats
 $stats = $mysqli->query("
     SELECT 
         COUNT(*) as total_orders,
@@ -35,7 +33,7 @@ $stats = $mysqli->query("
     FROM orders_tbl
 ")->fetch_assoc();
 
-// 2. Today's Stats
+// Today's Stats
 $today_stats = $mysqli->query("
     SELECT 
         COUNT(*) as today_orders,
@@ -44,7 +42,7 @@ $today_stats = $mysqli->query("
     WHERE DATE(order_date) = '$today'
 ")->fetch_assoc();
 
-// 3. Total Reservations
+// Reservation Stats
 $res_stats = $mysqli->query("
     SELECT 
         COUNT(*) as total_res,
@@ -52,7 +50,7 @@ $res_stats = $mysqli->query("
     FROM reservations_tbl
 ")->fetch_assoc();
 
-// 4. Recent Orders with User Names
+// Recent Orders
 $orders = $mysqli->query("
     SELECT o.*, u.username, u.email 
     FROM orders_tbl o 
@@ -61,14 +59,14 @@ $orders = $mysqli->query("
     LIMIT 50
 ")->fetch_all(MYSQLI_ASSOC);
 
-// 5. Recent Reservations
+// Recent Reservations
 $reservations = $mysqli->query("
     SELECT * FROM reservations_tbl 
     ORDER BY created_at DESC 
     LIMIT 20
 ")->fetch_all(MYSQLI_ASSOC);
 
-// 6. Top Selling Items (all time)
+// Top Selling Items
 $top_items = $mysqli->query("
     SELECT item_name, SUM(quantity) as qty, SUM(subtotal) as sales
     FROM order_items_tbl
@@ -86,143 +84,71 @@ $top_items = $mysqli->query("
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { --gold: #d4af37; --dark: #111; --card: #1a1a1a; }
-
     * { box-sizing: border-box; }
+    body { background: var(--dark); color: #fff; font-family: 'Cormorant Garamond', serif; margin: 0; padding: 24px; }
 
-    body {
-      background: var(--dark);
-      color: #fff;
-      font-family: 'Cormorant Garamond', serif;
-      margin: 0;
-      padding: 24px;
-    }
-
-    /* ── Header ── */
     .admin-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
       border-bottom: 1px solid rgba(212,175,55,0.3);
-      padding-bottom: 20px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      gap: 12px;
+      padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
     }
-    .admin-header h1 {
-      font-family: 'Great Vibes', cursive;
-      color: var(--gold);
-      font-size: 3em;
-      margin: 0;
-    }
-    .header-right {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      font-size: 0.95em;
-    }
+    .admin-header h1 { font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 3em; margin: 0; }
+    .header-right { display: flex; align-items: center; gap: 12px; font-size: 0.95em; flex-wrap: wrap; }
     .header-right a {
-      color: #ff6b6b;
-      text-decoration: none;
-      border: 1px solid rgba(255,107,107,0.4);
-      padding: 6px 14px;
-      border-radius: 8px;
-      transition: 0.3s;
+      text-decoration: none; border: 1px solid rgba(255,107,107,0.4);
+      color: #ff6b6b; padding: 6px 14px; border-radius: 8px; transition: 0.3s;
     }
     .header-right a:hover { background: rgba(255,107,107,0.15); }
+    .report-link {
+      color: var(--gold) !important;
+      border-color: rgba(212,175,55,0.4) !important;
+    }
+    .report-link:hover { background: rgba(212,175,55,0.1) !important; }
 
-    /* ── Nav Tabs ── */
     .tab-nav {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 28px;
+      display: flex; gap: 8px; margin-bottom: 28px;
       border-bottom: 1px solid rgba(212,175,55,0.15);
-      padding-bottom: 0;
     }
     .tab-btn {
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.4);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1em;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      transition: 0.2s;
-      letter-spacing: 1px;
+      background: none; border: none; color: rgba(255,255,255,0.4);
+      font-family: 'Cormorant Garamond', serif; font-size: 1em;
+      padding: 10px 20px; cursor: pointer;
+      border-bottom: 2px solid transparent; transition: 0.2s; letter-spacing: 1px;
     }
     .tab-btn:hover { color: var(--gold); }
     .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
-
     .tab-content { display: none; }
     .tab-content.active { display: block; }
 
-    /* ── Stats Grid ── */
     .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
-      margin-bottom: 32px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px; margin-bottom: 32px;
     }
     .stat-box {
-      background: var(--card);
-      border: 1px solid rgba(212,175,55,0.2);
-      padding: 20px;
-      border-radius: 14px;
-      text-align: center;
+      background: var(--card); border: 1px solid rgba(212,175,55,0.2);
+      padding: 20px; border-radius: 14px; text-align: center;
     }
-    .stat-box h3 {
-      color: var(--gold);
-      text-transform: uppercase;
-      font-size: 0.72em;
-      letter-spacing: 2px;
-      margin: 0 0 10px;
-    }
+    .stat-box h3 { color: var(--gold); text-transform: uppercase; font-size: 0.72em; letter-spacing: 2px; margin: 0 0 10px; }
     .stat-box p { font-size: 2em; font-weight: bold; margin: 0; }
     .stat-box small { color: rgba(255,255,255,0.35); font-size: 0.75em; }
 
-    /* ── Tables ── */
     .section-title {
-      color: var(--gold);
-      font-size: 1.1em;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin: 0 0 16px;
-      border-left: 3px solid var(--gold);
-      padding-left: 12px;
+      color: var(--gold); font-size: 1.1em; letter-spacing: 2px;
+      text-transform: uppercase; margin: 0 0 16px;
+      border-left: 3px solid var(--gold); padding-left: 12px;
     }
     .table-wrap { overflow-x: auto; border-radius: 14px; }
-    .order-table {
-      width: 100%;
-      border-collapse: collapse;
-      background: var(--card);
-      min-width: 700px;
-    }
+    .order-table { width: 100%; border-collapse: collapse; background: var(--card); min-width: 700px; }
     .order-table th {
-      background: rgba(212,175,55,0.08);
-      color: var(--gold);
-      padding: 13px 15px;
-      text-align: left;
-      text-transform: uppercase;
-      font-size: 0.75em;
-      letter-spacing: 1px;
-      white-space: nowrap;
+      background: rgba(212,175,55,0.08); color: var(--gold);
+      padding: 13px 15px; text-align: left;
+      text-transform: uppercase; font-size: 0.75em; letter-spacing: 1px; white-space: nowrap;
     }
-    .order-table td {
-      padding: 13px 15px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      font-size: 0.95em;
-    }
+    .order-table td { padding: 13px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.95em; }
     .order-table tr:hover td { background: rgba(255,255,255,0.02); }
     .revenue-cell { color: var(--gold); font-weight: bold; }
 
-    /* ── Status Pills ── */
-    .status-pill {
-      padding: 3px 11px;
-      border-radius: 20px;
-      font-size: 0.75em;
-      font-weight: bold;
-      white-space: nowrap;
-    }
+    .status-pill { padding: 3px 11px; border-radius: 20px; font-size: 0.75em; font-weight: bold; white-space: nowrap; }
     .status-pending   { background: #e67e22; color: #fff; }
     .status-confirmed { background: #2980b9; color: #fff; }
     .status-preparing { background: #8e44ad; color: #fff; }
@@ -230,53 +156,22 @@ $top_items = $mysqli->query("
     .status-completed { background: #27ae60; color: #fff; }
     .status-cancelled { background: #c0392b; color: #fff; }
 
-    /* ── Action Buttons ── */
     .btn-action {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-      padding: 5px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 0.88em;
-      transition: 0.2s;
+      background: transparent; border: 1px solid var(--gold); color: var(--gold);
+      padding: 5px 12px; border-radius: 6px; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif; font-size: 0.88em; transition: 0.2s;
     }
     .btn-action:hover { background: var(--gold); color: var(--dark); }
     .btn-action.danger { border-color: #e74c3c; color: #e74c3c; }
     .btn-action.danger:hover { background: #e74c3c; color: #fff; }
 
-    /* ── Report Button ── */
-    .report-btn {
-      display: inline-block;
-      background: var(--gold);
-      color: var(--dark);
-      padding: 9px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 0.9em;
-      margin-bottom: 20px;
-      transition: 0.2s;
-    }
-    .report-btn:hover { background: #e8c84a; }
-
-    /* ── Top Items ── */
     .top-item-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 0;
-      border-bottom: 1px solid rgba(255,255,255,0.05);
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
     }
     .top-item-row:last-child { border-bottom: none; }
     .item-bar-wrap { flex: 1; margin: 0 16px; }
-    .item-bar {
-      height: 6px;
-      background: var(--gold);
-      border-radius: 3px;
-      opacity: 0.7;
-    }
+    .item-bar { height: 6px; background: var(--gold); border-radius: 3px; opacity: 0.7; }
 
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
@@ -286,30 +181,30 @@ $top_items = $mysqli->query("
 </head>
 <body>
 
-  <!-- Header -->
   <div class="admin-header">
     <h1>Casa De Manila</h1>
     <div class="header-right">
-      <span style="color:rgba(255,255,255,0.5);">Admin: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong></span>
-      <a href="admin_dashboard.php?logout=1">🚪 Logout</a>
+      <span style="color:rgba(255,255,255,0.5);">
+        Admin: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+      </span>
+      <a href="admin_dashboard.php" class="report-link" target="_blank">📊 Daily Report</a>
+      <a href="admin.php?logout=1">🚪 Logout</a>
     </div>
   </div>
 
-  <!-- Tab Navigation -->
   <div class="tab-nav">
     <button class="tab-btn active" onclick="switchTab('orders', this)">📦 Orders</button>
     <button class="tab-btn" onclick="switchTab('reservations', this)">📅 Reservations</button>
     <button class="tab-btn" onclick="switchTab('reports', this)">📊 Reports</button>
   </div>
 
-  <!-- ══ ORDERS TAB ══════════════════════════════════════════════════════════ -->
+  <!-- ORDERS TAB -->
   <div id="tab-orders" class="tab-content active">
-
     <div class="stats-grid">
       <div class="stat-box">
         <h3>Total Revenue</h3>
         <p>₱<?php echo number_format($stats['total_revenue'] ?? 0, 0); ?></p>
-        <small>from completed orders</small>
+        <small>completed orders</small>
       </div>
       <div class="stat-box">
         <h3>Gross Revenue</h3>
@@ -336,18 +231,13 @@ $top_items = $mysqli->query("
       <table class="order-table">
         <thead>
           <tr>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Date</th>
-            <th>Amount</th>
-            <th>Status</th>
-            <th>Notes</th>
-            <th>Action</th>
+            <th>Order ID</th><th>Customer</th><th>Date</th>
+            <th>Amount</th><th>Status</th><th>Notes</th><th>Action</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($orders as $o): ?>
-          <tr id="row-<?php echo $o['order_id']; ?>">
+          <tr>
             <td>#<?php echo str_pad($o['order_id'], 4, '0', STR_PAD_LEFT); ?></td>
             <td>
               <strong><?php echo htmlspecialchars($o['username']); ?></strong><br>
@@ -363,14 +253,15 @@ $top_items = $mysqli->query("
             <td style="font-size:0.88em;max-width:180px;opacity:0.7;"><?php echo htmlspecialchars($o['notes'] ?? ''); ?></td>
             <td>
               <?php if ($o['status'] === 'pending'): ?>
-              <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Mark Paid</button>
+                <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Mark Paid</button>
+                <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php elseif ($o['status'] === 'completed'): ?>
-              <span style="color:#27ae60;font-size:0.85em;">✓ Verified</span>
+                <span style="color:#27ae60;font-size:0.85em;">✓ Verified</span>
               <?php elseif ($o['status'] === 'cancelled'): ?>
-              <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
+                <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
               <?php else: ?>
-              <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Complete</button>
-              <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
+                <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Complete</button>
+                <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php endif; ?>
             </td>
           </tr>
@@ -383,9 +274,8 @@ $top_items = $mysqli->query("
     </div>
   </div>
 
-  <!-- ══ RESERVATIONS TAB ════════════════════════════════════════════════════ -->
+  <!-- RESERVATIONS TAB -->
   <div id="tab-reservations" class="tab-content">
-
     <div class="stats-grid">
       <div class="stat-box">
         <h3>Total Reservations</h3>
@@ -402,20 +292,13 @@ $top_items = $mysqli->query("
       <table class="order-table">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Guests</th>
-            <th>Status</th>
-            <th>Action</th>
+            <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
+            <th>Date</th><th>Time</th><th>Guests</th><th>Status</th><th>Action</th>
           </tr>
         </thead>
         <tbody>
           <?php foreach ($reservations as $r): ?>
-          <tr id="res-row-<?php echo $r['reservation_id']; ?>">
+          <tr>
             <td>#<?php echo str_pad($r['reservation_id'], 4, '0', STR_PAD_LEFT); ?></td>
             <td><?php echo htmlspecialchars($r['full_name']); ?></td>
             <td style="font-size:0.85em;opacity:0.7;"><?php echo htmlspecialchars($r['email']); ?></td>
@@ -430,12 +313,12 @@ $top_items = $mysqli->query("
             </td>
             <td>
               <?php if ($r['status'] === 'pending'): ?>
-              <button class="btn-action" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'confirmed')">✓ Confirm</button>
-              <button class="btn-action danger" style="margin-top:4px;" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'cancelled')">✕ Cancel</button>
+                <button class="btn-action" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'confirmed')">✓ Confirm</button>
+                <button class="btn-action danger" style="margin-top:4px;" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php elseif ($r['status'] === 'confirmed'): ?>
-              <span style="color:#2980b9;font-size:0.85em;">✓ Confirmed</span>
+                <span style="color:#2980b9;font-size:0.85em;">✓ Confirmed</span>
               <?php else: ?>
-              <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
+                <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
               <?php endif; ?>
             </td>
           </tr>
@@ -448,9 +331,11 @@ $top_items = $mysqli->query("
     </div>
   </div>
 
-  <!-- ══ REPORTS TAB ══════════════════════════════════════════════════════════ -->
+  <!-- REPORTS TAB -->
   <div id="tab-reports" class="tab-content">
-    <a href="daily_report.php" target="_blank" class="report-btn">📥 Export Daily Report (PDF)</a>
+    <a href="admin_dashboard.php" target="_blank" class="btn-action" style="display:inline-block;margin-bottom:24px;padding:10px 20px;font-size:1em;">
+      📥 Open Daily Report (PDF)
+    </a>
 
     <p class="section-title">Top Selling Items (All Time)</p>
     <div style="background:var(--card);border-radius:14px;padding:24px;max-width:600px;">
@@ -475,7 +360,6 @@ $top_items = $mysqli->query("
   </div>
 
   <script>
-    // ── Tab switching ──
     function switchTab(name, btn) {
       document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -483,65 +367,54 @@ $top_items = $mysqli->query("
       btn.classList.add('active');
     }
 
-    // ── Mark order status ──
     async function markOrder(id, status) {
       const label = status === 'completed' ? 'completed (paid)' : 'cancelled';
       if (!confirm('Mark Order #' + id + ' as ' + label + '?')) return;
-
-      const res = await fetch('process_payment.php', {
+      const res  = await fetch('process_payment.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ order_id: id, status: status, method: 'Admin Override' })
+        body: JSON.stringify({ order_id: id, status: status })
       });
       const data = await res.json();
       if (data.success) location.reload();
-      else alert('Update failed: ' + data.message);
+      else alert('Update failed: ' + (data.message || 'Unknown error'));
     }
 
-    // ── Update reservation status ──
     async function updateRes(id, status) {
       const label = status === 'confirmed' ? 'confirm' : 'cancel';
       if (!confirm('Are you sure you want to ' + label + ' Reservation #' + id + '?')) return;
-
-      const res = await fetch('update_reservation.php', {
+      const res  = await fetch('update_reservation.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ reservation_id: id, status: status })
       });
       const data = await res.json();
       if (data.success) location.reload();
-      else alert('Update failed: ' + data.message);
+      else alert('Update failed: ' + (data.message || 'Unknown error'));
     }
-  </script>
 
-  <script>
-    // ── Auto-logout after 15 minutes of inactivity ──
-    const TIMEOUT_MS  = 15 * 60 * 1000; // 15 minutes
-    const WARNING_MS  = 14 * 60 * 1000; // warn at 14 minutes
-    let   logoutTimer, warnTimer;
+    // Auto-logout after 15 min inactivity
+    const TIMEOUT_MS = 15 * 60 * 1000;
+    const WARNING_MS = 14 * 60 * 1000;
+    let logoutTimer, warnTimer;
 
     function resetTimers() {
       clearTimeout(logoutTimer);
       clearTimeout(warnTimer);
-
       warnTimer = setTimeout(() => {
         if (confirm('⚠️ You will be logged out in 1 minute due to inactivity. Click OK to stay logged in.')) {
           resetTimers();
         }
       }, WARNING_MS);
-
       logoutTimer = setTimeout(() => {
-        alert('Session expired due to inactivity. You will be logged out.');
-        window.location.href = 'admin_dashboard.php?logout=1';
+        window.location.href = 'admin.php?logout=1';
       }, TIMEOUT_MS);
     }
 
-    // Reset timer on any user interaction
-    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+    ['mousemove','keydown','click','scroll','touchstart'].forEach(evt => {
       document.addEventListener(evt, resetTimers, { passive: true });
     });
-
-    resetTimers(); // start on page load
+    resetTimers();
   </script>
 
 </body>

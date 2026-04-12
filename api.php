@@ -16,8 +16,8 @@ function callGAS($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,            $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);  // follow GAS redirects
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // XAMPP localhost SSL fix
     curl_setopt($ch, CURLOPT_TIMEOUT,        15);
     $response = curl_exec($ch);
     curl_close($ch);
@@ -134,7 +134,7 @@ switch ($action) {
     $_SESSION['last_activity']    = time(); // for auto-logout tracking
 
     // Redirect admin to dashboard, user to account
-    $redirect = ($final_role === 'admin') ? 'admin_dashboard.php' : 'account.php';
+    $redirect = ($final_role === 'admin') ? 'admin.php' : 'account.php';
     echo json_encode(['success' => true, 'role' => $final_role, 'redirect' => $redirect]);
     break;
 

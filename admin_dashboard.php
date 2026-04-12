@@ -1,14 +1,19 @@
 <?php
+// =============================================
+// admin_dashboard.php — Daily Sales Report
+// Opened from admin.php Reports tab
+// =============================================
 session_start();
 require_once './connection.php';
+require_once './session_check.php';
 
-if (!isset($_SESSION['session_status']) || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php'); exit;
+if (!isset($_SESSION['session_status']) || $_SESSION['session_status'] != 1 || $_SESSION['role'] !== 'admin') {
+    header('Location: login.php');
+    exit;
 }
 
 $today = date('Y-m-d');
 
-// 1. Daily Totals
 $summary = $mysqli->query("
     SELECT 
         COUNT(*) as total_orders,
@@ -18,7 +23,6 @@ $summary = $mysqli->query("
     WHERE DATE(order_date) = '$today'
 ")->fetch_assoc();
 
-// 2. Top 5 Best Sellers for Today
 $top_items = $mysqli->query("
     SELECT item_name, SUM(quantity) as qty, SUM(subtotal) as sales
     FROM order_items_tbl oi
@@ -27,114 +31,39 @@ $top_items = $mysqli->query("
     GROUP BY item_name ORDER BY qty DESC LIMIT 5
 ")->fetch_all(MYSQLI_ASSOC);
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
-  <title>Daily Report - <?php echo $today; ?></title>
+  <title>Daily Report — <?php echo $today; ?> | Casa De Manila</title>
   <style>
-    body {
-      font-family: 'Times New Roman', serif;
-      color: #333;
-      padding: 40px;
-    }
-
-    .report-header {
-      text-align: center;
-      border-bottom: 2px solid #d4af37;
-      padding-bottom: 20px;
-      margin-bottom: 30px;
-    }
-
-    .report-header h1 {
-      font-size: 2.5em;
-      margin: 0;
-      color: #111;
-    }
-
-    .report-header p {
-      margin: 5px 0;
-      color: #666;
-      font-style: italic;
-    }
-
-    .stats-grid {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 40px;
-    }
-
-    .stat-item {
-      text-align: center;
-      flex: 1;
-      border: 1px solid #eee;
-      padding: 15px;
-    }
-
-    .stat-item span {
-      display: block;
-      font-size: 0.8em;
-      text-transform: uppercase;
-      color: #999;
-    }
-
-    .stat-item strong {
-      font-size: 1.8em;
-      color: #111;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-
-    th {
-      text-align: left;
-      border-bottom: 2px solid #111;
-      padding: 10px;
-      font-size: 0.9em;
-    }
-
-    td {
-      padding: 10px;
-      border-bottom: 1px solid #eee;
-    }
-
-    .no-print-btn {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: #d4af37;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-
-    /* PDF/Print Specifics */
+    body { font-family: 'Times New Roman', serif; color: #333; padding: 40px; background: #fff; }
+    .report-header { text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
+    .report-header h1 { font-size: 2.5em; margin: 0; color: #111; }
+    .report-header p { margin: 5px 0; color: #666; font-style: italic; }
+    .stats-grid { display: flex; justify-content: space-between; margin-bottom: 40px; gap: 10px; }
+    .stat-item { text-align: center; flex: 1; border: 1px solid #eee; padding: 15px; border-radius: 6px; }
+    .stat-item span { display: block; font-size: 0.8em; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+    .stat-item strong { font-size: 1.8em; color: #111; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th { text-align: left; border-bottom: 2px solid #111; padding: 10px; font-size: 0.9em; }
+    td { padding: 10px; border-bottom: 1px solid #eee; }
+    .no-print { position: fixed; top: 20px; right: 20px; display: flex; gap: 10px; }
+    .btn-print { background: #d4af37; color: #fff; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-size: 0.95em; }
+    .btn-back  { background: #111; color: #d4af37; border: 1px solid #d4af37; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-size: 0.95em; text-decoration: none; }
     @media print {
-      .no-print-btn {
-        display: none;
-      }
-
-      body {
-        padding: 0;
-      }
-
-      @page {
-        margin: 1cm;
-      }
+      .no-print { display: none; }
+      body { padding: 0; }
+      @page { margin: 1cm; }
     }
   </style>
 </head>
-
 <body>
 
-  <button class="no-print-btn" onclick="window.print()">📥 Export as PDF</button>
+  <div class="no-print">
+    <a href="admin.php" class="btn-back">← Back to Dashboard</a>
+    <button class="btn-print" onclick="window.print()">📥 Export as PDF</button>
+  </div>
 
   <div class="report-header">
     <h1>Casa De Manila</h1>
@@ -152,11 +81,11 @@ $top_items = $mysqli->query("
     </div>
     <div class="stat-item">
       <span>Collected (Paid)</span>
-      <strong style="color: #27ae60;">₱<?php echo number_format($summary['collected_cash'] ?? 0, 2); ?></strong>
+      <strong style="color:#27ae60;">₱<?php echo number_format($summary['collected_cash'] ?? 0, 2); ?></strong>
     </div>
   </div>
 
-  <h3>Top Selling Items</h3>
+  <h3>Top Selling Items Today</h3>
   <table>
     <thead>
       <tr>
@@ -166,20 +95,22 @@ $top_items = $mysqli->query("
       </tr>
     </thead>
     <tbody>
-      <?php foreach($top_items as $item): ?>
+      <?php foreach ($top_items as $item): ?>
       <tr>
         <td><?php echo htmlspecialchars($item['item_name']); ?></td>
         <td><?php echo $item['qty']; ?></td>
         <td>₱<?php echo number_format($item['sales'], 2); ?></td>
       </tr>
       <?php endforeach; ?>
+      <?php if (empty($top_items)): ?>
+      <tr><td colspan="3" style="text-align:center;color:#aaa;padding:20px;">No sales recorded today.</td></tr>
+      <?php endif; ?>
     </tbody>
   </table>
 
-  <div style="margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 0.8em; color: #999; text-align: center;">
-    Report generated on <?php echo date('Y-m-d H:i:s'); ?> by Admin System
+  <div style="margin-top:50px;border-top:1px solid #eee;padding-top:20px;font-size:0.8em;color:#999;text-align:center;">
+    Report generated on <?php echo date('Y-m-d H:i:s'); ?> · Casa De Manila Admin System
   </div>
 
 </body>
-
 </html>
