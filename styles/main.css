@@ -32,7 +32,7 @@ header {
   left: 0;
   width: 100%;
   z-index: 1000;
-  padding: 20px 0;
+  padding: 30px 0;
   background: transparent;
   border-bottom: 1px solid transparent;
   transition: all 0.4s ease;
@@ -153,11 +153,13 @@ header {
   background: rgba(255, 255, 255, 0.31);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
-  padding: 50px 35px;
+  padding: 60px 20px;
   border-radius: 12px;
   text-align: left;
   justify-content: left;
   align-items: left;
+  top: 50%;
+  left: 50%;
 }
 
 .hero-text h1 {
