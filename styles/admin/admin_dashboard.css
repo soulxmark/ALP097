@@ -1,0 +1,206 @@
+ body {
+      font-family: 'Times New Roman', serif;
+      color: #333;
+      padding: 40px;
+      background: #fff;
+    }
+
+    .no-print {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      gap: 10px;
+      z-index: 99;
+    }
+
+    .btn-print {
+      background: #d4af37;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 0.95em;
+    }
+
+    .btn-back {
+      background: #111;
+      color: #d4af37;
+      border: 1px solid #d4af37;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 0.95em;
+      text-decoration: none;
+    }
+
+    /* Period switcher (no-print) */
+    .period-bar {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .period-link {
+      padding: 6px 16px;
+      border: 1px solid #d4af37;
+      border-radius: 6px;
+      text-decoration: none;
+      color: #d4af37;
+      font-size: 0.85em;
+      transition: 0.2s;
+    }
+
+    .period-link:hover,
+    .period-link.active {
+      background: #d4af37;
+      color: #fff;
+    }
+
+    .report-header {
+      text-align: center;
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+    }
+
+    .report-header h1 {
+      font-size: 2.5em;
+      margin: 0;
+      color: #111;
+    }
+
+    .report-header h2 {
+      font-size: 1.2em;
+      color: #d4af37;
+      margin: 8px 0 4px;
+      font-weight: normal;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .report-header p {
+      margin: 4px 0;
+      color: #666;
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+    .stats-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 32px;
+    }
+
+    .stat-item {
+      text-align: center;
+      flex: 1;
+      border: 1px solid #eee;
+      padding: 16px;
+      border-radius: 6px;
+    }
+
+    .stat-item span {
+      display: block;
+      font-size: 0.75em;
+      text-transform: uppercase;
+      color: #999;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .stat-item strong {
+      font-size: 1.6em;
+      color: #111;
+    }
+
+    h3 {
+      font-size: 1em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #333;
+      border-left: 3px solid #d4af37;
+      padding-left: 10px;
+      margin: 28px 0 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.92em;
+    }
+
+    th {
+      text-align: left;
+      border-bottom: 2px solid #111;
+      padding: 9px 10px;
+      font-size: 0.85em;
+    }
+
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #eee;
+    }
+
+    .gold {
+      color: #d4af37;
+      font-weight: bold;
+    }
+
+    .status-badge {
+      padding: 2px 9px;
+      border-radius: 12px;
+      font-size: 0.78em;
+      font-weight: bold;
+    }
+
+    .s-completed {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .s-pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .s-cancelled {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .s-preparing {
+      background: #e2d9f3;
+      color: #4a235a;
+    }
+
+    .footer-note {
+      margin-top: 40px;
+      border-top: 1px solid #eee;
+      padding-top: 16px;
+      font-size: 0.78em;
+      color: #aaa;
+      text-align: center;
+    }
+    .period-bar {
+    position: relative; /* This "activates" z-index */
+    z-index: 700;       /* Higher numbers move the element toward the user */
+    }
+    @media print {
+
+      .no-print,
+      .period-bar {
+        display: none !important;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      @page {
+        margin: 1.2cm;
+      }
+    }

@@ -1,0 +1,307 @@
+ :root {
+      --gold: #d4af37;
+      --dark: #111;
+      --card: #1a1a1a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background: var(--dark);
+      color: #fff;
+      font-family: 'Cormorant Garamond', serif;
+      margin: 0;
+      padding: 24px;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .admin-header h2 {
+      font-family: "Cormorant Garamond", serif;
+      color: var(--gold);
+      font-size: 2em;
+      margin: 0;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 0.95em;
+      flex-wrap: wrap;
+    }
+
+    .header-right a {
+      text-decoration: none;
+      border: 1px solid rgba(255, 107, 107, 0.4);
+      color: #ff6b6b;
+      padding: 6px 14px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+
+    .header-right a:hover {
+      background: rgba(255, 107, 107, 0.15);
+    }
+
+    .report-link {
+      color: var(--gold) !important;
+      border-color: rgba(212, 175, 55, 0.4) !important;
+    }
+
+    .report-link:hover {
+      background: rgba(212, 175, 55, 0.1) !important;
+    }
+
+    .tab-nav {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.4);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1em;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      transition: 0.2s;
+      letter-spacing: 1px;
+    }
+
+    .tab-btn:hover {
+      color: var(--gold);
+    }
+
+    .tab-btn.active {
+      color: var(--gold);
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-box {
+      background: var(--card);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 20px;
+      border-radius: 14px;
+      text-align: center;
+    }
+
+    .stat-box h3 {
+      color: var(--gold);
+      text-transform: uppercase;
+      font-size: 0.72em;
+      letter-spacing: 2px;
+      margin: 0 0 10px;
+    }
+
+    .stat-box p {
+      font-size: 2em;
+      font-weight: bold;
+      margin: 0;
+    }
+
+    .stat-box small {
+      color: rgba(255, 255, 255, 0.35);
+      font-size: 0.75em;
+    }
+
+    .section-title {
+      color: var(--gold);
+      font-size: 1.1em;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin: 0 0 16px;
+      border-left: 3px solid var(--gold);
+      padding-left: 12px;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 14px;
+    }
+
+    .order-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      min-width: 700px;
+    }
+
+    .order-table th {
+      background: rgba(212, 175, 55, 0.08);
+      color: var(--gold);
+      padding: 13px 15px;
+      text-align: left;
+      text-transform: uppercase;
+      font-size: 0.75em;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .order-table td {
+      padding: 13px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      font-size: 0.95em;
+    }
+
+    .order-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .revenue-cell {
+      color: var(--gold);
+      font-weight: bold;
+    }
+
+    .status-pill {
+      padding: 3px 11px;
+      border-radius: 20px;
+      font-size: 0.75em;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .status-pending {
+      background: #e67e22;
+      color: #fff;
+    }
+
+    .status-confirmed {
+      background: #2980b9;
+      color: #fff;
+    }
+
+    .status-preparing {
+      background: #8e44ad;
+      color: #fff;
+    }
+
+    .status-ready {
+      background: #16a085;
+      color: #fff;
+    }
+
+    .status-completed {
+      background: #27ae60;
+      color: #fff;
+    }
+
+    .status-cancelled {
+      background: #c0392b;
+      color: #fff;
+    }
+
+    .btn-action {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.88em;
+      transition: 0.2s;
+    }
+
+    .btn-action:hover {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    .btn-action.danger {
+      border-color: #e74c3c;
+      color: #e74c3c;
+    }
+
+    .btn-action.danger:hover {
+      background: #e74c3c;
+      color: #fff;
+    }
+
+    .top-item-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .top-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .item-bar-wrap {
+      flex: 1;
+      margin: 0 16px;
+    }
+
+    .item-bar {
+      height: 6px;
+      background: var(--gold);
+      border-radius: 3px;
+      opacity: 0.7;
+    }
+
+    .period-btn {
+      background: transparent;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: rgba(255, 255, 255, 0.5);
+      padding: 7px 18px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95em;
+      transition: 0.2s;
+    }
+
+    .period-btn:hover {
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+
+    .period-btn.active {
+      background: var(--gold);
+      color: #111;
+      border-color: var(--gold);
+      font-weight: bold;
+    }
+
+    @media (max-width: 600px) {
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      body {
+        padding: 14px;
+      }
+    }

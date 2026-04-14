@@ -1,5 +1,4 @@
 <?php
-// report_data.php — Returns filtered report data as JSON
 session_start();
 require_once './connection.php';
 header('Content-Type: application/json');
@@ -10,8 +9,10 @@ if (!isset($_SESSION['session_status']) || $_SESSION['session_status'] != 1 || $
 }
 
 $period = $_GET['period'] ?? 'daily';
+$from   = $_GET['from']   ?? '';
+$to     = $_GET['to']     ?? '';
 
-// Build date filter based on period
+// Build WHERE clause
 switch ($period) {
     case 'weekly':
         $where = "DATE(order_date) >= DATE_SUB(CURDATE(), INTERVAL 7 DAY)";
@@ -21,6 +22,16 @@ switch ($period) {
         break;
     case 'annually':
         $where = "YEAR(order_date) = YEAR(CURDATE())";
+        break;
+    case 'custom':
+        // Sanitize dates
+        $from = preg_replace('/[^0-9\-]/', '', $from);
+        $to   = preg_replace('/[^0-9\-]/', '', $to);
+        if (!$from || !$to) {
+            echo json_encode(['error' => 'Invalid date range']);
+            exit;
+        }
+        $where = "DATE(order_date) BETWEEN '$from' AND '$to'";
         break;
     default: // daily
         $where = "DATE(order_date) = CURDATE()";
@@ -32,7 +43,9 @@ $stats = $mysqli->query("
     SELECT 
         COUNT(*) as total_orders,
         COALESCE(SUM(total_amount), 0) as gross_revenue,
-        COALESCE(SUM(CASE WHEN status = 'completed' THEN total_amount ELSE 0 END), 0) as collected
+        COALESCE(SUM(CASE WHEN status = 'completed' THEN total_amount ELSE 0 END), 0) as collected,
+        COALESCE(SUM(CASE WHEN status = 'pending'   THEN 1 ELSE 0 END), 0) as pending_orders,
+        COALESCE(SUM(CASE WHEN status = 'cancelled' THEN 1 ELSE 0 END), 0) as cancelled_orders
     FROM orders_tbl
     WHERE $where
 ")->fetch_assoc();
@@ -54,10 +67,12 @@ while ($row = $items_result->fetch_assoc()) {
 }
 
 echo json_encode([
-    'period'       => $period,
-    'total_orders' => (int)$stats['total_orders'],
-    'gross_revenue' => (float)$stats['gross_revenue'],
-    'collected'    => (float)$stats['collected'],
-    'items'        => $items,
+    'period'           => $period,
+    'total_orders'     => (int)$stats['total_orders'],
+    'gross_revenue'    => (float)$stats['gross_revenue'],
+    'collected'        => (float)$stats['collected'],
+    'pending_orders'   => (int)$stats['pending_orders'],
+    'cancelled_orders' => (int)$stats['cancelled_orders'],
+    'items'            => $items,
 ]);
 ?>

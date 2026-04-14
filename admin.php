@@ -77,123 +77,23 @@ $top_items = $mysqli->query("
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Casa De Manila</title>
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
-  <style>
-    :root { --gold: #d4af37; --dark: #111; --card: #1a1a1a; }
-    * { box-sizing: border-box; }
-    body { background: var(--dark); color: #fff; font-family: 'Cormorant Garamond', serif; margin: 0; padding: 24px; }
-
-    .admin-header {
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid rgba(212,175,55,0.3);
-      padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
-    }
-    .admin-header h1 { font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 3em; margin: 0; }
-    .header-right { display: flex; align-items: center; gap: 12px; font-size: 0.95em; flex-wrap: wrap; }
-    .header-right a {
-      text-decoration: none; border: 1px solid rgba(255,107,107,0.4);
-      color: #ff6b6b; padding: 6px 14px; border-radius: 8px; transition: 0.3s;
-    }
-    .header-right a:hover { background: rgba(255,107,107,0.15); }
-    .report-link {
-      color: var(--gold) !important;
-      border-color: rgba(212,175,55,0.4) !important;
-    }
-    .report-link:hover { background: rgba(212,175,55,0.1) !important; }
-
-    .tab-nav {
-      display: flex; gap: 8px; margin-bottom: 28px;
-      border-bottom: 1px solid rgba(212,175,55,0.15);
-    }
-    .tab-btn {
-      background: none; border: none; color: rgba(255,255,255,0.4);
-      font-family: 'Cormorant Garamond', serif; font-size: 1em;
-      padding: 10px 20px; cursor: pointer;
-      border-bottom: 2px solid transparent; transition: 0.2s; letter-spacing: 1px;
-    }
-    .tab-btn:hover { color: var(--gold); }
-    .tab-btn.active { color: var(--gold); border-bottom: 2px solid var(--gold); }
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
-
-    .stats-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px; margin-bottom: 32px;
-    }
-    .stat-box {
-      background: var(--card); border: 1px solid rgba(212,175,55,0.2);
-      padding: 20px; border-radius: 14px; text-align: center;
-    }
-    .stat-box h3 { color: var(--gold); text-transform: uppercase; font-size: 0.72em; letter-spacing: 2px; margin: 0 0 10px; }
-    .stat-box p { font-size: 2em; font-weight: bold; margin: 0; }
-    .stat-box small { color: rgba(255,255,255,0.35); font-size: 0.75em; }
-
-    .section-title {
-      color: var(--gold); font-size: 1.1em; letter-spacing: 2px;
-      text-transform: uppercase; margin: 0 0 16px;
-      border-left: 3px solid var(--gold); padding-left: 12px;
-    }
-    .table-wrap { overflow-x: auto; border-radius: 14px; }
-    .order-table { width: 100%; border-collapse: collapse; background: var(--card); min-width: 700px; }
-    .order-table th {
-      background: rgba(212,175,55,0.08); color: var(--gold);
-      padding: 13px 15px; text-align: left;
-      text-transform: uppercase; font-size: 0.75em; letter-spacing: 1px; white-space: nowrap;
-    }
-    .order-table td { padding: 13px 15px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.95em; }
-    .order-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .revenue-cell { color: var(--gold); font-weight: bold; }
-
-    .status-pill { padding: 3px 11px; border-radius: 20px; font-size: 0.75em; font-weight: bold; white-space: nowrap; }
-    .status-pending   { background: #e67e22; color: #fff; }
-    .status-confirmed { background: #2980b9; color: #fff; }
-    .status-preparing { background: #8e44ad; color: #fff; }
-    .status-ready     { background: #16a085; color: #fff; }
-    .status-completed { background: #27ae60; color: #fff; }
-    .status-cancelled { background: #c0392b; color: #fff; }
-
-    .btn-action {
-      background: transparent; border: 1px solid var(--gold); color: var(--gold);
-      padding: 5px 12px; border-radius: 6px; cursor: pointer;
-      font-family: 'Cormorant Garamond', serif; font-size: 0.88em; transition: 0.2s;
-    }
-    .btn-action:hover { background: var(--gold); color: var(--dark); }
-    .btn-action.danger { border-color: #e74c3c; color: #e74c3c; }
-    .btn-action.danger:hover { background: #e74c3c; color: #fff; }
-
-    .top-item-row {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);
-    }
-    .top-item-row:last-child { border-bottom: none; }
-    .item-bar-wrap { flex: 1; margin: 0 16px; }
-    .item-bar { height: 6px; background: var(--gold); border-radius: 3px; opacity: 0.7; }
-
-    .period-btn {
-      background: transparent; border: 1px solid rgba(212,175,55,0.3); color: rgba(255,255,255,0.5);
-      padding: 7px 18px; border-radius: 8px; cursor: pointer;
-      font-family: 'Cormorant Garamond', serif; font-size: 0.95em; transition: 0.2s;
-    }
-    .period-btn:hover { border-color: var(--gold); color: var(--gold); }
-    .period-btn.active { background: var(--gold); color: #111; border-color: var(--gold); font-weight: bold; }
-
-    @media (max-width: 600px) {
-      .stats-grid { grid-template-columns: repeat(2, 1fr); }
-      body { padding: 14px; }
-    }
-  </style>
+  <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
+  <link rel="stylesheet" href="./styles/admin/admin.css">
 </head>
+
 <body>
 
   <div class="admin-header">
-    <h1>Casa De Manila</h1>
+    <h2>Casa De Manila | Admin Dashboard</h2>
+
     <div class="header-right">
       <span style="color:rgba(255,255,255,0.5);">
-        Admin: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+        Account: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
       </span>
       <a href="admin_dashboard.php" class="report-link" target="_blank">📊 Daily Report</a>
       <a href="admin.php?logout=1">🚪 Logout</a>
@@ -239,8 +139,13 @@ $top_items = $mysqli->query("
       <table class="order-table">
         <thead>
           <tr>
-            <th>Order ID</th><th>Customer</th><th>Date</th>
-            <th>Amount</th><th>Status</th><th>Notes</th><th>Action</th>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Notes</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -261,21 +166,23 @@ $top_items = $mysqli->query("
             <td style="font-size:0.88em;max-width:180px;opacity:0.7;"><?php echo htmlspecialchars($o['notes'] ?? ''); ?></td>
             <td>
               <?php if ($o['status'] === 'pending'): ?>
-                <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Mark Paid</button>
-                <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
+              <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Mark Paid</button>
+              <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php elseif ($o['status'] === 'completed'): ?>
-                <span style="color:#27ae60;font-size:0.85em;">✓ Verified</span>
+              <span style="color:#27ae60;font-size:0.85em;">✓ Verified</span>
               <?php elseif ($o['status'] === 'cancelled'): ?>
-                <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
+              <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
               <?php else: ?>
-                <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Complete</button>
-                <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
+              <button class="btn-action" onclick="markOrder(<?php echo $o['order_id']; ?>,'completed')">✓ Complete</button>
+              <button class="btn-action danger" style="margin-top:4px;" onclick="markOrder(<?php echo $o['order_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php endif; ?>
             </td>
           </tr>
           <?php endforeach; ?>
           <?php if (empty($orders)): ?>
-          <tr><td colspan="7" style="text-align:center;opacity:0.4;padding:30px;">No orders yet.</td></tr>
+          <tr>
+            <td colspan="7" style="text-align:center;opacity:0.4;padding:30px;">No orders yet.</td>
+          </tr>
           <?php endif; ?>
         </tbody>
       </table>
@@ -300,8 +207,15 @@ $top_items = $mysqli->query("
       <table class="order-table">
         <thead>
           <tr>
-            <th>ID</th><th>Name</th><th>Email</th><th>Phone</th>
-            <th>Date</th><th>Time</th><th>Guests</th><th>Status</th><th>Action</th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Guests</th>
+            <th>Status</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -321,18 +235,20 @@ $top_items = $mysqli->query("
             </td>
             <td>
               <?php if ($r['status'] === 'pending'): ?>
-                <button class="btn-action" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'confirmed')">✓ Confirm</button>
-                <button class="btn-action danger" style="margin-top:4px;" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'cancelled')">✕ Cancel</button>
+              <button class="btn-action" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'confirmed')">✓ Confirm</button>
+              <button class="btn-action danger" style="margin-top:4px;" onclick="updateRes(<?php echo $r['reservation_id']; ?>,'cancelled')">✕ Cancel</button>
               <?php elseif ($r['status'] === 'confirmed'): ?>
-                <span style="color:#2980b9;font-size:0.85em;">✓ Confirmed</span>
+              <span style="color:#2980b9;font-size:0.85em;">✓ Confirmed</span>
               <?php else: ?>
-                <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
+              <span style="color:#c0392b;font-size:0.85em;">Cancelled</span>
               <?php endif; ?>
             </td>
           </tr>
           <?php endforeach; ?>
           <?php if (empty($reservations)): ?>
-          <tr><td colspan="9" style="text-align:center;opacity:0.4;padding:30px;">No reservations yet.</td></tr>
+          <tr>
+            <td colspan="9" style="text-align:center;opacity:0.4;padding:30px;">No reservations yet.</td>
+          </tr>
           <?php endif; ?>
         </tbody>
       </table>
@@ -343,12 +259,13 @@ $top_items = $mysqli->query("
   <div id="tab-reports" class="tab-content">
 
     <!-- Filter Bar -->
-    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
-      <div style="display:flex;gap:6px;">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;">
         <button class="period-btn active" onclick="setPeriod('daily',this)">Daily</button>
         <button class="period-btn" onclick="setPeriod('weekly',this)">Weekly</button>
         <button class="period-btn" onclick="setPeriod('monthly',this)">Monthly</button>
         <button class="period-btn" onclick="setPeriod('annually',this)">Annual</button>
+        <button class="period-btn" onclick="setPeriod('custom',this)">📅 Custom</button>
       </div>
       <span id="period-label" style="color:rgba(255,255,255,0.4);font-size:0.9em;"></span>
       <button onclick="exportPDF()" style="margin-left:auto;background:var(--gold);color:#111;border:none;padding:9px 20px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:1em;font-weight:bold;cursor:pointer;transition:0.2s;">
@@ -356,10 +273,21 @@ $top_items = $mysqli->query("
       </button>
     </div>
 
-    <!-- Stats for selected period -->
-    <div class="stats-grid" id="report-stats" style="max-width:700px;margin-bottom:28px;"></div>
+    <!-- Custom Date Range (shown only when Custom is selected) -->
+    <div id="custom-date-row" style="display:none;align-items:center;gap:12px;margin-bottom:20px;background:var(--card);padding:16px 20px;border-radius:12px;border:1px solid rgba(212,175,55,0.2);flex-wrap:wrap;">
+      <label style="color:rgba(255,255,255,0.5);font-size:0.82em;letter-spacing:1px;text-transform:uppercase;">From</label>
+      <input type="date" id="custom-from" style="background:rgba(255,255,255,0.07);border:1px solid rgba(212,175,55,0.3);color:#fff;padding:8px 12px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:0.95em;outline:none;">
+      <label style="color:rgba(255,255,255,0.5);font-size:0.82em;letter-spacing:1px;text-transform:uppercase;">To</label>
+      <input type="date" id="custom-to" style="background:rgba(255,255,255,0.07);border:1px solid rgba(212,175,55,0.3);color:#fff;padding:8px 12px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:0.95em;outline:none;">
+      <button onclick="loadReport('custom')" style="background:var(--gold);color:#111;border:none;padding:8px 18px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:0.95em;font-weight:bold;cursor:pointer;">
+        Generate
+      </button>
+    </div>
 
-    <!-- Top Selling Items for selected period -->
+    <!-- Stats for selected period -->
+    <div class="stats-grid" id="report-stats" style="max-width:750px;margin-bottom:28px;"></div>
+
+    <!-- Top Selling Items -->
     <p class="section-title">Top Selling Items</p>
     <div id="report-items" style="background:var(--card);border-radius:14px;padding:24px;max-width:600px;min-height:100px;">
       <p style="opacity:0.4;text-align:center;">Loading...</p>
@@ -378,10 +306,15 @@ $top_items = $mysqli->query("
     async function markOrder(id, status) {
       const label = status === 'completed' ? 'completed (paid)' : 'cancelled';
       if (!confirm('Mark Order #' + id + ' as ' + label + '?')) return;
-      const res  = await fetch('process_payment.php', {
+      const res = await fetch('process_payment.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ order_id: id, status: status })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          order_id: id,
+          status: status
+        })
       });
       const data = await res.json();
       if (data.success) location.reload();
@@ -391,10 +324,15 @@ $top_items = $mysqli->query("
     async function updateRes(id, status) {
       const label = status === 'confirmed' ? 'confirm' : 'cancel';
       if (!confirm('Are you sure you want to ' + label + ' Reservation #' + id + '?')) return;
-      const res  = await fetch('update_reservation.php', {
+      const res = await fetch('update_reservation.php', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservation_id: id, status: status })
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          reservation_id: id,
+          status: status
+        })
       });
       const data = await res.json();
       if (data.success) location.reload();
@@ -419,44 +357,94 @@ $top_items = $mysqli->query("
       }, TIMEOUT_MS);
     }
 
-    ['mousemove','keydown','click','scroll','touchstart'].forEach(evt => {
-      document.addEventListener(evt, resetTimers, { passive: true });
+    ['mousemove', 'keydown', 'click', 'scroll', 'touchstart'].forEach(evt => {
+      document.addEventListener(evt, resetTimers, {
+        passive: true
+      });
     });
     resetTimers();
 
     // ── Reports Filter ──
     let currentPeriod = 'daily';
 
+    const today = new Date();
+    const todayStr = today.toLocaleDateString('en-PH', {
+      month: 'long',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
     const PERIOD_LABELS = {
-      daily:    'Today — ' + new Date().toLocaleDateString('en-PH', {month:'long',day:'numeric',year:'numeric'}),
-      weekly:   'This Week',
-      monthly:  new Date().toLocaleDateString('en-PH', {month:'long',year:'numeric'}),
-      annually: 'Year ' + new Date().getFullYear()
+      daily: 'Today — ' + todayStr,
+      weekly: 'This Week (Last 7 Days)',
+      monthly: today.toLocaleDateString('en-PH', {
+        month: 'long',
+        year: 'numeric'
+      }),
+      annually: 'Year ' + today.getFullYear(),
+      custom: 'Custom Range'
     };
+
+    // Set default max date on custom inputs to today
+    document.addEventListener('DOMContentLoaded', () => {
+      const todayISO = today.toISOString().split('T')[0];
+      document.getElementById('custom-to').value = todayISO;
+      document.getElementById('custom-to').max = todayISO;
+      document.getElementById('custom-from').max = todayISO;
+      // Set from to start of current month by default
+      const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+      document.getElementById('custom-from').value = firstOfMonth;
+    });
 
     function setPeriod(period, btn) {
       currentPeriod = period;
       document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      document.getElementById('period-label').textContent = PERIOD_LABELS[period];
-      loadReport(period);
+
+      const customRow = document.getElementById('custom-date-row');
+      if (period === 'custom') {
+        customRow.style.display = 'flex';
+        document.getElementById('period-label').textContent = 'Select date range below';
+        return; // don't auto-load — wait for Generate button
+      } else {
+        customRow.style.display = 'none';
+        document.getElementById('period-label').textContent = PERIOD_LABELS[period];
+        loadReport(period);
+      }
     }
 
     async function loadReport(period) {
       document.getElementById('report-items').innerHTML = '<p style="opacity:0.4;text-align:center;padding:20px;">Loading...</p>';
       document.getElementById('report-stats').innerHTML = '';
 
+      let url = 'report_data.php?period=' + period;
+
+      if (period === 'custom') {
+        const from = document.getElementById('custom-from').value;
+        const to = document.getElementById('custom-to').value;
+        if (!from || !to) {
+          document.getElementById('report-items').innerHTML = '<p style="color:#e67e22;text-align:center;padding:20px;">Please select both From and To dates.</p>';
+          return;
+        }
+        if (from > to) {
+          document.getElementById('report-items').innerHTML = '<p style="color:#e74c3c;text-align:center;padding:20px;">From date cannot be after To date.</p>';
+          return;
+        }
+        url += '&from=' + from + '&to=' + to;
+        document.getElementById('period-label').textContent = from + ' → ' + to;
+      }
+
       try {
-        const res  = await fetch('report_data.php?period=' + period);
+        const res = await fetch(url);
         const data = await res.json();
 
         // Stats
-        const statsHtml = `
+        document.getElementById('report-stats').innerHTML = `
           <div class="stat-box"><h3>Orders</h3><p>${data.total_orders}</p></div>
           <div class="stat-box"><h3>Gross Revenue</h3><p>₱${numFmt(data.gross_revenue)}</p></div>
           <div class="stat-box"><h3>Collected</h3><p style="color:#27ae60;">₱${numFmt(data.collected)}</p></div>
+          <div class="stat-box"><h3>Pending</h3><p style="color:#e67e22;">${data.pending_orders}</p></div>
         `;
-        document.getElementById('report-stats').innerHTML = statsHtml;
 
         // Top Items
         if (!data.items || data.items.length === 0) {
@@ -478,20 +466,33 @@ $top_items = $mysqli->query("
         });
         document.getElementById('report-items').innerHTML = html;
 
-      } catch(e) {
+      } catch (e) {
         document.getElementById('report-items').innerHTML = '<p style="color:#e74c3c;text-align:center;">Failed to load report data.</p>';
       }
     }
 
     function numFmt(n) {
-      return Number(n || 0).toLocaleString('en-PH', {minimumFractionDigits:0, maximumFractionDigits:0});
+      return Number(n || 0).toLocaleString('en-PH', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+      });
     }
 
     function exportPDF() {
-      window.open('admin_dashboard.php?period=' + currentPeriod, '_blank');
+      let url = 'admin_dashboard.php?period=' + currentPeriod;
+      if (currentPeriod === 'custom') {
+        const from = document.getElementById('custom-from').value;
+        const to = document.getElementById('custom-to').value;
+        if (!from || !to) {
+          alert('Please select a custom date range first.');
+          return;
+        }
+        url += '&from=' + from + '&to=' + to;
+      }
+      window.open(url, '_blank');
     }
 
-    // Load daily report on page load when reports tab is opened
+    // Load daily report when reports tab is clicked
     document.querySelector('[onclick*="reports"]').addEventListener('click', () => {
       if (!document.getElementById('report-stats').innerHTML.trim()) {
         document.getElementById('period-label').textContent = PERIOD_LABELS['daily'];
@@ -501,4 +502,5 @@ $top_items = $mysqli->query("
   </script>
 
 </body>
+
 </html>
