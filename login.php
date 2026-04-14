@@ -193,7 +193,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
     }
 
     .otp-box h3 {
-      font-family: 'Great Vibes', cursive;
+      font-family: "Cormorant Garamond", serif;
       color: #d4af37;
       font-size: 2.2em;
       margin: 0 0 6px;

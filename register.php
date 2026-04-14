@@ -717,7 +717,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>Confirm Password <span class="req">*</span></label>
             <div class="input-wrap">
-                <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password" oninput="checkMatch()">
+              <input type="password" id="confirmPassword" placeholder="Repeat password" autocomplete="new-password" oninput="checkMatch()">
               <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword',this)">👁</button>
             </div>
             <small id="matchHint" style="font-size:.75em;display:block;margin-top:4px;min-height:16px;"></small>
@@ -736,7 +736,7 @@ if (isset($_SESSION['session_status']) && $_SESSION['session_status'] == 1) {
           <div class="form-group">
             <label>First Name <span class="req">*</span></label>
             <div class="input-wrap">
-             
+
               <input type="text" id="firstName" placeholder="Juan" autocomplete="given-name">
             </div>
             <div class="field-error" id="errFirstName"></div>

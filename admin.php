@@ -81,7 +81,6 @@ $top_items = $mysqli->query("
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Casa De Manila</title>
-   <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { --gold: #d4af37; --dark: #111; --card: #1a1a1a; }
@@ -93,7 +92,7 @@ $top_items = $mysqli->query("
       border-bottom: 1px solid rgba(212,175,55,0.3);
       padding-bottom: 20px; margin-bottom: 30px; flex-wrap: wrap; gap: 12px;
     }
-    .admin-header h1 { font-family: "Cormorant Garamond", serif; color: var(--gold); font-size: 3em; margin: 0; }
+    .admin-header h1 { font-family: 'Great Vibes', cursive; color: var(--gold); font-size: 3em; margin: 0; }
     .header-right { display: flex; align-items: center; gap: 12px; font-size: 0.95em; flex-wrap: wrap; }
     .header-right a {
       text-decoration: none; border: 1px solid rgba(255,107,107,0.4);
@@ -174,6 +173,14 @@ $top_items = $mysqli->query("
     .item-bar-wrap { flex: 1; margin: 0 16px; }
     .item-bar { height: 6px; background: var(--gold); border-radius: 3px; opacity: 0.7; }
 
+    .period-btn {
+      background: transparent; border: 1px solid rgba(212,175,55,0.3); color: rgba(255,255,255,0.5);
+      padding: 7px 18px; border-radius: 8px; cursor: pointer;
+      font-family: 'Cormorant Garamond', serif; font-size: 0.95em; transition: 0.2s;
+    }
+    .period-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .period-btn.active { background: var(--gold); color: #111; border-color: var(--gold); font-weight: bold; }
+
     @media (max-width: 600px) {
       .stats-grid { grid-template-columns: repeat(2, 1fr); }
       body { padding: 14px; }
@@ -183,10 +190,10 @@ $top_items = $mysqli->query("
 <body>
 
   <div class="admin-header">
-    <h1>Casa De Manila (Dashboard)</h1>
+    <h1>Casa De Manila</h1>
     <div class="header-right">
       <span style="color:rgba(255,255,255,0.5);">
-        Account: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
+        Admin: <strong style="color:#fff;"><?php echo htmlspecialchars($_SESSION['username']); ?></strong>
       </span>
       <a href="admin_dashboard.php" class="report-link" target="_blank">📊 Daily Report</a>
       <a href="admin.php?logout=1">🚪 Logout</a>
@@ -334,30 +341,30 @@ $top_items = $mysqli->query("
 
   <!-- REPORTS TAB -->
   <div id="tab-reports" class="tab-content">
-    <a href="admin_dashboard.php" target="_blank" class="btn-action" style="display:inline-block;margin-bottom:24px;padding:10px 20px;font-size:1em;">
-      📥 Open Daily Report (PDF)
-    </a>
 
-    <p class="section-title">Top Selling Items (All Time)</p>
-    <div style="background:var(--card);border-radius:14px;padding:24px;max-width:600px;">
-      <?php
-      $maxQty = !empty($top_items) ? $top_items[0]['qty'] : 1;
-      foreach ($top_items as $item):
-        $pct = round(($item['qty'] / $maxQty) * 100);
-      ?>
-      <div class="top-item-row">
-        <span style="min-width:160px;"><?php echo htmlspecialchars($item['item_name']); ?></span>
-        <div class="item-bar-wrap">
-          <div class="item-bar" style="width:<?php echo $pct; ?>%;"></div>
-        </div>
-        <span style="min-width:40px;text-align:right;opacity:0.7;"><?php echo $item['qty']; ?>x</span>
-        <span class="revenue-cell" style="min-width:90px;text-align:right;">₱<?php echo number_format($item['sales'], 0); ?></span>
+    <!-- Filter Bar -->
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:28px;flex-wrap:wrap;">
+      <div style="display:flex;gap:6px;">
+        <button class="period-btn active" onclick="setPeriod('daily',this)">Daily</button>
+        <button class="period-btn" onclick="setPeriod('weekly',this)">Weekly</button>
+        <button class="period-btn" onclick="setPeriod('monthly',this)">Monthly</button>
+        <button class="period-btn" onclick="setPeriod('annually',this)">Annual</button>
       </div>
-      <?php endforeach; ?>
-      <?php if (empty($top_items)): ?>
-      <p style="opacity:0.4;text-align:center;">No sales data yet.</p>
-      <?php endif; ?>
+      <span id="period-label" style="color:rgba(255,255,255,0.4);font-size:0.9em;"></span>
+      <button onclick="exportPDF()" style="margin-left:auto;background:var(--gold);color:#111;border:none;padding:9px 20px;border-radius:8px;font-family:'Cormorant Garamond',serif;font-size:1em;font-weight:bold;cursor:pointer;transition:0.2s;">
+        📥 Export as PDF
+      </button>
     </div>
+
+    <!-- Stats for selected period -->
+    <div class="stats-grid" id="report-stats" style="max-width:700px;margin-bottom:28px;"></div>
+
+    <!-- Top Selling Items for selected period -->
+    <p class="section-title">Top Selling Items</p>
+    <div id="report-items" style="background:var(--card);border-radius:14px;padding:24px;max-width:600px;min-height:100px;">
+      <p style="opacity:0.4;text-align:center;">Loading...</p>
+    </div>
+
   </div>
 
   <script>
@@ -416,6 +423,81 @@ $top_items = $mysqli->query("
       document.addEventListener(evt, resetTimers, { passive: true });
     });
     resetTimers();
+
+    // ── Reports Filter ──
+    let currentPeriod = 'daily';
+
+    const PERIOD_LABELS = {
+      daily:    'Today — ' + new Date().toLocaleDateString('en-PH', {month:'long',day:'numeric',year:'numeric'}),
+      weekly:   'This Week',
+      monthly:  new Date().toLocaleDateString('en-PH', {month:'long',year:'numeric'}),
+      annually: 'Year ' + new Date().getFullYear()
+    };
+
+    function setPeriod(period, btn) {
+      currentPeriod = period;
+      document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('period-label').textContent = PERIOD_LABELS[period];
+      loadReport(period);
+    }
+
+    async function loadReport(period) {
+      document.getElementById('report-items').innerHTML = '<p style="opacity:0.4;text-align:center;padding:20px;">Loading...</p>';
+      document.getElementById('report-stats').innerHTML = '';
+
+      try {
+        const res  = await fetch('report_data.php?period=' + period);
+        const data = await res.json();
+
+        // Stats
+        const statsHtml = `
+          <div class="stat-box"><h3>Orders</h3><p>${data.total_orders}</p></div>
+          <div class="stat-box"><h3>Gross Revenue</h3><p>₱${numFmt(data.gross_revenue)}</p></div>
+          <div class="stat-box"><h3>Collected</h3><p style="color:#27ae60;">₱${numFmt(data.collected)}</p></div>
+        `;
+        document.getElementById('report-stats').innerHTML = statsHtml;
+
+        // Top Items
+        if (!data.items || data.items.length === 0) {
+          document.getElementById('report-items').innerHTML = '<p style="opacity:0.4;text-align:center;padding:20px;">No data for this period.</p>';
+          return;
+        }
+
+        const maxQty = data.items[0].qty;
+        let html = '';
+        data.items.forEach(item => {
+          const pct = Math.round((item.qty / maxQty) * 100);
+          html += `
+            <div class="top-item-row">
+              <span style="min-width:160px;">${item.item_name}</span>
+              <div class="item-bar-wrap"><div class="item-bar" style="width:${pct}%;"></div></div>
+              <span style="min-width:40px;text-align:right;opacity:0.7;">${item.qty}x</span>
+              <span class="revenue-cell" style="min-width:90px;text-align:right;">₱${numFmt(item.sales)}</span>
+            </div>`;
+        });
+        document.getElementById('report-items').innerHTML = html;
+
+      } catch(e) {
+        document.getElementById('report-items').innerHTML = '<p style="color:#e74c3c;text-align:center;">Failed to load report data.</p>';
+      }
+    }
+
+    function numFmt(n) {
+      return Number(n || 0).toLocaleString('en-PH', {minimumFractionDigits:0, maximumFractionDigits:0});
+    }
+
+    function exportPDF() {
+      window.open('admin_dashboard.php?period=' + currentPeriod, '_blank');
+    }
+
+    // Load daily report on page load when reports tab is opened
+    document.querySelector('[onclick*="reports"]').addEventListener('click', () => {
+      if (!document.getElementById('report-stats').innerHTML.trim()) {
+        document.getElementById('period-label').textContent = PERIOD_LABELS['daily'];
+        loadReport('daily');
+      }
+    });
   </script>
 
 </body>

@@ -595,7 +595,7 @@
     <source src="./sounds/notify.mp3" type="audio/mpeg">
   </audio>
 
- <footer class="footer reveal">
+  <footer class="footer reveal">
     <div class="footer-container">
       <p>&copy; 2026 Casa De Manila. All rights reserved.</p>
       <p>Email: reservations@casamanila.ph | Phone: +63 912 345 6789</p>
@@ -771,36 +771,39 @@
       closeModal();
     }
 
-   function updateCartUI() {
-  const rows = document.querySelectorAll('#cartItems .cart-item');
-  let total = 0, count = 0;
+    function updateCartUI() {
+      const rows = document.querySelectorAll('#cartItems .cart-item');
+      let total = 0,
+        count = 0;
 
-  rows.forEach(row => {
-    const price = parseFloat(row.querySelector('.cart-item-price').dataset.price);
-    const qty = parseInt(row.querySelector('.cart-item-qty').textContent);
-    total += price * qty;
-    count += qty;
-  });
+      rows.forEach(row => {
+        const price = parseFloat(row.querySelector('.cart-item-price').dataset.price);
+        const qty = parseInt(row.querySelector('.cart-item-qty').textContent);
+        total += price * qty;
+        count += qty;
+      });
 
-  // Use the formatter for a professional look
-  document.getElementById('cartTotal').textContent = `₱${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-  updateCartBadge(count);
-}
-  function updateCartUI() {
-    const rows = document.querySelectorAll('#cartItems .cart-item');
-    let total = 0, count = 0;
+      // Use the formatter for a professional look
+      document.getElementById('cartTotal').textContent = `₱${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+      updateCartBadge(count);
+    }
 
-    rows.forEach(row => {
-      const price = parseFloat(row.querySelector('.cart-item-price').dataset.price);
-      const qty = parseInt(row.querySelector('.cart-item-qty').textContent);
-      total += price * qty;
-      count += qty;
-    });
+    function updateCartUI() {
+      const rows = document.querySelectorAll('#cartItems .cart-item');
+      let total = 0,
+        count = 0;
 
-    // Car Added formatting for better UX
-    document.getElementById('cartTotal').textContent = `₱${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
-    updateCartBadge(count); 
-}
+      rows.forEach(row => {
+        const price = parseFloat(row.querySelector('.cart-item-price').dataset.price);
+        const qty = parseInt(row.querySelector('.cart-item-qty').textContent);
+        total += price * qty;
+        count += qty;
+      });
+
+      // Car Added formatting for better UX
+      document.getElementById('cartTotal').textContent = `₱${total.toLocaleString(undefined, {minimumFractionDigits: 2})}`;
+      updateCartBadge(count);
+    }
     /*updateCartUI() {
       const rows = document.querySelectorAll('#cartItems .cart-item');
       let total = 0,
@@ -812,7 +815,7 @@
       document.getElementById('cartTotal').textContent = `₱${total.toLocaleString()}`;
       updateCartBadge(count);
     }
-      */  
+      */
     function changeCartQty(btn, delta) {
       const qtyEl = btn.closest('.cart-item').querySelector('.cart-item-qty');
       qtyEl.textContent = Math.max(1, parseInt(qtyEl.textContent) + delta);

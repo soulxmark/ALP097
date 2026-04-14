@@ -179,8 +179,8 @@ require_once './connection.php';
         <p>A confirmation email is on its way to your inbox.</p><br>
         <h4>Notice: For Our Clients</h4>
         <p>Our team will review your request and contact you within <strong>4</strong>
-        days for confirmation. If we are unable to reach you or confirm the details within this timeframe, the request will be automatically cancelled."</p>
-    
+          days for confirmation. If we are unable to reach you or confirm the details within this timeframe, the request will be automatically cancelled."</p>
+
       </div>
     </div>
   </div>
