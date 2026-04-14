@@ -81,7 +81,7 @@ $top_items = $mysqli->query("
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Casa De Manila</title>
-  < <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
+   <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root { --gold: #d4af37; --dark: #111; --card: #1a1a1a; }
