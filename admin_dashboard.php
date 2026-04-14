@@ -36,6 +36,7 @@ $top_items = $mysqli->query("
 <head>
   <meta charset="UTF-8">
   <title>Daily Report — <?php echo $today; ?> | Casa De Manila</title>
+   <link rel="icon" type="image/x-icon" href="./images/logo/favicon.ico">
   <style>
     body { font-family: 'Times New Roman', serif; color: #333; padding: 40px; background: #fff; }
     .report-header { text-align: center; border-bottom: 2px solid #d4af37; padding-bottom: 20px; margin-bottom: 30px; }
@@ -61,8 +62,12 @@ $top_items = $mysqli->query("
 <body>
 
   <div class="no-print">
-    <a href="admin.php" class="btn-back">← Back to Dashboard</a>
+    <a href="admin.php" class="btn-back">←  Dashboard</a>
     <button class="btn-print" onclick="window.print()">📥 Export as PDF</button>
+     <button class="btn-print"><a href="https://docs.google.com/spreadsheets/d/1fHBQgDMMnOWFlkX8f8DBO3a9z8TMdHw8DRmShvbUHfE/edit?usp=sharing" class="btn-print" style="display: inline-block; text-decoration: none;">
+    📥 Reports Reservations
+    </a>
+    </button>
   </div>
 
   <div class="report-header">

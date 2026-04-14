@@ -199,8 +199,8 @@ CREATE TABLE `users_tbl1` (
 -- Dumping data for table `users_tbl1`
 --
 
-INSERT INTO `users_tbl1` (`uid`, `username`, `email`, `password_us`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'admin', 'admin@casamanila.ph', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', '2026-03-21 01:38:05', '2026-03-21 01:38:05'),
+INSERT INTO users_tbl1 (uid, username, email, password_us, role, created_at, updated_at) 
+VALUES (1, 'admin', 'mark2899estimada@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin', NOW(), NOW())
 (2, 'soulxmark', 'asdasd@gmai.com', '$2y$10$Iqw3Ry2CJQiB4Vc5QaBu5eYZGfWKJXtToUMb92E0u3nUU7kGphau.', 'user', '2026-03-24 04:06:38', '2026-03-24 04:06:38');
 
 --

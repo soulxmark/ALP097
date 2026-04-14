@@ -176,8 +176,11 @@ require_once './connection.php';
         <div class="success-icon">✔</div>
         <h3>Mabuhay!</h3>
         <p>Your reservation has been sent successfully.</p>
-        <p>A confirmation email is on its way to your inbox.</p>
-        <button type="button" onclick="closeSuccessModal()" class="btn">Close</button>
+        <p>A confirmation email is on its way to your inbox.</p><br>
+        <h4>Notice: For Our Clients</h4>
+        <p>Our team will review your request and contact you within <strong>4</strong>
+        days for confirmation. If we are unable to reach you or confirm the details within this timeframe, the request will be automatically cancelled."</p>
+    
       </div>
     </div>
   </div>
