@@ -104,6 +104,7 @@ $top_items = $mysqli->query("
     <button class="tab-btn active" onclick="switchTab('orders', this)">📦 Orders</button>
     <button class="tab-btn" onclick="switchTab('reservations', this)">📅 Reservations</button>
     <button class="tab-btn" onclick="switchTab('reports', this)">📊 Reports</button>
+    <button class="tab-btn" onclick="window.location.href='https://docs.google.com/spreadsheets/d/1fHBQgDMMnOWFlkX8f8DBO3a9z8TMdHw8DRmShvbUHfE/edit?gid=0#gid=0'">📅Reservation List</button>
   </div>
 
   <!-- ORDERS TAB -->

@@ -221,7 +221,7 @@ body.bg-drinks::after {
   font-family: 'Cormorant Garamond', serif;
   font-size: 13px;
   margin-top: 2px;
-  color: #fff;
+  color: #000;
   text-align: center;
 }
 
@@ -239,7 +239,7 @@ body.bg-drinks::after {
 }
 
 .nav-links a {
-  color:#fff;
+  color:#000;
   text-decoration: none;
   font-weight: 500;
   transition: color 0.3s ease;
